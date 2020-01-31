@@ -213,7 +213,7 @@ namespace PS
 			}
 		}, this);
 
-		RN::String *audioDevice = nullptr;
+/*		RN::String *audioDevice = nullptr;
 #if RN_PLATFORM_WINDOWS
 		if(_vrWindow && _vrWindow->IsKindOfClass(RN::OculusWindow::GetMetaClass()))
 		{
@@ -241,7 +241,7 @@ namespace PS
 			RN::OpenALListener *listener = new RN::OpenALListener();
 			_mainCamera->AddAttachment(listener);
 			_audioWorld->SetListener(listener);
-		}
+		}*/
 	}
 	
 	void World::AddLevelNode(RN::SceneNode *node)
@@ -271,8 +271,17 @@ namespace PS
 	void World::LoadLevel()
 	{
 		RN::Model *levelModel = RN::Model::WithName(RNCSTR("models/room.sgm"));
+		RN::Model::LODStage *levelLodStage = levelModel->GetLODStage(0);
+		for(int i = 0; i < levelLodStage->GetCount(); i++)
+		{
+			RN::Material *material = levelLodStage->GetMaterialAtIndex(i);
+			RN::Shader::Options *shaderOptions = RN::Shader::Options::WithMesh(levelLodStage->GetMeshAtIndex(i));
+			material->SetVertexShader(_shaderLibrary->GetShaderWithName(RNCSTR("main_vertex"), shaderOptions), RN::Shader::UsageHint::Default);
+			material->SetFragmentShader(_shaderLibrary->GetShaderWithName(RNCSTR("main_fragment"), shaderOptions), RN::Shader::UsageHint::Default);
+		}
+		
 		_levelEntity = new RN::Entity(levelModel);
-		AddNode(_levelEntity->Autorelease());
+		AddLevelNode(_levelEntity->Autorelease());
 		
 /*		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
 		RN::PhysXCompoundShape *levelShape = RN::PhysXCompoundShape::WithModel(levelModel, levelPhysicsMaterial->Autorelease(), true);
@@ -334,7 +343,7 @@ namespace PS
 		RN::Scene::WillUpdate(delta);
 		
 		
-		RN::InputManager *manager = RN::InputManager::GetSharedInstance();
+/*		RN::InputManager *manager = RN::InputManager::GetSharedInstance();
 
 		RN::Vector3 rotation(0.0);
 
@@ -348,7 +357,7 @@ namespace PS
 		translation.z = ((int)manager->IsControlToggling(RNCSTR("S")) - (int)manager->IsControlToggling(RNCSTR("W"))) * 15.0f;
 
 		_mainCamera->Rotate(rotation * delta * 15.0f);
-		_mainCamera->TranslateLocal(translation * delta);
+		_mainCamera->TranslateLocal(translation * delta);*/
 	}
 
 	void World::DidUpdate(float delta)
