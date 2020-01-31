@@ -1,0 +1,76 @@
+apply plugin: 'com.android.application'
+
+def getVersionCodeFromProjectProperty = { ->
+    def code = project.hasProperty('projectBuildNumber') ? projectBuildNumber.toInteger() : 1
+    return code
+}
+
+def getVersionNameFromProjectProperty = { ->
+    def name = project.hasProperty('projectVersion') ? projectVersion : "1.0"
+    return name
+}
+
+def getCmakeArgumentsFromProjectProperty = { ->
+    def cmakeArguments = project.hasProperty('projectCmakeArguments') ? projectCmakeArguments.tokenize(',') : []
+    return cmakeArguments
+}
+
+android {
+    compileSdkVersion 28
+    sourceSets {
+        main {
+            jniLibs.srcDirs 'src/main/libs'
+        }
+        debug {
+            jniLibs.srcDirs 'src/debug/libs'
+        }
+    }
+    defaultConfig {
+        applicationId "com.slindev.ProjectSteve"
+        minSdkVersion 24
+        targetSdkVersion 28
+        versionCode getVersionCodeFromProjectProperty()
+        versionName getVersionNameFromProjectProperty()
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                arguments = getCmakeArgumentsFromProjectProperty()
+                arguments.add("-DANDROID_ASSETS_DIRECTORIES='"+"${sourceSets.main.assets.srcDirs}".toString()+"'")
+
+                cppFlags ""
+                targets "Rayne", "RayneOgg", "RaynePhysX", "RayneUI", "RayneRecast", "OpenAL", "RayneOpenAL", "RayneVulkan", "RayneVR", "RayneOculusMobile", "zlibstatic", "jansson", "png_static", "ProjectSteve"
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ndk {
+                abiFilters 'arm64-v8a'
+            }
+        }
+        debug {
+            ndk {
+                abiFilters 'arm64-v8a'
+            }
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            version "3.15.3"
+            path "../../../CMakeLists.txt"
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:28.0.0-alpha3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}

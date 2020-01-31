@@ -1,0 +1,61 @@
+[
+	{
+		"file": "AllInOne.hlsl",
+		"shaders":
+		[
+			{
+				"name": "main_vertex",
+				"type": "vertex",
+
+				"signature":
+				{
+					"options":
+					[
+						"RN_UV0",
+						"RN_UV1",
+						"RN_ANIMATIONS",
+						"PZ_SIMPLELIGHT",
+						"PZ_SKYLIGHT",
+						"PZ_FLOOR",
+						"PZ_SPECULARITY",
+						"PZ_PLAYERFADE"
+					]
+				}
+			},
+			{
+				"name": "main_fragment",
+				"type": "fragment",
+
+				"signature":
+				{
+					"options":
+					[
+						"RN_UV0",
+						"RN_UV1",
+						"PZ_UNLIT",
+						"PZ_FIX_LIGHTMAP_GAMMA",
+						"PZ_SIMPLELIGHT",
+						"PZ_SKYLIGHT",
+						"PZ_FLOOR",
+						"PZ_SPECULARITY",
+						"PZ_PLAYERFADE"
+					]
+				}
+			}
+		]
+	},
+	{
+		"file": "PostProcessing.hlsl",
+		"shaders":
+		[
+			{
+				"name": "pp_vertex",
+				"type": "vertex"
+			},
+			{
+				"name": "pp_blit_fragment",
+				"type": "fragment"
+			}
+		]
+	}
+]

@@ -1,0 +1,71 @@
+[
+    {
+        "file~d3d12": "shaders/AllInOne.vs.cso", 
+        "file~metal": "shaders/AllInOne.vs.metallib", 
+        "file~vulkan": "shaders/AllInOne.vs.spirv", 
+        "shaders": [
+            {
+                "name": "main_vertex", 
+                "signature": {
+                    "options": [
+                        "RN_UV0", 
+                        "RN_UV1", 
+                        "RN_ANIMATIONS", 
+                        "PZ_SIMPLELIGHT", 
+                        "PZ_SKYLIGHT", 
+                        "PZ_FLOOR", 
+                        "PZ_SPECULARITY", 
+                        "PZ_PLAYERFADE"
+                    ]
+                }, 
+                "type": "vertex"
+            }
+        ]
+    }, 
+    {
+        "file~d3d12": "shaders/AllInOne.ps.cso", 
+        "file~metal": "shaders/AllInOne.ps.metallib", 
+        "file~vulkan": "shaders/AllInOne.ps.spirv", 
+        "shaders": [
+            {
+                "name": "main_fragment", 
+                "signature": {
+                    "options": [
+                        "RN_UV0", 
+                        "RN_UV1", 
+                        "PZ_UNLIT", 
+                        "PZ_FIX_LIGHTMAP_GAMMA", 
+                        "PZ_SIMPLELIGHT", 
+                        "PZ_SKYLIGHT", 
+                        "PZ_FLOOR", 
+                        "PZ_SPECULARITY", 
+                        "PZ_PLAYERFADE"
+                    ]
+                }, 
+                "type": "fragment"
+            }
+        ]
+    }, 
+    {
+        "file~d3d12": "shaders/PostProcessing.vs.cso", 
+        "file~metal": "shaders/PostProcessing.vs.metallib", 
+        "file~vulkan": "shaders/PostProcessing.vs.spirv", 
+        "shaders": [
+            {
+                "name": "pp_vertex", 
+                "type": "vertex"
+            }
+        ]
+    }, 
+    {
+        "file~d3d12": "shaders/PostProcessing.ps.cso", 
+        "file~metal": "shaders/PostProcessing.ps.metallib", 
+        "file~vulkan": "shaders/PostProcessing.ps.spirv", 
+        "shaders": [
+            {
+                "name": "pp_blit_fragment", 
+                "type": "fragment"
+            }
+        ]
+    }
+]
