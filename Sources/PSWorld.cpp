@@ -91,6 +91,8 @@ namespace PS
 		AddNode(_player->Autorelease());
 		_player->SetWorldPosition(RN::Vector3(0, 0, 0));*/
 		
+		AddNode(_mainCamera);
+		
 		LoadLevel();
 	}
 
@@ -268,11 +270,11 @@ namespace PS
 
 	void World::LoadLevel()
 	{
-/*		RN::Model *levelModel = RN::Model::WithName(RNCSTR("models/Wand_Boden_Raum.sgm"));
+		RN::Model *levelModel = RN::Model::WithName(RNCSTR("models/room.sgm"));
 		_levelEntity = new RN::Entity(levelModel);
 		AddNode(_levelEntity->Autorelease());
 		
-		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
+/*		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
 		RN::PhysXCompoundShape *levelShape = RN::PhysXCompoundShape::WithModel(levelModel, levelPhysicsMaterial->Autorelease(), true);
 		RN::PhysXStaticBody *levelBody = RN::PhysXStaticBody::WithShape(levelShape);
 		levelBody->SetCollisionFilter(World::CollisionType::Level, World::CollisionType::All);
@@ -330,6 +332,23 @@ namespace PS
 		}
 		
 		RN::Scene::WillUpdate(delta);
+		
+		
+		RN::InputManager *manager = RN::InputManager::GetSharedInstance();
+
+		RN::Vector3 rotation(0.0);
+
+		rotation.x = manager->GetMouseDelta().x;
+		rotation.y = manager->GetMouseDelta().y;
+		rotation = -rotation;
+
+		RN::Vector3 translation(0.0);
+
+		translation.x = ((int)manager->IsControlToggling(RNCSTR("D")) - (int)manager->IsControlToggling(RNCSTR("A"))) * 15.0f;
+		translation.z = ((int)manager->IsControlToggling(RNCSTR("S")) - (int)manager->IsControlToggling(RNCSTR("W"))) * 15.0f;
+
+		_mainCamera->Rotate(rotation * delta * 15.0f);
+		_mainCamera->TranslateLocal(translation * delta);
 	}
 
 	void World::DidUpdate(float delta)
