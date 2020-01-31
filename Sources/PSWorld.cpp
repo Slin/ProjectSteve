@@ -8,6 +8,7 @@
 
 #include "PSWorld.h"
 #include "PSPlatformWrapper.h"
+#include "PSStevelet.h"
 
 #if RN_PLATFORM_ANDROID
 	#include "RNOculusMobileWindow.h"
@@ -273,6 +274,9 @@ namespace PS
 		RN::Model *levelModel = RN::Model::WithName(RNCSTR("models/room.sgm"));
 		_levelEntity = new RN::Entity(levelModel);
 		AddNode(_levelEntity->Autorelease());
+		auto stevelet = new PS::Stevelet();
+		stevelet->SetWorldPosition({ 0, 0, 0 });
+		AddNode(stevelet->Autorelease());
 		
 /*		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
 		RN::PhysXCompoundShape *levelShape = RN::PhysXCompoundShape::WithModel(levelModel, levelPhysicsMaterial->Autorelease(), true);
@@ -280,7 +284,7 @@ namespace PS
 		levelBody->SetCollisionFilter(World::CollisionType::Level, World::CollisionType::All);
 		_levelEntity->AddAttachment(levelBody);
 		
-		RN::Entity *skyEntity = new RN::Entity(RN::Model::WithSkydome(RNCSTR("models/sky_lightblue.*")));
+		RN::Entity *skyEntity = new RN::Entity(RN::Model::WithSkydome(RNCSTR("m}odels/sky_lightblue.*")));
 		skyEntity->SetScale(RN::Vector3(1000.0f));
 		skyEntity->SetWorldRotation(RN::Vector3(200.0f, 0.0f, 0.0f));
 		AddNode(skyEntity->Autorelease());*/

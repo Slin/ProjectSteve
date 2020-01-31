@@ -16,10 +16,9 @@
 #include "RNOpenALWorld.h"
 #include "RNRecastWorld.h"
 
-#include "PSPlayer.h"
-
 namespace PS
 {
+	class Player;
 	class World : public RN::SceneBasic
 	{
 	public:
