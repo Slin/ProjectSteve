@@ -11,14 +11,7 @@
 				{
 					"options":
 					[
-						"RN_UV0",
-						"RN_UV1",
-						"RN_ANIMATIONS",
-						"PZ_SIMPLELIGHT",
-						"PZ_SKYLIGHT",
-						"PZ_FLOOR",
-						"PZ_SPECULARITY",
-						"PZ_PLAYERFADE"
+						"RN_UV0"
 					]
 				}
 			},
@@ -30,15 +23,7 @@
 				{
 					"options":
 					[
-						"RN_UV0",
-						"RN_UV1",
-						"PZ_UNLIT",
-						"PZ_FIX_LIGHTMAP_GAMMA",
-						"PZ_SIMPLELIGHT",
-						"PZ_SKYLIGHT",
-						"PZ_FLOOR",
-						"PZ_SPECULARITY",
-						"PZ_PLAYERFADE"
+						"RN_UV0"
 					]
 				}
 			}
