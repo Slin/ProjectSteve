@@ -215,7 +215,7 @@ namespace PS
 #if RN_PLATFORM_WINDOWS
 		if(_vrWindow && _vrWindow->IsKindOfClass(RN::OculusWindow::GetMetaClass()))
 		{
-			RN::Array *audioDevices = RN::OpenALWorld::GetDeviceNames();
+			RN::Array *audioDevices = RN::OpenALWorld::GetOutputDeviceNames();
 			audioDevices->Enumerate<RN::String>([&audioDevice](RN::String *string, size_t index, bool &stop) {
 				if (string->GetRangeOfString(RNCSTR("Rift Audio")).length > 0)
 				{
