@@ -310,6 +310,11 @@ namespace PS
 		AddLevelNode(stevelet->Autorelease());
 		stevelet->SetWorldPosition(RN::Vector3(1.5f, 0.8f, 0.0f));
 		stevelet->SetWorldRotation(RN::Vector3(0.0f, 0.0f, 0.0f));
+
+		stevelet = new PS::Stevelet();
+		AddLevelNode(stevelet->Autorelease());
+		stevelet->SetWorldPosition(RN::Vector3(1.5f, 1.0f, -1.8f));
+		stevelet->SetWorldRotation(RN::Vector3(0.0f, 180.0f, 0.0f));
 		
 /*		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
 		RN::PhysXCompoundShape *levelShape = RN::PhysXCompoundShape::WithModel(levelModel, levelPhysicsMaterial->Autorelease(), true);

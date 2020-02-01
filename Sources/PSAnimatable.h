@@ -6,27 +6,29 @@
 //  Unauthorized use is punishable by torture, mutilation, and vivisection.
 //
 
-#ifndef __ProjectSteve_STEVELET_H_
-#define __ProjectSteve_STEVELET_H_
+#ifndef __ProjectSteve_ANIMATABLE_H_
+#define __ProjectSteve_ANIMATABLE_H_
 
 #include <Rayne.h>
 #include <RNPhysXWorld.h>
 #include <RNOpenALWorld.h>
-#include "PSAnimatable.h"
 
 namespace PS
 {
 	class World;
-	class Stevelet : public Animatable
+	class Animatable : public RN::Entity
 	{
 	public:
-		Stevelet();
-		~Stevelet() = default;
+		Animatable(RN::String const* modelName);
+		~Animatable() = default;
+		
 		void Update(float delta) override;
+	protected:
+		RN::Model* _model;
 	private:
 		float _animationTimer;
 		
-		RNDeclareMeta(Stevelet)
+		RNDeclareMeta(Animatable)
 	};
 }
 

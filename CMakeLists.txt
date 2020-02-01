@@ -71,14 +71,16 @@ set(SOURCES
 	Sources/PSWorld.cpp
 	Sources/PSPlayer.cpp
 	Sources/main.cpp
-	Sources/PSStevelet.cpp)
+	Sources/PSStevelet.cpp
+	Sources/PSAnimatable.cpp)
 
 set(HEADERS
 	Sources/PSApplication.h
 	Sources/PSPlatformWrapper.h
 	Sources/PSWorld.h
 	Sources/PSPlayer.h
-	Sources/PSStevelet.h)
+	Sources/PSStevelet.h
+	Sources/PSAnimatable.h)
 
 set(RESOURCES
 	manifest.json
