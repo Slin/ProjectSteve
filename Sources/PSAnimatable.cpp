@@ -14,7 +14,7 @@ namespace PS
 	RNDefineMeta(Animatable, RN::Entity)
 	
 	Animatable::Animatable(RN::String const* spriteName) 
-		: _animationTimer(0.0f)
+		: _animationTimer(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0.0f, 1.0f))
 	{
 		bool isSprite = false;
 		if(spriteName->HasSuffix(RNCSTR(".sgm")))
