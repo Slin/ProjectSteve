@@ -10,6 +10,10 @@
 #define RN_UV0 0
 #endif
 
+#ifndef PS_SPRITESHEET
+#define PS_SPRITESHEET 0
+#endif
+
 #if RN_UV0
 [[vk::binding(3)]] SamplerState linearRepeatSampler : register(s0);
 [[vk::binding(4)]] Texture2D texture0 : register(t0);
@@ -18,6 +22,10 @@
 [[vk::binding(1)]] cbuffer vertexUniforms : register(b0)
 {
 	matrix modelViewProjectionMatrix;
+
+#if PS_SPRITESHEET
+	float4 specularColor;
+#endif
 };
 
 [[vk::binding(2)]] cbuffer fragmentUniforms : register(b1)
@@ -50,6 +58,10 @@ FragmentVertex main_vertex(InputVertex vert)
 
 #if RN_UV0
 	result.texCoords0 = vert.texCoords0;
+	#if PS_SPRITESHEET
+		result.texCoords0 *= specularColor.xy;
+		result.texCoords0 += specularColor.zw;
+	#endif
 #endif
 
 	result.position = mul(modelViewProjectionMatrix, float4(vert.position, 1.0));

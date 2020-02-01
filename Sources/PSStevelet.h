@@ -24,8 +24,9 @@ namespace PS
 		
 		void Update(float delta) override;
 
-
 	private:
+		float _animationTimer;
+		
 		RNDeclareMeta(Stevelet)
 	};
 }

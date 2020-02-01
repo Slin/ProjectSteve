@@ -11,7 +11,8 @@
 				{
 					"options":
 					[
-						"RN_UV0"
+						"RN_UV0",
+						"PS_SPRITESHEET"
 					]
 				}
 			},
