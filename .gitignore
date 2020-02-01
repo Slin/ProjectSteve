@@ -22,3 +22,5 @@ Scripts/Utilities.pyc
 /Assets/Blender/Grundriss.blend
 /Assets/Blender/Boden_Raum.blend
 /Assets/Blender/Boden_Holz.jpg
+Resources/shaders/*.cso
+build/*
