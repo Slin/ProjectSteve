@@ -16,7 +16,8 @@ namespace PS
 	Animatable::Animatable(RN::String const* spriteName) 
 		: _animationTimer(0.0f), 
 		_model(RN::Model::WithName(RNCSTR("models/stevelet.sgm"))->Copy()),
-		_isGrabbed(false)
+		_isGrabbed(false),
+		_wantsThrow(false)
 	{
 		RN::ShaderLibrary *shaderLibrary = World::GetSharedInstance()->GetShaderLibrary();
 		
@@ -34,9 +35,11 @@ namespace PS
 		SetModel(_model);
 	}
 
-	void Animatable::Update(float deltaTime)
+	void Animatable::Update(float delta)
 	{
-		_animationTimer += deltaTime*2.0f;
+		RN::Entity::Update(delta);
+		
+		_animationTimer += delta*2.0f;
 		
 		while(_animationTimer > 1.0f)
 		{
@@ -50,10 +53,26 @@ namespace PS
 		
 		RN::Material *material = GetModel()->GetLODStage(0)->GetMaterialAtIndex(0);
 		material->SetSpecularColor(RN::Color::WithRGBA(1.0f, 1.0f, 0.0f, animationOffset));
+		
+		if(_isGrabbed)
+		{
+			RN::Vector3 currentSpeed = (GetWorldPosition() - _previousPosition) / delta;
+			_currentGrabbedSpeed = _currentGrabbedSpeed.GetLerp(currentSpeed, 0.5f);
+		}
+		
+		_previousPosition = GetWorldPosition();
 	}
 
 	void Animatable::SetIsGrabbed(bool isGrabbed)
 	{
+		if(_isGrabbed != isGrabbed)
+		{
+			if(isGrabbed)
+			{
+				_currentGrabbedSpeed = RN::Vector3();
+			}
+			_wantsThrow = !isGrabbed;
+		}
 		_isGrabbed = isGrabbed;
 	}
 }

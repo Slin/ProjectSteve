@@ -44,12 +44,10 @@ namespace PS
 		bool _isActivating;
 		
 		RN::Entity *_handEntity[2];
-		RN::SceneNode *_activeHand;
 		bool _isHandGrabbing[2];
 		RN::SceneNode *_grabbedObject[2];
 		RN::Vector3 _grabbedObjectOffset[2];
 		RN::Quaternion _grabbedObjectRotationOffset[2];
-		RN::Quaternion _grabbedObjectStartRotation[2];
 		
 		RN::uint8 _lastActiveHand;
 		

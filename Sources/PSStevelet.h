@@ -24,9 +24,16 @@ namespace PS
 		Stevelet();
 		~Stevelet() = default;
 		void Update(float delta) override;
+		
+		void SetTargetPosition(RN::Vector3 position);
+		
 	private:
 		float _animationTimer;
 		SteveStats _stats;
+		RN::Vector3 _targetPosition;
+		bool _isMoving;
+		
+		RN::PhysXDynamicBody *_physicsBody;
 		
 		RNDeclareMeta(Stevelet)
 	};

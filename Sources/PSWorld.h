@@ -48,10 +48,10 @@ namespace PS
 		void AddLevelNode(RN::SceneNode *node, bool _isGrabbable);
 		void RemoveLevelNode(RN::SceneNode *node);
 		
+		RN::Model *AssignDefaultShader(RN::Model *model, bool transparent);
+		
 		bool IsPaused() const { return _isPaused; }
 		bool IsDash() const { return _isDash; }
-		
-		RN::Entity *_levelEntity;
 
 	protected:
 		void WillBecomeActive() override;
