@@ -27,9 +27,13 @@ namespace PS
 		void AddObstacle(Obstacle* obs);
 		void AssignStevelet(Stevelet* steve);
 		void FreeStevelet(Stevelet* steve, Obstacle* obs);
+		void Update(float delta) override;
 	private:
 		std::vector<Obstacle*> _obstacles;
 		RN::Vector3 CalculateEndPosition();
+		void UpdateBoundingBox();
+
+		RN::AABB _startTrigger;
 
 		RNDeclareMeta(Level)
 	};

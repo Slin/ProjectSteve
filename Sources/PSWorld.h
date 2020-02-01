@@ -49,6 +49,7 @@ namespace PS
 		void AddLevelNode(RN::SceneNode *node, bool _isGrabbable);
 		void RemoveLevelNode(RN::SceneNode *node);
 		void RegisterGrabbable(RN::SceneNode* node);
+		RN::Array* GetGrabbableObjects();
 
 		RN::Model *AssignDefaultShader(RN::Model *model, bool transparent);
 		

@@ -316,6 +316,7 @@ namespace PS
 		auto stevelet = new PS::Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
 
+
 		auto level = new PS::Level();
 		AddLevelNode(level->Autorelease(), false);
 		level->SetWorldPosition(RN::Vector3(1.5f, 0.9f, -0.6f));
@@ -327,6 +328,16 @@ namespace PS
 		}
 
 		level->AssignStevelet(stevelet);
+
+		stevelet = new PS::Stevelet();
+		AddLevelNode(stevelet->Autorelease(), true);
+		stevelet->SetWorldPosition(RN::Vector3(3.0f, 2.0f, 2.0f));
+		stevelet = new PS::Stevelet();
+		AddLevelNode(stevelet->Autorelease(), true);
+		stevelet->SetWorldPosition(RN::Vector3(1.0f, -2.0f, 2.0f));
+		stevelet = new PS::Stevelet();
+		AddLevelNode(stevelet->Autorelease(), true);
+		stevelet->SetWorldPosition(RN::Vector3(1.5f, 3.0f, -2.0f));
 	}
 
 	void World::UpdateForWindowSize() const
@@ -432,6 +443,10 @@ namespace PS
 		});
 		
 		return closestObject;
+	}
+
+	RN::Array* World::GetGrabbableObjects() {
+		return _grabbableObjects;
 	}
 
 	std::pair<RN::SceneNode*, float> World::GetClosestGrabbableObject(RN::Vector2 coordinate)

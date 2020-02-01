@@ -25,6 +25,7 @@ namespace PS
 		Obstacle(RN::String const* modelName, Level* parent) : Animatable(modelName), _parent{ parent } {}
 		~Obstacle() = default;
 		void AssignStevelet(Stevelet* steve);
+		bool Contains(Stevelet* steve);
 		void Update(float delta) override;
 	private:
 		std::vector<Stevelet*> _steves;

@@ -18,6 +18,10 @@ namespace PS
 		_steves.push_back(steve);
 	}
 
+	bool Obstacle::Contains(Stevelet* steve) {
+		return std::find(_steves.begin(), _steves.end(), steve) != _steves.end();
+	}
+
 	void Obstacle::Update(float delta) {
 		PS::Animatable::Update(delta);
 
@@ -35,6 +39,7 @@ namespace PS
 				}
 			}
 		}
+
 
 		/*_steves.erase(
 			_steves.begin(), 

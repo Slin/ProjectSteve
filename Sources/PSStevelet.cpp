@@ -23,8 +23,13 @@ namespace PS
 	}
 
 	void Stevelet::Kill() {
-		//World::GetSharedInstance()->RemoveLevelNode(this);
-		StopMovement();
+		if (_isGrabbed) {
+			StopMovement();
+			ResumePhysics();
+			return;
+		}
+
+		World::GetSharedInstance()->RemoveLevelNode(this);
 	}
 
 	void Stevelet::MoveForward() {
