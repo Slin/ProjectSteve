@@ -15,6 +15,7 @@
 #include "PSSyringe.h"
 #include "PSLevel.h"
 #include "PSObstacle.h"
+#include "PSSpawner.h"
 
 #if RN_PLATFORM_ANDROID
 	#include "RNOculusMobileWindow.h"
@@ -152,7 +153,7 @@ namespace PS
 			_vrCamera->GetEye(1)->GetRenderPass()->SetClearColor(RN::Color::Black());
 			_vrCamera->GetEye(1)->GetRenderPass()->SetFlags(RN::RenderPass::Flags::ClearColor|RN::RenderPass::Flags::ClearDepthStencil);
 #endif
-			_mainCamera = _vrCamera;
+			_mainCamera = _vrCamera;                                                                                                                                                                                                                  
 		}
 		else
 		{
@@ -308,10 +309,13 @@ namespace PS
 		AddLevelNode(helix->Autorelease(), false);
 		helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.0f));
 		
-		/*auto stevelet = new Stevelet();
-		Syringe *syringe = new Syringe();
+		Spawner *syringeSpawner = new Spawner(RNCSTR("models/syringe_body.sgm"), Spawner::ObjectType::SyringeType, 20);
+		AddLevelNode(syringeSpawner->Autorelease(), true);
+		syringeSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));
+		
+/*		Syringe *syringe = new Syringe();
 		AddLevelNode(syringe->Autorelease(), true);
-		syringe->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));
+		syringe->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));*/
 		
 		auto stevelet = new Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
@@ -321,9 +325,9 @@ namespace PS
 		stevelet = new Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
 		stevelet->SetWorldPosition(RN::Vector3(0.5f, 0.95f, 0.0f));
-		stevelet->SetWorldRotation(RN::Vector3(0.0f, 0.0f, 0.0f));*/
+		stevelet->SetWorldRotation(RN::Vector3(0.0f, 0.0f, 0.0f));
 
-		auto stevelet = new PS::Stevelet();
+		stevelet = new PS::Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
 		stevelet->SetWorldPosition(RN::Vector3(1.5f, 1.05f, -0.5f));
 		stevelet->SetWorldRotation(RN::Vector3(180.0f, 0.0f, 0.0f));

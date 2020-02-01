@@ -15,7 +15,7 @@ namespace PS
 	RNDefineMeta(Level, RN::Entity)
 
 	void Level::AddObstacle(Obstacle* obst) {
-		auto position = _CalculateEndPosition();
+		auto position = CalculateEndPosition();
 		position.z -= obst->GetBoundingBox().minExtend.z;
 		obst->SetWorldPosition(position);
 		_obstacles.push_back(obst);
@@ -38,7 +38,7 @@ namespace PS
 		steve->MoveForward();
 	}
 
-	RN::Vector3 Level::_CalculateEndPosition() {
+	RN::Vector3 Level::CalculateEndPosition() {
 		auto position = GetWorldPosition();
 		for (auto o : _obstacles) {
 			position.z += o->GetBoundingBox().maxExtend.z - o->GetBoundingBox().minExtend.z;

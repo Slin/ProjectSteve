@@ -69,6 +69,8 @@ namespace PS
 		_fillPercentage = 0.0f;
 		_isAnimating = false;
 		SetPercentage(_fillPercentage);
+		
+		Grabbable::Reset();
 	}
 
 	void Syringe::Trigger()

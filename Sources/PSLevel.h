@@ -29,7 +29,7 @@ namespace PS
 		void FreeStevelet(Stevelet* steve, Obstacle* obs);
 	private:
 		std::vector<Obstacle*> _obstacles;
-		RN::Vector3 Level::_CalculateEndPosition();
+		RN::Vector3 CalculateEndPosition();
 
 		RNDeclareMeta(Level)
 	};

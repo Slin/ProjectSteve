@@ -10,13 +10,14 @@ namespace PS {
 	//	template<typename... Args>
 	//	Grabbable(Args&&... args) : Entity(std::forward<Args>(args)), _isGrabbed(false) {}
 		using Entity::Entity;
+		void Update(float delta) override;
 
 		void SetIsGrabbed(bool isGrabbed);
 		bool IsGrabbed() const { return _isGrabbed; }
 
 		void SetIsTriggered(bool isTriggered);
+		virtual void Reset();
 
-		void Update(float delta) override;
 	protected:
 		bool _isGrabbed = false;
 		bool _wantsThrow = false;

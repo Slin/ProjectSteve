@@ -32,4 +32,9 @@ namespace PS {
 	{
 		_isTriggered = isTriggered;
 	}
+
+	void Grabbable::Reset()
+	{
+		
+	}
 }

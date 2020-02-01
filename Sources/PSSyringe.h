@@ -28,7 +28,7 @@ namespace PS
 		
 		void SetPercentage(float percentage);
 		void Trigger();
-		void Reset();
+		void Reset() override;
 		
 	private:
 		RN::PhysXDynamicBody *_physicsBody;
