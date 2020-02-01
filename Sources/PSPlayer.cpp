@@ -9,12 +9,21 @@
 #include "PSPlayer.h"
 #include "PSWorld.h"
 #include "PSAnimatable.h"
+#include "PSHelix.h"
 
 namespace PS
 {
 	RNDefineMeta(Player, RN::SceneNode)
 	
-	Player::Player(RN::SceneNode *camera) : _camera(camera->Retain()), _stickIsPressed(false), _didSnapTurn(false), _isActivating(false), _didActivate(false), _lastActiveHand(0)
+	Player::Player(RN::SceneNode *camera) 
+		: _camera(camera->Retain()), 
+		_stickIsPressed(false), 
+		_didSnapTurn(false), 
+		_isActivating(false), 
+		_didActivate(false), 
+		_isHandGrabbing{},
+		_grabbedObject{},
+		_lastActiveHand(0)
 	{
 		AddChild(camera);
 
@@ -272,26 +281,15 @@ namespace PS
 				{
 					if(!_isHandGrabbing[i])
 					{
-						RN::SceneNode *grabbedObject = World::GetSharedInstance()->GetClosestGrabbableObject(_handEntity[i]->GetWorldPosition());
-						if(_handEntity[i]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
+						RN::SceneNode* grabbedObject;
+						if((grabbedObject = FindGrabbable(true, i)) && (grabbedObject = Grab(grabbedObject,i)))
 						{
-							_grabbedObject[i] = grabbedObject;
 							_grabbedObjectOffset[i] = _handEntity[i]->GetWorldRotation().GetConjugated().GetRotatedVector(grabbedObject->GetWorldPosition() - _handEntity[i]->GetWorldPosition());
 							_grabbedObjectRotationOffset[i] = _handEntity[i]->GetWorldRotation().GetConjugated() * grabbedObject->GetWorldRotation();
 							
-							if(grabbedObject)
-							{
-								Animatable *animatable = grabbedObject->Downcast<Animatable>();
-								if(animatable)
-								{
-									animatable->SetIsGrabbed(true);
-								}
-							}
 						}
 					}
-					_isHandGrabbing[i] = true;
-					
-					if(_grabbedObject[i])
+					else
 					{
 						_grabbedObject[i]->SetWorldPosition(_handEntity[i]->GetWorldPosition() + _handEntity[i]->GetWorldRotation().GetRotatedVector(_grabbedObjectOffset[i]));
 						_grabbedObject[i]->SetWorldRotation(_handEntity[i]->GetWorldRotation() * _grabbedObjectRotationOffset[i]);
@@ -301,15 +299,8 @@ namespace PS
 				{
 					if(_grabbedObject[i])
 					{
-						Animatable *animatable = _grabbedObject[i]->Downcast<Animatable>();
-						if(animatable)
-						{
-							animatable->SetIsGrabbed(false);
-						}
+						ReleaseGrabbable(true, i);
 					}
-					
-					_isHandGrabbing[i] = false;
-					_grabbedObject[i] = nullptr;
 				}
 				
 				if(_grabbedObject[i])
@@ -329,6 +320,32 @@ namespace PS
 			
 			_lastActiveHand = activeHand;
 		}
+		else // emulate grabbing with mouse
+		{
+			using namespace RN;
+			constexpr int i = 0;
+			if (manager->IsControlToggling(RNSTR("1")))
+			{
+				if (!_isHandGrabbing[i])
+				{
+					SceneNode* grabbedObject;
+					if ((grabbedObject = FindGrabbable(false, i)) && (grabbedObject = Grab(grabbedObject, i)))
+					{
+						_grabbedObjectOffset[i] = {};
+						_grabbedObjectOffset[i].z = -grabbedObject->GetWorldPosition().GetDistance(_camera->GetWorldPosition());
+					}
+				}
+				else
+				{
+					const Vector3 dir = _cameraRotation.GetRotatedVector(_grabbedObjectOffset[i]);
+					_grabbedObject[i]->SetWorldPosition(_camera->GetWorldPosition() + dir);
+				}
+			}
+			else
+			{
+				if (_grabbedObject[i]) ReleaseGrabbable(false, i);
+			}
+		}
 	}
 	
 	bool Player::IsActivatePressed()
@@ -339,5 +356,69 @@ namespace PS
 	void Player::DidActivate()
 	{
 		_didActivate = true;
+	}
+
+	RN::SceneNode* Player::FindGrabbable(bool vrMode, RN::uint8 handIndex)
+	{
+		PS::World* world = World::GetSharedInstance();
+		if (vrMode)
+		{
+			RN::SceneNode* grabbedObject = Grab(world->GetClosestGrabbableObject(_handEntity[handIndex]->GetWorldPosition()), handIndex);
+			if (_handEntity[handIndex]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
+				return grabbedObject;
+		}
+		else
+		{
+			// no C++17 :(
+			auto res = world->GetClosestGrabbableObject(RN::Vector2(0.f, 0.f));
+			RN::SceneNode* grabbedObject = res.first;
+			const float dist = res.second;
+			if (dist < 0.1f)
+				return grabbedObject;
+		}
+		return nullptr;
+	}
+
+	RN::SceneNode* Player::Grab(RN::SceneNode* node, RN::uint8 handIndex)
+	{
+		if (!node) return nullptr;
+
+		if (node->IsKindOfClass(Gene::GetMetaClass()) && node->GetParent() && node->GetParent()->IsKindOfClass(Helix::GetMetaClass()))
+		{
+			Helix& helix = static_cast<Helix&>(*node->GetParent());
+			node = helix.PickGene(static_cast<Gene&>(*node));
+		}
+
+		if (node)
+		{
+			_isHandGrabbing[handIndex] = true;
+			_grabbedObject[handIndex] = node;
+			static_cast<Grabbable*>(node)->SetIsGrabbed(true);
+		}
+
+		return node;
+	}
+
+	void Player::ReleaseGrabbable(bool vrMode, RN::uint8 handIndex)
+	{
+		assert(_isHandGrabbing[handIndex]);
+
+		RN::SceneNode* node = _grabbedObject[handIndex];
+		// drop gene in helix?
+		if (node->IsKindOfClass(Gene::GetMetaClass()))
+		{
+			RN::SceneNode* target = FindGrabbable(vrMode, handIndex);
+			if (target && target->IsKindOfClass(Gene::GetMetaClass())
+				&& target->GetParent()
+				&& target->GetParent()->IsKindOfClass(Helix::GetMetaClass()))
+			{
+				Helix& helix = static_cast<Helix&>(*target->GetParent());
+				helix.PlaceGene(*static_cast<Gene*>(target), *static_cast<Gene*>(node));
+			}
+		}
+
+		_isHandGrabbing[handIndex] = false;
+		_grabbedObject[handIndex] = nullptr;
+		static_cast<Grabbable*>(node)->SetIsGrabbed(false);
 	}
 }

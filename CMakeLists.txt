@@ -76,7 +76,9 @@ set(SOURCES
 	Sources/PSHelix.cpp
 	Sources/PSSyringe.cpp
 	Sources/PSObstacle.cpp
-	Sources/PSLevel.cpp)
+	Sources/PSLevel.cpp
+	Sources/PSHelix.cpp
+	Sources/PSGrabbable.cpp)
 
 set(HEADERS
 	Sources/PSApplication.h
@@ -89,7 +91,8 @@ set(HEADERS
 	Sources/PSHelix.h
 	Sources/PSSyringe.h
 	Sources/PSObstacle.h
-	Sources/PSLevel.h)
+	Sources/PSLevel.h
+	Sources/PSGrabbable.h)
 
 set(RESOURCES
 	manifest.json
