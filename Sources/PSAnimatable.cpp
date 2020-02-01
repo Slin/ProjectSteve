@@ -14,10 +14,7 @@ namespace PS
 	RNDefineMeta(Animatable, RN::Entity)
 	
 	Animatable::Animatable(RN::String const* spriteName) 
-		: _animationTimer(0.0f),
-		_isGrabbed(false),
-		_isTriggered(false),
-		_wantsThrow(false)
+		: _animationTimer(0.0f)
 	{
 		bool isSprite = false;
 		if(spriteName->HasSuffix(RNCSTR(".sgm")))
@@ -67,31 +64,5 @@ namespace PS
 		
 		RN::Material *material = GetModel()->GetLODStage(0)->GetMaterialAtIndex(0);
 		material->SetSpecularColor(RN::Color::WithRGBA(1.0f, 1.0f, 0.0f, animationOffset));
-		
-		if(_isGrabbed)
-		{
-			RN::Vector3 currentSpeed = (GetWorldPosition() - _previousPosition) / delta;
-			_currentGrabbedSpeed = _currentGrabbedSpeed.GetLerp(currentSpeed, 0.5f);
-		}
-		
-		_previousPosition = GetWorldPosition();
-	}
-
-	void Animatable::SetIsGrabbed(bool isGrabbed)
-	{
-		if(_isGrabbed != isGrabbed)
-		{
-			if(isGrabbed)
-			{
-				_currentGrabbedSpeed = RN::Vector3();
-			}
-			_wantsThrow = !isGrabbed;
-		}
-		_isGrabbed = isGrabbed;
-	}
-
-	void Animatable::SetIsTriggered(bool isTriggered)
-	{
-		_isTriggered = isTriggered;
 	}
 }

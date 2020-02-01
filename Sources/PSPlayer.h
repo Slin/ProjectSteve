@@ -32,6 +32,10 @@ namespace PS
 		bool GetIsGrabbing(RN::uint8 handIndex) const { return _isHandGrabbing[handIndex]; }
 
 	private:
+		RN::SceneNode* FindGrabbable(bool vrMode, RN::uint8 handIndex);
+		RN::SceneNode* Grab(RN::SceneNode* node, RN::uint8 handIndex);
+		void ReleaseGrabbable(bool vrMode, RN::uint8 handIndex);
+
 		RN::SceneNode *_camera;
 
 		RN::Vector3 _previousHeadPosition;

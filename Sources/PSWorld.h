@@ -44,10 +44,12 @@ namespace PS
 		Player *GetPlayer() const { return _player; }
 		
 		RN::SceneNode *GetClosestGrabbableObject(RN::Vector3 position);
+		std::pair<RN::SceneNode*,float> GetClosestGrabbableObject(RN::Vector2 coordinate);
 
 		void AddLevelNode(RN::SceneNode *node, bool _isGrabbable);
 		void RemoveLevelNode(RN::SceneNode *node);
-		
+		void RegisterGrabbable(RN::SceneNode* node);
+
 		RN::Model *AssignDefaultShader(RN::Model *model, bool transparent);
 		
 		bool IsPaused() const { return _isPaused; }

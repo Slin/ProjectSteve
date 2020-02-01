@@ -263,6 +263,11 @@ namespace PS
 		_grabbableObjects->RemoveObject(node);
 	}
 	
+	void World::RegisterGrabbable(RN::SceneNode* node)
+	{
+		_grabbableObjects->AddObject(node);
+	}
+
 	void World::ClearLevel()
 	{
 		_levelNodes->Enumerate<RN::SceneNode>([&](RN::SceneNode *node, size_t index, bool &stop){
@@ -299,7 +304,7 @@ namespace PS
 		tableEntity->AddAttachment(tableBody);
 		
 		
-		Helix *helix = new Helix();
+		Helix *helix = new Helix(*this);
 		AddLevelNode(helix->Autorelease(), false);
 		helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.0f));
 		
@@ -430,7 +435,9 @@ namespace PS
 		RN::SceneNode *closestObject = nullptr;
 		float closestDistance = 1000.0f;
 		
-		_grabbableObjects->Enumerate<RN::SceneNode>([&](RN::SceneNode *node, size_t index, bool &stop){
+		_grabbableObjects->Enumerate<Grabbable>([&](Grabbable* node, size_t index, bool &stop){
+			if (node->IsGrabbed()) return;
+
 			float distance = node->GetWorldPosition().GetSquaredDistance(position);
 			if(distance < closestDistance)
 			{
@@ -440,6 +447,30 @@ namespace PS
 		});
 		
 		return closestObject;
+	}
+
+	std::pair<RN::SceneNode*, float> World::GetClosestGrabbableObject(RN::Vector2 coordinate)
+	{
+		RN::SceneNode* closestObject = nullptr;
+		float closestDistance = 1000.0f;
+		const RN::Camera* camera = static_cast<RN::Camera*>(GetCamera());
+		// GetInverseProjectionMatrix
+		const RN::Matrix viewProjection = camera->GetProjectionMatrix()*camera->GetViewMatrix();
+	
+		_grabbableObjects->Enumerate<Grabbable>([&](Grabbable* node, size_t index, bool& stop) {
+			if (node->IsGrabbed()) return;
+
+			const RN::Vector4 posScreen = (viewProjection * RN::Vector4(node->GetWorldPosition(),1.f));
+			if (posScreen.z < 0.f) return;
+			const RN::Vector2 ndc = RN::Vector2(posScreen.x, posScreen.y) / posScreen.w;
+			const float distance = ndc.GetSquaredDistance(coordinate);
+			if (distance < closestDistance)
+			{
+				closestDistance = distance;
+				closestObject = node;
+			}
+			});
+		return std::make_pair(closestObject, closestDistance);
 	}
 
 	RN::Model *World::AssignDefaultShader(RN::Model *model, bool transparent)
