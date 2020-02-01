@@ -205,17 +205,31 @@ namespace PS
 		_cameraRotation = _camera->GetRotation();
 		
 
-		RN::Vector3 globalTranslaion;
+		RN::Vector3 globalTranslation;
 		if(vrCamera)
 		{
 			RN::Vector3 localMovement = vrCamera->GetHead()->GetPosition() - _previousHeadPosition;
 			_previousHeadPosition = vrCamera->GetHead()->GetPosition();
 			localMovement.y = 0.0f;
 
-			globalTranslaion += _camera->GetWorldRotation().GetRotatedVector(localMovement);
+			globalTranslation += _camera->GetWorldRotation().GetRotatedVector(localMovement);
+		}
+		else
+		{
+			RN::Vector3 translation{};
+			if(manager->IsControlToggling(RNSTR("V")))
+				translation -= RN::Vector3(0.f,0.f, delta);
+			if (manager->IsControlToggling(RNSTR("I")))
+				translation += RN::Vector3(0.f, 0.f, delta);
+			if (manager->IsControlToggling(RNSTR("U")))
+				translation -= RN::Vector3(delta, 0.f, 0.f);
+			if (manager->IsControlToggling(RNSTR("A")))
+				translation += RN::Vector3(delta, 0.f, 0.f);
+
+			globalTranslation = _camera->GetWorldRotation().GetRotatedVector(translation);
 		}
 
-		Translate(globalTranslaion);
+		Translate(globalTranslation);
 		
 		if(vrCamera)
 		{
