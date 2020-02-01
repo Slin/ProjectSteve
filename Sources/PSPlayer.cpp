@@ -331,13 +331,15 @@ namespace PS
 					SceneNode* grabbedObject;
 					if ((grabbedObject = FindGrabbable(false, i)) && (grabbedObject = Grab(grabbedObject, i)))
 					{
+						const RN::Vector3 v = grabbedObject->GetWorldPosition() - _camera->GetWorldPosition();
+			
 						_grabbedObjectOffset[i] = {};
 						_grabbedObjectOffset[i].z = -grabbedObject->GetWorldPosition().GetDistance(_camera->GetWorldPosition());
 					}
 				}
 				else
 				{
-					const Vector3 dir = _cameraRotation.GetRotatedVector(_grabbedObjectOffset[i]);
+					const Vector3 dir = _camera->GetWorldRotation().GetRotatedVector(_grabbedObjectOffset[i]);
 					_grabbedObject[i]->SetWorldPosition(_camera->GetWorldPosition() + dir);
 				}
 			}
@@ -364,7 +366,7 @@ namespace PS
 		if (vrMode)
 		{
 			RN::SceneNode* grabbedObject = Grab(world->GetClosestGrabbableObject(_handEntity[handIndex]->GetWorldPosition()), handIndex);
-			if (_handEntity[handIndex]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
+			if(grabbedObject && _handEntity[handIndex]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
 				return grabbedObject;
 		}
 		else
@@ -420,5 +422,18 @@ namespace PS
 		_isHandGrabbing[handIndex] = false;
 		_grabbedObject[handIndex] = nullptr;
 		static_cast<Grabbable*>(node)->SetIsGrabbed(false);
+	}
+
+	void Player::ReleaseObjectFromHandIfNeeded(Grabbable *grabbable)
+	{
+		for(int i = 0; i < 2; i++)
+		{
+			if(_grabbedObject[i] == grabbable)
+			{
+				_grabbedObject[i]->Downcast<Grabbable>()->SetIsGrabbed(false);
+				_isHandGrabbing[i] = false;
+				_grabbedObject[i] = nullptr;
+			}
+		}
 	}
 }

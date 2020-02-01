@@ -12,13 +12,13 @@
 #include <Rayne.h>
 #include <RNPhysXWorld.h>
 #include <RNOpenALWorld.h>
-#include "PSAnimatable.h"
+#include "PSGrabbable.h"
 #include "PSSteveStats.h"
 
 namespace PS
 {
 	class World;
-	class Syringe : public Animatable
+	class Syringe : public Grabbable
 	{
 	public:
 		Syringe();

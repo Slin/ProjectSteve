@@ -47,7 +47,8 @@ namespace PS
 		gene.AddFlags(RN::SceneNode::Flags::Hidden);
 		World* world = World::GetSharedInstance();
 		Gene& newGene = *new Gene(_geneModel);
-		newGene.SetRotation(gene.GetRotation());
+		newGene.SetRotation(gene.GetWorldRotation());
+		newGene.SetWorldPosition(gene.GetWorldPosition());
 		world->AddLevelNode(newGene.Autorelease(), true);
 
 		return &newGene;

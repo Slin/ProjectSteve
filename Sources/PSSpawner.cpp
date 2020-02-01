@@ -9,6 +9,7 @@
 #include "PSSpawner.h"
 #include "PSWorld.h"
 
+#include "PSPlayer.h"
 #include "PSAnimatable.h"
 #include "PSSyringe.h"
 
@@ -41,7 +42,7 @@ namespace PS
 		{
 			if(_objectPool->GetCount() > 0)
 			{
-				Animatable *lastObject = _objectPool->GetLastObject<Animatable>();
+				Grabbable *lastObject = _objectPool->GetLastObject<Grabbable>();
 				_activeObjects->AddObject(lastObject);
 				_objectPool->RemoveObject(lastObject);
 				World::GetSharedInstance()->AddLevelNode(lastObject, true);
@@ -51,9 +52,10 @@ namespace PS
 			}
 			else
 			{
-				Animatable *firstObject = _activeObjects->GetFirstObject<Animatable>();
+				Grabbable *firstObject = _activeObjects->GetFirstObject<Grabbable>();
 				_activeObjects->RemoveObject(firstObject);
 				_activeObjects->AddObject(firstObject);
+				World::GetSharedInstance()->GetPlayer()->ReleaseObjectFromHandIfNeeded(firstObject);
 				firstObject->Reset();
 				firstObject->SetWorldPosition(GetWorldPosition());
 				firstObject->SetWorldRotation(GetWorldRotation());

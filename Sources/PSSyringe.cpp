@@ -11,9 +11,9 @@
 
 namespace PS
 {
-	RNDefineMeta(Syringe, Animatable)
+	RNDefineMeta(Syringe, Grabbable)
 	
-	Syringe::Syringe() : Animatable(RNCSTR("models/syringe_body.sgm")), _fillPercentage(0.0f), _isAnimating(false)
+	Syringe::Syringe() : Grabbable(RN::Model::WithName(RNCSTR("models/syringe_body.sgm"))), _fillPercentage(0.0f), _isAnimating(false)
 	{
 		RN::PhysXMaterial *material = new RN::PhysXMaterial();
 		RN::PhysXShape *shape = RN::PhysXBoxShape::WithHalfExtents(RN::Vector3(0.08f, 0.01f, 0.015f), material);
@@ -30,7 +30,7 @@ namespace PS
 
 	void Syringe::Update(float delta)
 	{
-		Animatable::Update(delta);
+		Grabbable::Update(delta);
 		
 		if(_isGrabbed)
 		{
