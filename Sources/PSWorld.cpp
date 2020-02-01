@@ -284,7 +284,7 @@ namespace PS
 		_levelEntity = new RN::Entity(levelModel);
 		AddNode(_levelEntity->Autorelease());
 		auto stevelet = new PS::Stevelet();
-		stevelet->SetWorldPosition({ 0, 0, 0 });
+		stevelet->SetWorldPosition({ -1, 0, 0 });
 		AddNode(stevelet->Autorelease());
 		
 /*		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
@@ -347,7 +347,7 @@ namespace PS
 		RN::Scene::WillUpdate(delta);
 		
 		
-/*		RN::InputManager *manager = RN::InputManager::GetSharedInstance();
+		RN::InputManager *manager = RN::InputManager::GetSharedInstance();
 
 		RN::Vector3 rotation(0.0);
 
@@ -361,7 +361,7 @@ namespace PS
 		translation.z = ((int)manager->IsControlToggling(RNCSTR("S")) - (int)manager->IsControlToggling(RNCSTR("W"))) * 15.0f;
 
 		_mainCamera->Rotate(rotation * delta * 15.0f);
-		_mainCamera->TranslateLocal(translation * delta);*/
+		_mainCamera->TranslateLocal(translation * delta);
 	}
 
 	void World::DidUpdate(float delta)

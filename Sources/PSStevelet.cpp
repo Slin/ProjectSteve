@@ -14,27 +14,20 @@ namespace PS
 	RNDefineMeta(Stevelet, RN::Entity)
 	
 	Stevelet::Stevelet() {
-		RN::Mesh* cube
-			= RN::Mesh::WithColoredCube(
-				{1,1,1},
-				{.5f, .3f, .8f}
-			);
-		SetModel(
-			new RN::Model(
-				cube,
-				new RN::Material(
-					RN::Renderer::GetActiveRenderer()->GetDefaultShader(
-						RN::Shader::Type::Vertex,
-						RN::Shader::Options::WithMesh(cube),
-						RN::Shader::UsageHint::Default
-					),
-					RN::Renderer::GetActiveRenderer()->GetDefaultShader(
-						RN::Shader::Type::Fragment,
-						RN::Shader::Options::WithMesh(cube),
-						RN::Shader::UsageHint::Default
-					)
-				)
-			));
+		RN::Mesh* cube = RN::Mesh::WithTexturedCube(
+				{1, 1, 1});
+		RN::Material* mat = new RN::Material(
+			RN::Renderer::GetActiveRenderer()->GetDefaultShader(
+				RN::Shader::Type::Vertex,
+				RN::Shader::Options::WithMesh(cube),
+				RN::Shader::UsageHint::Default),
+			RN::Renderer::GetActiveRenderer()->GetDefaultShader(
+				RN::Shader::Type::Fragment,
+				RN::Shader::Options::WithMesh(cube),
+				RN::Shader::UsageHint::Default));
+		mat->AddTexture(RN::Texture::WithName(RNCSTR("sprites/Pyxel2DBlob_Arms_Idle.png")));
+
+		SetModel(new RN::Model(cube, mat));
 	}
 
 	void Stevelet::Update(float deltaTime) {
