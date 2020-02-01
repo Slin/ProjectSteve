@@ -13,6 +13,6 @@ namespace PS
 {
 	RN::String *SteveStats::GetSteveletFileName()
 	{
-		return RNCSTR("sprites/stevelet/0000000.png");
+		return RNCSTR("sprites/stevelet/3131331.png");
 	}
 }

@@ -23,7 +23,7 @@ namespace PS
 		}
 		else
 		{
-			_model = RN::Model::WithName(RNCSTR("models/stevelet.sgm"))->Copy();
+			_model = RN::Model::WithName(RNCSTR("sprites/stevelet/stevelet.sgm"))->Copy();
 			isSprite = true;
 		}
 		
