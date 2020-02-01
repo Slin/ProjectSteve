@@ -47,8 +47,7 @@ def addA():
 		
 	return 0
 
-addA()
-while attrs != attrsZ:
+def outFile():
 	out = base.copy()
 	eAntenne= 1
 	for i in range(len(attrs)):
@@ -59,5 +58,11 @@ while attrs != attrsZ:
 	if eAntenne:
 		out = img.alpha_composite(antenne, out)
 	out.save(name(attrs))	
+	return
+
+outFile()
+addA()
+while attrs != attrsZ:
+	outFile()
 	addA()
 
