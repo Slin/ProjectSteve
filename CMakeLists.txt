@@ -72,7 +72,8 @@ set(SOURCES
 	Sources/PSPlayer.cpp
 	Sources/main.cpp
 	Sources/PSStevelet.cpp
-	Sources/PSAnimatable.cpp)
+	Sources/PSAnimatable.cpp
+	Sources/PSHelix.cpp)
 
 set(HEADERS
 	Sources/PSApplication.h
@@ -80,7 +81,8 @@ set(HEADERS
 	Sources/PSWorld.h
 	Sources/PSPlayer.h
 	Sources/PSStevelet.h
-	Sources/PSAnimatable.h)
+	Sources/PSAnimatable.h
+	Sources/PSHelix.h)
 
 set(RESOURCES
 	manifest.json

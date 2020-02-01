@@ -13,7 +13,7 @@ namespace PS
 {
 	RNDefineMeta(Player, RN::SceneNode)
 	
-	Player::Player(RN::SceneNode *camera) : _camera(camera->Retain()), _stickIsPressed(false), _didSnapTurn(false), _isActivating(false), _didActivate(false), _lastActiveHand(0), _activeHand(nullptr)
+	Player::Player(RN::SceneNode *camera) : _camera(camera->Retain()), _stickIsPressed(false), _didSnapTurn(false), _isActivating(false), _didActivate(false), _lastActiveHand(0)
 	{
 		AddChild(camera);
 
@@ -31,8 +31,8 @@ namespace PS
 			_camera->SetPosition(RN::Vector3(0.0f, 1.8f, 0.0f));
 		}
 		
-		World *world = World::GetSharedInstance();
-		RN::ShaderLibrary *shaderLibrary = world->GetShaderLibrary();
+		//World *world = World::GetSharedInstance();
+		//RN::ShaderLibrary *shaderLibrary = world->GetShaderLibrary();
 		
 		RN::Model *handModel = RN::Model::WithName(RNCSTR("models/hand.sgm"));
 		handModel->GetLODStage(0)->GetMaterialAtIndex(0)->SetAlphaToCoverage(false);
@@ -43,6 +43,9 @@ namespace PS
 			
 			_handEntity[i]->SetWorldPosition(RN::Vector3(0.0f, 1.0f, 0.0f));
 		}
+		
+		_grabbedObject[0] = nullptr;
+		_grabbedObject[1] = nullptr;
 	}
 	
 	Player::~Player()
@@ -202,17 +205,31 @@ namespace PS
 		_cameraRotation = _camera->GetRotation();
 		
 
-		RN::Vector3 globalTranslaion;
+		RN::Vector3 globalTranslation;
 		if(vrCamera)
 		{
 			RN::Vector3 localMovement = vrCamera->GetHead()->GetPosition() - _previousHeadPosition;
 			_previousHeadPosition = vrCamera->GetHead()->GetPosition();
 			localMovement.y = 0.0f;
 
-			globalTranslaion += _camera->GetWorldRotation().GetRotatedVector(localMovement);
+			globalTranslation += _camera->GetWorldRotation().GetRotatedVector(localMovement);
+		}
+		else
+		{
+			RN::Vector3 translation{};
+			if(manager->IsControlToggling(RNSTR("V")))
+				translation -= RN::Vector3(0.f,0.f, delta);
+			if (manager->IsControlToggling(RNSTR("I")))
+				translation += RN::Vector3(0.f, 0.f, delta);
+			if (manager->IsControlToggling(RNSTR("U")))
+				translation -= RN::Vector3(delta, 0.f, 0.f);
+			if (manager->IsControlToggling(RNSTR("A")))
+				translation += RN::Vector3(delta, 0.f, 0.f);
+
+			globalTranslation = _camera->GetWorldRotation().GetRotatedVector(translation);
 		}
 
-		Translate(globalTranslaion);
+		Translate(globalTranslation);
 		
 		if(vrCamera)
 		{
@@ -232,49 +249,48 @@ namespace PS
 		
 		if(vrCamera)
 		{
-			RN::VRControllerTrackingState leftController = vrCamera->GetControllerTrackingState(0);
-			RN::VRControllerTrackingState rightController = vrCamera->GetControllerTrackingState(1);
-			
-			leftController.position = vrCamera->GetWorldRotation().GetRotatedVector(leftController.position);
-			leftController.rotation = vrCamera->GetWorldRotation() * leftController.rotation;
-			rightController.position = vrCamera->GetWorldRotation().GetRotatedVector(rightController.position);
-			rightController.rotation = vrCamera->GetWorldRotation() * rightController.rotation;
-			
-			//Hand placement
-			_handEntity[0]->SetRotation(leftController.rotation * RN::Vector3(0.0f, -45.0f, 0.0f));
-			_handEntity[0]->SetPosition(vrCamera->GetWorldPosition() - GetWorldPosition() + leftController.position - _handEntity[0]->GetRotation().GetRotatedVector(RN::Vector3(0.0f, 0.0f, 0.0f)));
-			_handEntity[1]->SetRotation(rightController.rotation * RN::Vector3(0.0f, -45.0f, 0.0f));
-			_handEntity[1]->SetPosition(vrCamera->GetWorldPosition() - GetWorldPosition() + rightController.position - _handEntity[1]->GetRotation().GetRotatedVector(RN::Vector3(-0.0f, 0.0f, -0.0f)));
-
-			int activeHand = 0;
-			if(leftController.active == rightController.active)
+			int activeHand = _lastActiveHand;
+			for(int i = 0; i < 2; i++)
 			{
-				activeHand = 2; //TODO: Chose the controller with the last button press
+				RN::VRControllerTrackingState controller = vrCamera->GetControllerTrackingState(i);
+				controller.position = vrCamera->GetWorldRotation().GetRotatedVector(controller.position);
+				controller.rotation = vrCamera->GetWorldRotation() * controller.rotation;
 				
-				if(leftController.indexTrigger > 0.1f)
+				_handEntity[i]->SetRotation(controller.rotation * RN::Vector3(0.0f, -45.0f, 0.0f));
+				_handEntity[i]->SetPosition(vrCamera->GetWorldPosition() - GetWorldPosition() + controller.position - _handEntity[i]->GetRotation().GetRotatedVector(RN::Vector3(0.0f, 0.0f, 0.0f)));
+				
+				if(controller.active && controller.handTrigger > 0.1f)
 				{
-					_activeHand = _handEntity[0];
-				}
-				else if(rightController.indexTrigger > 0.1f)
-				{
-					_activeHand = _handEntity[1];
-				}
-				else if(_activeHand == nullptr)
-				{
-					_activeHand = _handEntity[1];
-				}
-			}
-			else
-			{
-				if(leftController.active)
-				{
-					activeHand = 0;
+					if(!_isHandGrabbing[i])
+					{
+						RN::SceneNode *grabbedObject = World::GetSharedInstance()->GetClosestGrabbableObject(_handEntity[i]->GetWorldPosition());
+						if(_handEntity[i]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
+						{
+							_grabbedObject[i] = grabbedObject;
+							_grabbedObjectOffset[i] = grabbedObject->GetWorldPosition() - _handEntity[i]->GetWorldPosition();
+							_grabbedObjectRotationOffset[i] = _handEntity[i]->GetWorldRotation().GetConjugated() * grabbedObject->GetWorldRotation();
+							_grabbedObjectStartRotation[i] = _handEntity[i]->GetWorldRotation();
+						}
+					}
+					_isHandGrabbing[i] = true;
+					
+					if(_grabbedObject[i])
+					{
+						RN::Quaternion rotationDiff = _grabbedObjectStartRotation[i].GetConjugated() * _handEntity[i]->GetWorldRotation();
+						_grabbedObject[i]->SetWorldPosition(_handEntity[i]->GetWorldPosition() + rotationDiff.GetRotatedVector(_grabbedObjectOffset[i]));
+						_grabbedObject[i]->SetWorldRotation(_handEntity[i]->GetWorldRotation() * _grabbedObjectRotationOffset[i]);
+					}
 				}
 				else
 				{
-					activeHand = 1;
+					_isHandGrabbing[i] = false;
+					_grabbedObject[i] = nullptr;
 				}
-				_activeHand = _handEntity[activeHand];
+				
+				if(controller.active && controller.indexTrigger > 0.1f)
+				{
+					activeHand = i;
+				}
 			}
 			
 			_lastActiveHand = activeHand;

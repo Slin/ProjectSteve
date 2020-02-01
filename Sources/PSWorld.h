@@ -42,8 +42,10 @@ namespace PS
 		RN::ShaderLibrary *GetShaderLibrary() const { return _shaderLibrary; }
 		RN::SceneNode *GetCamera() const { return _mainCamera; }
 		Player *GetPlayer() const { return _player; }
+		
+		RN::SceneNode *GetClosestGrabbableObject(RN::Vector3 position);
 
-		void AddLevelNode(RN::SceneNode *node);
+		void AddLevelNode(RN::SceneNode *node, bool _isGrabbable);
 		void RemoveLevelNode(RN::SceneNode *node);
 		
 		bool IsPaused() const { return _isPaused; }
@@ -65,6 +67,7 @@ namespace PS
 
 		RN::ShaderLibrary *_shaderLibrary;
 		RN::Array *_levelNodes;
+		RN::Array *_grabbableObjects;
 
 		Player *_player;
 		RN::Camera *_shadowCamera;

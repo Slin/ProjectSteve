@@ -27,7 +27,9 @@ namespace PS
 		bool IsActivatePressed();
 		void DidActivate();
 
-		RN::SceneNode *GetActiveHand() const { return _activeHand; }
+		RN::uint8 GetActiveHandIndex() const { return _lastActiveHand; }
+		RN::SceneNode *GetHand(RN::uint8 handIndex) const { return _handEntity[handIndex]; }
+		bool GetIsGrabbing(RN::uint8 handIndex) const { return _isHandGrabbing[handIndex]; }
 
 	private:
 		RN::SceneNode *_camera;
@@ -43,8 +45,13 @@ namespace PS
 		
 		RN::Entity *_handEntity[2];
 		RN::SceneNode *_activeHand;
+		bool _isHandGrabbing[2];
+		RN::SceneNode *_grabbedObject[2];
+		RN::Vector3 _grabbedObjectOffset[2];
+		RN::Quaternion _grabbedObjectRotationOffset[2];
+		RN::Quaternion _grabbedObjectStartRotation[2];
 		
-		int _lastActiveHand;
+		RN::uint8 _lastActiveHand;
 		
 		RNDeclareMeta(Player)
 	};
