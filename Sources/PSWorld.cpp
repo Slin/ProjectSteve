@@ -8,7 +8,9 @@
 
 #include "PSWorld.h"
 #include "PSPlatformWrapper.h"
+
 #include "PSStevelet.h"
+#include "PSPlayer.h"
 
 #if RN_PLATFORM_ANDROID
 	#include "RNOculusMobileWindow.h"

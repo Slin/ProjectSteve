@@ -34,22 +34,14 @@ namespace PS
 		World *world = World::GetSharedInstance();
 		RN::ShaderLibrary *shaderLibrary = world->GetShaderLibrary();
 		
-		//Create the body entity
-		RN::Mesh *boxMesh = RN::Mesh::WithColoredCube(RN::Vector3(0.28f, 0.5f, 0.08f), RN::Color::White());
-		RN::Shader::Options *boxShaderOptions = RN::Shader::Options::WithMesh(boxMesh);
-		RN::Material *boxMaterial = RN::Material::WithShaders(shaderLibrary->GetShaderWithName(RNCSTR("main_vertex"), boxShaderOptions), shaderLibrary->GetShaderWithName(RNCSTR("main_fragment"), boxShaderOptions));
-		boxMaterial->SetDiffuseColor(RN::Color::WithRGBA(0.0f, 1.0f, 0.0f));
-		
-		RN::Mesh *handMesh = RN::Mesh::WithColoredCube(RN::Vector3(0.05f, 0.05f, 0.05f), RN::Color::White());
-		RN::Material *handMaterial = RN::Material::WithMaterial(boxMaterial);
-		handMaterial->SetDiffuseColor(RN::Color::WithRGBA(1.0f, 0.878f, 0.768f));
-		RN::Model *handModel = new RN::Model(handMesh, handMaterial);
-		
+		RN::Model *handModel = RN::Model::WithName(RNCSTR("models/hand.sgm"));
+		handModel->GetLODStage(0)->GetMaterialAtIndex(0)->SetAlphaToCoverage(true);
 		for(int i = 0; i < 2; i++)
 		{
 			_handEntity[i] = new RN::Entity(handModel);
 			AddChild(_handEntity[i]->Autorelease());
-			_handEntity[i]->AddFlags(RN::SceneNode::Flags::Hidden);
+			
+			_handEntity[i]->SetWorldPosition(RN::Vector3(0.0f, 1.0f, 0.0f));
 		}
 	}
 	

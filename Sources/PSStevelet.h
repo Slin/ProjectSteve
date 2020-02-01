@@ -6,8 +6,8 @@
 //  Unauthorized use is punishable by torture, mutilation, and vivisection.
 //
 
-#ifndef __ProjectSteve_PLAYER_H_
-#define __ProjectSteve_PLAYER_H_
+#ifndef __ProjectSteve_STEVELET_H_
+#define __ProjectSteve_STEVELET_H_
 
 #include <Rayne.h>
 #include <RNPhysXWorld.h>
@@ -30,4 +30,4 @@ namespace PS
 	};
 }
 
-#endif /* defined(__ProjectSteve_PLAYER_H_) */
+#endif /* defined(__ProjectSteve_STEVELET_H_) */
