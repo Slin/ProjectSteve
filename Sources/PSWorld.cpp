@@ -88,11 +88,9 @@ namespace PS
 /*		RN::OpenALSource *atmoAudioPlayer = _audioWorld->PlaySound(RN::AudioAsset::WithName(RNCSTR("audio/atmo.ogg")));
 		atmoAudioPlayer->SetRepeat(true);*/
 		
-/*		_player = new Player(_mainCamera);
+		_player = new Player(_mainCamera);
 		AddNode(_player->Autorelease());
-		_player->SetWorldPosition(RN::Vector3(0, 0, 0));*/
-		
-		AddNode(_mainCamera);
+		_player->SetWorldPosition(RN::Vector3(0, 0, 0));
 		
 		LoadLevel();
 	}
@@ -214,7 +212,7 @@ namespace PS
 			}
 		}, this);
 
-/*		RN::String *audioDevice = nullptr;
+		RN::String *audioDevice = nullptr;
 #if RN_PLATFORM_WINDOWS
 		if(_vrWindow && _vrWindow->IsKindOfClass(RN::OculusWindow::GetMetaClass()))
 		{
@@ -242,7 +240,7 @@ namespace PS
 			RN::OpenALListener *listener = new RN::OpenALListener();
 			_mainCamera->AddAttachment(listener);
 			_audioWorld->SetListener(listener);
-		}*/
+		}
 	}
 	
 	void World::AddLevelNode(RN::SceneNode *node)

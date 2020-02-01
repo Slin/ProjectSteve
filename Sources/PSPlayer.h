@@ -28,17 +28,8 @@ namespace PS
 		void DidActivate();
 
 		RN::SceneNode *GetActiveHand() const { return _activeHand; }
-		
-		RN::Vector3 _handPosition;
-		bool _wantsLevelPlacementReset;
 
 	private:
-		void CreateBody();
-		void UpdateBody(const RN::Vector3 &direction, float delta);
-		void UpdateArms();
-		void PlaceEntityBetween(RN::Entity *entity, const RN::Vector3 &position1, const RN::Vector3 &position2);
-		void SetAnimation(bool idle, bool leftHand, bool rightHand);
-		
 		RN::SceneNode *_camera;
 
 		RN::Vector3 _previousHeadPosition;
@@ -50,15 +41,9 @@ namespace PS
 		bool _didActivate;
 		bool _isActivating;
 		
-		RN::Entity *_bodyEntity;
 		RN::Entity *_handEntity[2];
-		RN::Entity *_shoulderEntity[2];
-		RN::Entity *_elbowEntity[2];
-		RN::Entity *_upperArmEntity[2];
-		RN::Entity *_lowerArmEntity[2];
 		RN::SceneNode *_activeHand;
 		
-		bool _isIdle;
 		int _lastActiveHand;
 		
 		RNDeclareMeta(Player)
