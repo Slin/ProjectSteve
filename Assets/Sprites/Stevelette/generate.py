@@ -32,7 +32,7 @@ for  f in list(files):
 global attrs
 attrs = [0 for y in range(len(attrsMeta))]
 attrsZ = [0 for y in range(len(attrsMeta))]
-attrsList = list(map(lambda key: attrsMeta[key], list(attrsMeta)))
+attrsList = list(map(lambda key: attrsMeta[key], sorted(attrsMeta)))
 
 def addA():
 	y = 0;
