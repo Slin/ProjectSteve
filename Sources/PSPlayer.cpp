@@ -8,6 +8,7 @@
 
 #include "PSPlayer.h"
 #include "PSWorld.h"
+#include "PSAnimatable.h"
 
 namespace PS
 {
@@ -270,6 +271,15 @@ namespace PS
 							_grabbedObjectOffset[i] = grabbedObject->GetWorldPosition() - _handEntity[i]->GetWorldPosition();
 							_grabbedObjectRotationOffset[i] = _handEntity[i]->GetWorldRotation().GetConjugated() * grabbedObject->GetWorldRotation();
 							_grabbedObjectStartRotation[i] = _handEntity[i]->GetWorldRotation();
+							
+							if(grabbedObject)
+							{
+								Animatable *animatable = grabbedObject->Downcast<Animatable>();
+								if(animatable)
+								{
+									animatable->SetIsGrabbed(true);
+								}
+							}
 						}
 					}
 					_isHandGrabbing[i] = true;
@@ -283,6 +293,15 @@ namespace PS
 				}
 				else
 				{
+					if(_grabbedObject[i])
+					{
+						Animatable *animatable = _grabbedObject[i]->Downcast<Animatable>();
+						if(animatable)
+						{
+							animatable->SetIsGrabbed(false);
+						}
+					}
+					
 					_isHandGrabbing[i] = false;
 					_grabbedObject[i] = nullptr;
 				}

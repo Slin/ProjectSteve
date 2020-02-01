@@ -15,7 +15,8 @@ namespace PS
 	
 	Animatable::Animatable(RN::String const* modelName) 
 		: _animationTimer(0.0f), 
-		_model(RN::Model::WithName(modelName)->Copy()) 
+		_model(RN::Model::WithName(modelName)->Copy()),
+		_isGrabbed(false)
 	{
 		RN::ShaderLibrary *shaderLibrary = World::GetSharedInstance()->GetShaderLibrary();
 		
@@ -46,5 +47,10 @@ namespace PS
 		
 		RN::Material *material = GetModel()->GetLODStage(0)->GetMaterialAtIndex(0);
 		material->SetSpecularColor(RN::Color::WithRGBA(1.0f, 1.0f, 0.0f, animationOffset));
+	}
+
+	void Animatable::SetIsGrabbed(bool isGrabbed)
+	{
+		_isGrabbed = isGrabbed;
 	}
 }
