@@ -317,7 +317,7 @@ namespace PS
 		AddLevelNode(syringe->Autorelease(), true);
 		syringe->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));*/
 		
-		auto stevelet = new Stevelet();
+	/*	auto stevelet = new Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
 		stevelet->SetWorldPosition(RN::Vector3(0.0f, 0.95f, 1.5f));
 		stevelet->SetWorldRotation(RN::Vector3(90.0f, 0.0f, 0.0f));
@@ -325,12 +325,10 @@ namespace PS
 		stevelet = new Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
 		stevelet->SetWorldPosition(RN::Vector3(0.5f, 0.95f, 0.0f));
-		stevelet->SetWorldRotation(RN::Vector3(0.0f, 0.0f, 0.0f));
+		stevelet->SetWorldRotation(RN::Vector3(0.0f, 0.0f, 0.0f));*/
 
-		stevelet = new PS::Stevelet();
+		auto stevelet = new PS::Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
-		stevelet->SetWorldPosition(RN::Vector3(1.5f, 1.05f, -0.5f));
-		stevelet->SetWorldRotation(RN::Vector3(180.0f, 0.0f, 0.0f));
 
 		auto level = new PS::Level();
 		AddLevelNode(level->Autorelease(), false);
@@ -343,9 +341,6 @@ namespace PS
 		}
 
 		level->AssignStevelet(stevelet);
-		
-		stevelet->SetWorldPosition(RN::Vector3(1.5f, 0.95f, -1.8f));
-		stevelet->SetWorldRotation(RN::Vector3(0.0f, 180.0f, 0.0f));
 	}
 
 	void World::UpdateForWindowSize() const

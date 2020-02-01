@@ -39,6 +39,9 @@ namespace PS
 		RN::Vector3 _targetPosition;
 		RN::Quaternion _targetRotation;
 		bool _isMoving;
+		bool _isWalking = false;
+
+		float const _targetVelocity = 0.4f;
 		
 		RN::PhysXDynamicBody *_physicsBody;
 		bool _physicsEnabled = true;

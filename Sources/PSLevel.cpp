@@ -35,6 +35,7 @@ namespace PS
 	void Level::AssignStevelet(Stevelet* steve) {
 		_obstacles.front()->AssignStevelet(steve);
 		steve->FreezePhysics();
+		steve->SetWorldPosition(GetWorldPosition());
 		steve->MoveForward();
 	}
 

@@ -28,10 +28,11 @@ namespace PS
 	}
 
 	void Stevelet::MoveForward() {
-		_physicsBody->SetLinearVelocity(GetForward().GetNormalized());
+		_isWalking = true;
 	}
 
 	void Stevelet::StopMovement() {
+		_isWalking = false;
 		_physicsBody->SetLinearVelocity(RN::Vector3());
 	}
 
@@ -48,6 +49,7 @@ namespace PS
 
 	void Stevelet::Update(float delta)
 	{
+		delta = std::min(0.05f, delta);
 		Animatable::Update(delta);
 		
 		RN::Vector3 direction = _targetPosition - GetWorldPosition();
@@ -93,6 +95,10 @@ namespace PS
 			angularVelocity /= 180.0f;
 			angularVelocity /= delta;
 			_physicsBody->SetAngularVelocity(angularVelocity);
+		}
+
+		if (_isWalking) {
+			_physicsBody->SetLinearVelocity(RN::Vector3(0, 0, _targetVelocity));
 		}
 	}
 
