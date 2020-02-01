@@ -26,14 +26,43 @@ namespace PS
 			for(int i = 0; i < poolSize; i++)
 			{
 				Syringe *syringe = new Syringe();
+				syringe->SetSpawner(this);
 				_objectPool->AddObject(syringe->Autorelease());
 			}
 		}
-		else if(type == ObjectType::GeneType)
+		else if(type == ObjectType::GeneCType)
+		{
+			for(int i = 0; i < poolSize; i++)
+			{
+				Gene *gene = new Gene(Gene::Type::C);
+				gene->SetSpawner(this);
+				_objectPool->AddObject(gene->Autorelease());
+			}
+		}
+		else if(type == ObjectType::GeneGType)
+		{
+			for(int i = 0; i < poolSize; i++)
+			{
+				Gene *gene = new Gene(Gene::Type::G);
+				gene->SetSpawner(this);
+				_objectPool->AddObject(gene->Autorelease());
+			}
+		}
+		else if(type == ObjectType::GeneAType)
 		{
 			for(int i = 0; i < poolSize; i++)
 			{
 				Gene *gene = new Gene(Gene::Type::A);
+				gene->SetSpawner(this);
+				_objectPool->AddObject(gene->Autorelease());
+			}
+		}
+		else if(type == ObjectType::GeneTType)
+		{
+			for(int i = 0; i < poolSize; i++)
+			{
+				Gene *gene = new Gene(Gene::Type::T);
+				gene->SetSpawner(this);
 				_objectPool->AddObject(gene->Autorelease());
 			}
 		}
@@ -42,6 +71,7 @@ namespace PS
 			for(int i = 0; i < poolSize; i++)
 			{
 				Stevelet *stevlet = new Stevelet();
+				stevlet->SetSpawner(this);
 				_objectPool->AddObject(stevlet->Autorelease());
 			}
 		}
@@ -70,7 +100,7 @@ namespace PS
 				
 				if(_currentObject)
 				{
-					if(_type == ObjectType::GeneType)
+					if(_type == ObjectType::GeneCType || _type == ObjectType::GeneGType || _type == ObjectType::GeneAType || _type == ObjectType::GeneTType)
 					{
 						_currentObject->Downcast<Gene>()->EnablePhysics();
 					}
@@ -78,6 +108,8 @@ namespace PS
 			}
 			else
 			{
+				if(_type == ObjectType::SteveletType) return;
+				
 				Grabbable *firstObject = _activeObjects->GetFirstObject<Grabbable>();
 				_activeObjects->RemoveObject(firstObject);
 				_activeObjects->AddObject(firstObject);
@@ -88,5 +120,15 @@ namespace PS
 				_currentObject = firstObject;
 			}
 		}
+	}
+
+	void Spawner::ReturnToPool(RN::SceneNode *node)
+	{
+		if(!_activeObjects->ContainsObject(node)) return;
+		
+		_activeObjects->RemoveObject(node);
+		_objectPool->AddObject(node);
+		
+		World::GetSharedInstance()->RemoveLevelNode(node);
 	}
 }

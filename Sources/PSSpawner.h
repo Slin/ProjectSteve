@@ -23,12 +23,17 @@ namespace PS
 		{
 			SteveletType,
 			SyringeType,
-			GeneType
+			GeneCType,
+			GeneGType,
+			GeneAType,
+			GeneTType
 		};
 		
 		Spawner(ObjectType type, size_t poolSize);
 		~Spawner() = default;
 		void Update(float delta) override;
+		
+		void ReturnToPool(RN::SceneNode *node);
 		
 	private:
 		ObjectType _type;

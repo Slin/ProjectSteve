@@ -11,7 +11,7 @@
 
 namespace PS
 {
-	RNDefineMeta(Animatable, RN::Entity)
+	RNDefineMeta(Animatable, Grabbable)
 	
 	Animatable::Animatable(RN::String const* spriteName) 
 		: _animationTimer(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0.0f, 1.0f))

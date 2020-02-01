@@ -305,29 +305,33 @@ namespace PS
 		tableEntity->AddAttachment(tableBody);
 		
 		
-		Helix *helix = new Helix(*this);
-		AddLevelNode(helix->Autorelease(), false);
-		helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.01f));
-		
 		Spawner *syringeSpawner = new Spawner(Spawner::ObjectType::SyringeType, 20);
 		AddLevelNode(syringeSpawner->Autorelease(), false);
-		syringeSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));
+		syringeSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, 1.0f));
 		
-		Spawner *geneGreenSpawner = new Spawner(Spawner::ObjectType::GeneType, 20);
+		Helix *helix = new Helix(*this);
+		AddLevelNode(helix->Autorelease(), false);
+		helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.625f));
+		
+		Spawner *geneGreenSpawner = new Spawner(Spawner::ObjectType::GeneCType, 20);
 		AddLevelNode(geneGreenSpawner->Autorelease(), false);
-		geneGreenSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.3f));
+		geneGreenSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, 0.25f));
 		
-		Spawner *geneBlueSpawner = new Spawner(Spawner::ObjectType::GeneType, 20);
+		Spawner *geneBlueSpawner = new Spawner(Spawner::ObjectType::GeneGType, 20);
 		AddLevelNode(geneBlueSpawner->Autorelease(), false);
-		geneBlueSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.1f));
+		geneBlueSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, 0.0f));
 		
-/*		Spawner *steveletSpawner = new Spawner(Spawner::ObjectType::SteveletType, 5);
+		Spawner *geneYellowSpawner = new Spawner(Spawner::ObjectType::GeneAType, 20);
+		AddLevelNode(geneYellowSpawner->Autorelease(), false);
+		geneYellowSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.25f));
+		
+		Spawner *geneRedSpawner = new Spawner(Spawner::ObjectType::GeneTType, 20);
+		AddLevelNode(geneRedSpawner->Autorelease(), false);
+		geneRedSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));
+		
+		Spawner *steveletSpawner = new Spawner(Spawner::ObjectType::SteveletType, 5);
 		AddLevelNode(steveletSpawner->Autorelease(), false);
-		steveletSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));*/
-
-		auto stevelet = new PS::Stevelet();
-		AddLevelNode(stevelet->Autorelease(), true);
-
+		steveletSpawner->SetWorldPosition(RN::Vector3(1.5f, 0.2f, 0.75f));
 
 		auto level = new PS::Level();
 		AddLevelNode(level->Autorelease(), false);
@@ -338,18 +342,6 @@ namespace PS
 			level -> AddObstacle(obs);
 			AddLevelNode(obs->Autorelease(), false);
 		}
-
-		level->AssignStevelet(stevelet);
-
-		stevelet = new PS::Stevelet();
-		AddLevelNode(stevelet->Autorelease(), true);
-		stevelet->SetWorldPosition(RN::Vector3(3.0f, 2.0f, 2.0f));
-		stevelet = new PS::Stevelet();
-		AddLevelNode(stevelet->Autorelease(), true);
-		stevelet->SetWorldPosition(RN::Vector3(1.0f, -2.0f, 2.0f));
-		stevelet = new PS::Stevelet();
-		AddLevelNode(stevelet->Autorelease(), true);
-		stevelet->SetWorldPosition(RN::Vector3(1.5f, 3.0f, -2.0f));
 	}
 
 	void World::UpdateForWindowSize() const

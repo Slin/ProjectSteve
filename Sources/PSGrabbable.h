@@ -4,6 +4,7 @@
 
 namespace PS {
 
+	class Spawner;
 	class Grabbable : public RN::Entity
 	{
 	public:
@@ -17,6 +18,8 @@ namespace PS {
 
 		void SetIsTriggered(bool isTriggered);
 		virtual void Reset();
+		
+		void SetSpawner(Spawner *spawner) { _spawner = spawner; }
 
 	protected:
 		bool _isGrabbed = false;
@@ -26,6 +29,8 @@ namespace PS {
 		RN::Vector3 _previousPosition;
 		RN::Vector3 _currentGrabbedSpeed;
 		RN::Vector3 _currentGrabbedRotationSpeed;
+		
+		Spawner *_spawner;
 
 		RNDeclareMeta(Grabbable)
 	};
