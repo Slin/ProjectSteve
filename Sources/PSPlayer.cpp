@@ -8,7 +8,7 @@
 
 #include "PSPlayer.h"
 #include "PSWorld.h"
-#include "PSAnimatable.h"
+#include "PSGrabbable.h"
 #include "PSHelix.h"
 
 namespace PS
@@ -286,7 +286,6 @@ namespace PS
 						{
 							_grabbedObjectOffset[i] = _handEntity[i]->GetWorldRotation().GetConjugated().GetRotatedVector(grabbedObject->GetWorldPosition() - _handEntity[i]->GetWorldPosition());
 							_grabbedObjectRotationOffset[i] = _handEntity[i]->GetWorldRotation().GetConjugated() * grabbedObject->GetWorldRotation();
-							
 						}
 					}
 					else
@@ -305,10 +304,10 @@ namespace PS
 				
 				if(_grabbedObject[i])
 				{
-					Animatable *animatable = _grabbedObject[i]->Downcast<Animatable>();
-					if(animatable)
+					Grabbable *grabbable = _grabbedObject[i]->Downcast<Grabbable>();
+					if(grabbable)
 					{
-						animatable->SetIsTriggered((controller.active && controller.indexTrigger > 0.1f));
+						grabbable->SetIsTriggered((controller.active && controller.indexTrigger > 0.1f));
 					}
 				}
 				
@@ -331,8 +330,6 @@ namespace PS
 					SceneNode* grabbedObject;
 					if ((grabbedObject = FindGrabbable(false, i)) && (grabbedObject = Grab(grabbedObject, i)))
 					{
-						const RN::Vector3 v = grabbedObject->GetWorldPosition() - _camera->GetWorldPosition();
-			
 						_grabbedObjectOffset[i] = {};
 						_grabbedObjectOffset[i].z = -grabbedObject->GetWorldPosition().GetDistance(_camera->GetWorldPosition());
 					}
@@ -365,7 +362,7 @@ namespace PS
 		PS::World* world = World::GetSharedInstance();
 		if (vrMode)
 		{
-			RN::SceneNode* grabbedObject = Grab(world->GetClosestGrabbableObject(_handEntity[handIndex]->GetWorldPosition()), handIndex);
+			RN::SceneNode* grabbedObject = world->GetClosestGrabbableObject(_handEntity[handIndex]->GetWorldPosition());
 			if(grabbedObject && _handEntity[handIndex]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
 				return grabbedObject;
 		}
