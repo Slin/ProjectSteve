@@ -331,13 +331,15 @@ namespace PS
 					SceneNode* grabbedObject;
 					if ((grabbedObject = FindGrabbable(false, i)) && (grabbedObject = Grab(grabbedObject, i)))
 					{
+						const RN::Vector3 v = grabbedObject->GetWorldPosition() - _camera->GetWorldPosition();
+			
 						_grabbedObjectOffset[i] = {};
 						_grabbedObjectOffset[i].z = -grabbedObject->GetWorldPosition().GetDistance(_camera->GetWorldPosition());
 					}
 				}
 				else
 				{
-					const Vector3 dir = _cameraRotation.GetRotatedVector(_grabbedObjectOffset[i]);
+					const Vector3 dir = _camera->GetWorldRotation().GetRotatedVector(_grabbedObjectOffset[i]);
 					_grabbedObject[i]->SetWorldPosition(_camera->GetWorldPosition() + dir);
 				}
 			}
