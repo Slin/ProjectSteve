@@ -44,7 +44,7 @@ namespace PS
 		bool _isActivating;
 		
 		RN::Entity *_handEntity[2];
-		RN::SceneNode *_activeHand;
+		RN::PhysXDynamicBody *_handBody[2];
 		bool _isHandGrabbing[2];
 		RN::SceneNode *_grabbedObject[2];
 		RN::Vector3 _grabbedObjectOffset[2];

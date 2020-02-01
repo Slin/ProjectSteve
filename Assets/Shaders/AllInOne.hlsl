@@ -75,8 +75,8 @@ float4 main_fragment(FragmentVertex vert) : SV_TARGET
 	float4 color = diffuseColor;
 
 #if RN_UV0
-	color.a = diffuseColor.a;
 	color *= texture0.Sample(linearRepeatSampler, vert.texCoords0);
+	color.a = 1.0;
 #endif
 
 	color.rgb *= cameraAmbientColor.rgb * color.a;

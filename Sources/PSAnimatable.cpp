@@ -31,9 +31,11 @@ namespace PS
 		SetModel(_model);
 	}
 
-	void Animatable::Update(float deltaTime)
+	void Animatable::Update(float delta)
 	{
-		_animationTimer += deltaTime*2.0f;
+		RN::Entity::Update(delta);
+		
+		_animationTimer += delta*2.0f;
 		
 		while(_animationTimer > 1.0f)
 		{

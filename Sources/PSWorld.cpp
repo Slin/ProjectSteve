@@ -274,31 +274,27 @@ namespace PS
 
 	void World::LoadLevel()
 	{
-		RN::Model *levelModel = RN::Model::WithName(RNCSTR("models/room.sgm"));
-		RN::Model::LODStage *levelLodStage = levelModel->GetLODStage(0);
-		for(int i = 0; i < levelLodStage->GetCount(); i++)
-		{
-			RN::Material *material = levelLodStage->GetMaterialAtIndex(i);
-			RN::Shader::Options *shaderOptions = RN::Shader::Options::WithMesh(levelLodStage->GetMeshAtIndex(i));
-			material->SetVertexShader(_shaderLibrary->GetShaderWithName(RNCSTR("main_vertex"), shaderOptions), RN::Shader::UsageHint::Default);
-			material->SetFragmentShader(_shaderLibrary->GetShaderWithName(RNCSTR("main_fragment"), shaderOptions), RN::Shader::UsageHint::Default);
-		}
+		RN::Model *levelModel = AssignDefaultShader(RN::Model::WithName(RNCSTR("models/room.sgm")), false);
+		RN::Entity *levelEntity = new RN::Entity(levelModel);
+		AddLevelNode(levelEntity->Autorelease(), false);
 		
-		_levelEntity = new RN::Entity(levelModel);
-		AddLevelNode(_levelEntity->Autorelease(), false);
+		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
+		levelPhysicsMaterial->Autorelease();
+		RN::PhysXCompoundShape *levelShape = RN::PhysXCompoundShape::WithModel(levelModel, levelPhysicsMaterial, true);
+		RN::PhysXStaticBody *levelBody = RN::PhysXStaticBody::WithShape(levelShape);
+		levelBody->SetCollisionFilter(World::CollisionType::Level, World::CollisionType::All);
+		levelEntity->AddAttachment(levelBody);
 		
-		RN::Model *tableModel = RN::Model::WithName(RNCSTR("models/table.sgm"));
-		RN::Model::LODStage *tableLodStage = levelModel->GetLODStage(0);
-		for(int i = 0; i < tableLodStage->GetCount(); i++)
-		{
-			RN::Material *material = tableLodStage->GetMaterialAtIndex(i);
-			RN::Shader::Options *shaderOptions = RN::Shader::Options::WithMesh(levelLodStage->GetMeshAtIndex(i));
-			material->SetVertexShader(_shaderLibrary->GetShaderWithName(RNCSTR("main_vertex"), shaderOptions), RN::Shader::UsageHint::Default);
-			material->SetFragmentShader(_shaderLibrary->GetShaderWithName(RNCSTR("main_fragment"), shaderOptions), RN::Shader::UsageHint::Default);
-		}
 		
+		RN::Model *tableModel = AssignDefaultShader(RN::Model::WithName(RNCSTR("models/table.sgm")), false);
 		RN::Entity *tableEntity = new RN::Entity(tableModel);
 		AddLevelNode(tableEntity->Autorelease(), false);
+		
+		RN::PhysXCompoundShape *tableShape = RN::PhysXCompoundShape::WithModel(tableModel, levelPhysicsMaterial, true);
+		RN::PhysXStaticBody *tableBody = RN::PhysXStaticBody::WithShape(tableShape);
+		tableBody->SetCollisionFilter(World::CollisionType::Level, World::CollisionType::All);
+		tableEntity->AddAttachment(tableBody);
+		
 		
 		Helix *helix = new Helix();
 		AddLevelNode(helix->Autorelease(), false);
@@ -306,12 +302,12 @@ namespace PS
 		
 		auto stevelet = new Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
-		stevelet->SetWorldPosition(RN::Vector3(0.0f, 0.95f, 1.5f));
+		stevelet->SetWorldPosition(RN::Vector3(0.0f, 1.95f, 1.5f));
 		stevelet->SetWorldRotation(RN::Vector3(90.0f, 0.0f, 0.0f));
 		
 		stevelet = new Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
-		stevelet->SetWorldPosition(RN::Vector3(0.5f, 0.95f, 0.0f));
+		stevelet->SetWorldPosition(RN::Vector3(0.5f, 1.95f, 0.0f));
 		stevelet->SetWorldRotation(RN::Vector3(0.0f, 0.0f, 0.0f));
 
 		stevelet = new PS::Stevelet();
@@ -319,12 +315,7 @@ namespace PS
 		stevelet->SetWorldPosition(RN::Vector3(1.5f, 1.0f, -1.8f));
 		stevelet->SetWorldRotation(RN::Vector3(0.0f, 180.0f, 0.0f));
 		
-/*		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
-		RN::PhysXCompoundShape *levelShape = RN::PhysXCompoundShape::WithModel(levelModel, levelPhysicsMaterial->Autorelease(), true);
-		RN::PhysXStaticBody *levelBody = RN::PhysXStaticBody::WithShape(levelShape);
-		levelBody->SetCollisionFilter(World::CollisionType::Level, World::CollisionType::All);
-		_levelEntity->AddAttachment(levelBody);
-		
+/*
 		RN::Entity *skyEntity = new RN::Entity(RN::Model::WithSkydome(RNCSTR("m}odels/sky_lightblue.*")));
 		skyEntity->SetScale(RN::Vector3(1000.0f));
 		skyEntity->SetWorldRotation(RN::Vector3(200.0f, 0.0f, 0.0f));
@@ -449,5 +440,26 @@ namespace PS
 		});
 		
 		return closestObject;
+	}
+
+	RN::Model *World::AssignDefaultShader(RN::Model *model, bool transparent)
+	{
+		World *world = World::GetSharedInstance();
+		RN::ShaderLibrary *shaderLibrary = world->GetShaderLibrary();
+		
+		RN::Model::LODStage *lodStage = model->GetLODStage(0);
+		for(int i = 0; i < lodStage->GetCount(); i++)
+		{
+			RN::Shader::Options *shaderOptions = RN::Shader::Options::WithMesh(lodStage->GetMeshAtIndex(i));
+			
+			RN::Material *material = lodStage->GetMaterialAtIndex(i);
+			material->SetAlphaToCoverage(transparent);
+			material->SetAmbientColor(RN::Color::White());
+			
+			material->SetVertexShader(shaderLibrary->GetShaderWithName(RNCSTR("main_vertex"), shaderOptions));
+			material->SetFragmentShader(shaderLibrary->GetShaderWithName(RNCSTR("main_fragment"), shaderOptions));
+		}
+		
+		return model;
 	}
 }
