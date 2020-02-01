@@ -15,7 +15,7 @@
 
 namespace PS
 {
-	class Animatable;
+	class Grabbable;
 	class Spawner : public RN::SceneNode
 	{
 	public:
@@ -35,7 +35,7 @@ namespace PS
 		RN::Array *_objectPool;
 		RN::Array *_activeObjects;
 		
-		Animatable *_currentObject;
+		Grabbable *_currentObject;
 		
 		RNDeclareMeta(Spawner)
 	};

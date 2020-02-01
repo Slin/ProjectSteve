@@ -366,7 +366,7 @@ namespace PS
 		if (vrMode)
 		{
 			RN::SceneNode* grabbedObject = Grab(world->GetClosestGrabbableObject(_handEntity[handIndex]->GetWorldPosition()), handIndex);
-			if (_handEntity[handIndex]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
+			if(grabbedObject && _handEntity[handIndex]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
 				return grabbedObject;
 		}
 		else
@@ -422,5 +422,18 @@ namespace PS
 		_isHandGrabbing[handIndex] = false;
 		_grabbedObject[handIndex] = nullptr;
 		static_cast<Grabbable*>(node)->SetIsGrabbed(false);
+	}
+
+	void Player::ReleaseObjectFromHandIfNeeded(Grabbable *grabbable)
+	{
+		for(int i = 0; i < 2; i++)
+		{
+			if(_grabbedObject[i] == grabbable)
+			{
+				_grabbedObject[i]->Downcast<Grabbable>()->SetIsGrabbed(false);
+				_isHandGrabbing[i] = false;
+				_grabbedObject[i] = nullptr;
+			}
+		}
 	}
 }

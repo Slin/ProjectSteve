@@ -307,15 +307,11 @@ namespace PS
 		
 		Helix *helix = new Helix(*this);
 		AddLevelNode(helix->Autorelease(), false);
-		helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.0f));
+		helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.01f));
 		
 		Spawner *syringeSpawner = new Spawner(RNCSTR("models/syringe_body.sgm"), Spawner::ObjectType::SyringeType, 20);
-		AddLevelNode(syringeSpawner->Autorelease(), true);
+		AddLevelNode(syringeSpawner->Autorelease(), false);
 		syringeSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));
-		
-/*		Syringe *syringe = new Syringe();
-		AddLevelNode(syringe->Autorelease(), true);
-		syringe->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));*/
 		
 		auto stevelet = new Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);

@@ -16,6 +16,7 @@
 namespace PS
 {
 	class World;
+	class Grabbable;
 	class Player : public RN::SceneNode
 	{
 	public:
@@ -30,6 +31,8 @@ namespace PS
 		RN::uint8 GetActiveHandIndex() const { return _lastActiveHand; }
 		RN::SceneNode *GetHand(RN::uint8 handIndex) const { return _handEntity[handIndex]; }
 		bool GetIsGrabbing(RN::uint8 handIndex) const { return _isHandGrabbing[handIndex]; }
+		
+		void ReleaseObjectFromHandIfNeeded(Grabbable *grabbable);
 
 	private:
 		RN::SceneNode* FindGrabbable(bool vrMode, RN::uint8 handIndex);
