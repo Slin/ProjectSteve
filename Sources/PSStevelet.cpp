@@ -13,7 +13,7 @@ namespace PS
 {
 	RNDefineMeta(Stevelet, Animatable)
 	
-	Stevelet::Stevelet() : Animatable(RNCSTR("sprites/Pyxel2DBlob_Arms_Idle.png")), _isMoving(false)
+	Stevelet::Stevelet() : Animatable(RNCSTR("sprites/stevelet/0000000.png")), _isMoving(false)
 	{
 		RN::PhysXMaterial *material = new RN::PhysXMaterial();
 		RN::PhysXShape *shape = RN::PhysXSphereShape::WithRadius(0.15, material);
@@ -117,5 +117,18 @@ namespace PS
 	void Stevelet::SetTargetRotation(RN::Vector3 rotation)
 	{
 		_targetRotation = rotation;
+	}
+
+	void Stevelet::SetSteveletStats(const SteveStats &stats)
+	{
+		_stats = stats;
+		SetTexture(_stats.GetSteveletFileName());
+	}
+
+	void Stevelet::SetTexture(RN::String *file)
+	{
+		RN::Material *material = _model->GetLODStage(0)->GetMaterialAtIndex(0);
+		material->RemoveAllTextures();
+		material->AddTexture(RN::Texture::WithName(file));
 	}
 }

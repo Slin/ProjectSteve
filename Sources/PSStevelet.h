@@ -34,12 +34,16 @@ namespace PS
 		void SetTargetPosition(RN::Vector3 position);
 		void SetTargetRotation(RN::Vector3 rotation);
 		
+		void SetSteveletStats(const SteveStats &stats);
+		
 	private:
 		SteveStats _stats;
 		RN::Vector3 _targetPosition;
 		RN::Quaternion _targetRotation;
 		bool _isMoving;
 		bool _isWalking = false;
+		
+		void SetTexture(RN::String *file);
 
 		float const _targetVelocity = 0.4f;
 		
