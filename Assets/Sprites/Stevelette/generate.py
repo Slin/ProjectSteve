@@ -2,7 +2,7 @@ from PIL import Image as img
 from functools import reduce
 import os
 
-files = filter(lambda str: str[-4:] == ".png" , os.listdir())
+files = sorted(filter(lambda str: str[-4:] == ".png" , os.listdir()))
 
 def load(name, list) :
 	return (filter(lambda str: str != name, list), img.open(name))
