@@ -13,7 +13,7 @@ namespace PS
 {
 	RNDefineMeta(Player, RN::SceneNode)
 	
-	Player::Player(RN::SceneNode *camera) : _camera(camera->Retain()), _stickIsPressed(false), _didSnapTurn(false), _isActivating(false), _didActivate(false), _lastActiveHand(0), _activeHand(nullptr)
+	Player::Player(RN::SceneNode *camera) : _camera(camera->Retain()), _stickIsPressed(false), _didSnapTurn(false), _isActivating(false), _didActivate(false), _lastActiveHand(0)
 	{
 		AddChild(camera);
 
@@ -31,8 +31,8 @@ namespace PS
 			_camera->SetPosition(RN::Vector3(0.0f, 1.8f, 0.0f));
 		}
 		
-		World *world = World::GetSharedInstance();
-		RN::ShaderLibrary *shaderLibrary = world->GetShaderLibrary();
+		//World *world = World::GetSharedInstance();
+		//RN::ShaderLibrary *shaderLibrary = world->GetShaderLibrary();
 		
 		RN::Model *handModel = RN::Model::WithName(RNCSTR("models/hand.sgm"));
 		handModel->GetLODStage(0)->GetMaterialAtIndex(0)->SetAlphaToCoverage(false);
@@ -43,6 +43,9 @@ namespace PS
 			
 			_handEntity[i]->SetWorldPosition(RN::Vector3(0.0f, 1.0f, 0.0f));
 		}
+		
+		_grabbedObject[0] = nullptr;
+		_grabbedObject[1] = nullptr;
 	}
 	
 	Player::~Player()
@@ -246,22 +249,72 @@ namespace PS
 			_handEntity[1]->SetRotation(rightController.rotation * RN::Vector3(0.0f, -45.0f, 0.0f));
 			_handEntity[1]->SetPosition(vrCamera->GetWorldPosition() - GetWorldPosition() + rightController.position - _handEntity[1]->GetRotation().GetRotatedVector(RN::Vector3(-0.0f, 0.0f, -0.0f)));
 
-			int activeHand = 0;
+
+			if(leftController.active && leftController.handTrigger > 0.1f)
+			{
+				if(!_isHandGrabbing[0])
+				{
+					RN::SceneNode *grabbedObject = World::GetSharedInstance()->GetClosestGrabbableObject(_handEntity[0]->GetWorldPosition());
+					if(_handEntity[0]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
+					{
+						_grabbedObject[0] = grabbedObject;
+						_grabbedObjectOffset[0] = grabbedObject->GetWorldPosition() - _handEntity[0]->GetWorldPosition();
+						_grabbedObjectRotationOffset[0] = _handEntity[0]->GetWorldRotation().GetConjugated() * grabbedObject->GetWorldRotation();
+						_grabbedObjectStartRotation[0] = grabbedObject->GetWorldRotation();
+					}
+				}
+				_isHandGrabbing[0] = true;
+				
+				if(_grabbedObject[0])
+				{
+					RN::Quaternion rotationDiff = _grabbedObjectStartRotation[0].GetConjugated() * _handEntity[0]->GetWorldRotation();
+					_grabbedObject[0]->SetWorldPosition(_handEntity[0]->GetWorldPosition() + rotationDiff.GetRotatedVector(_grabbedObjectOffset[0]));
+					_grabbedObject[0]->SetWorldRotation(_handEntity[0]->GetWorldRotation() * _grabbedObjectRotationOffset[0]);
+				}
+			}
+			else
+			{
+				_isHandGrabbing[0] = false;
+				_grabbedObject[0] = nullptr;
+			}
+			if(rightController.active && rightController.handTrigger > 0.1f)
+			{
+				if(!_isHandGrabbing[1])
+				{
+					RN::SceneNode *grabbedObject = World::GetSharedInstance()->GetClosestGrabbableObject(_handEntity[1]->GetWorldPosition());
+					if(_handEntity[1]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
+					{
+						_grabbedObject[1] = grabbedObject;
+						_grabbedObjectOffset[1] = grabbedObject->GetWorldPosition() - _handEntity[1]->GetWorldPosition();
+						_grabbedObjectRotationOffset[1] = _handEntity[1]->GetWorldRotation().GetConjugated() * grabbedObject->GetWorldRotation();
+						_grabbedObjectStartRotation[1] = grabbedObject->GetWorldRotation();
+					}
+				}
+				_isHandGrabbing[1] = true;
+				
+				if(_grabbedObject[1])
+				{
+					RN::Quaternion rotationDiff = _grabbedObjectStartRotation[0].GetConjugated() * _handEntity[1]->GetWorldRotation();
+					_grabbedObject[1]->SetWorldPosition(_handEntity[1]->GetWorldPosition() + rotationDiff.GetRotatedVector(_grabbedObjectOffset[1]));
+					_grabbedObject[1]->SetWorldRotation(_handEntity[1]->GetWorldRotation() * _grabbedObjectRotationOffset[1]);
+				}
+			}
+			else
+			{
+				_isHandGrabbing[1] = false;
+				_grabbedObject[1] = nullptr;
+			}
+
+			int activeHand = _lastActiveHand;
 			if(leftController.active == rightController.active)
 			{
-				activeHand = 2; //TODO: Chose the controller with the last button press
-				
 				if(leftController.indexTrigger > 0.1f)
 				{
-					_activeHand = _handEntity[0];
+					activeHand = 0;
 				}
 				else if(rightController.indexTrigger > 0.1f)
 				{
-					_activeHand = _handEntity[1];
-				}
-				else if(_activeHand == nullptr)
-				{
-					_activeHand = _handEntity[1];
+					activeHand = 1;
 				}
 			}
 			else
@@ -274,7 +327,6 @@ namespace PS
 				{
 					activeHand = 1;
 				}
-				_activeHand = _handEntity[activeHand];
 			}
 			
 			_lastActiveHand = activeHand;

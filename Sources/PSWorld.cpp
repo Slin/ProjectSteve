@@ -11,6 +11,7 @@
 
 #include "PSStevelet.h"
 #include "PSPlayer.h"
+#include "PSHelix.h"
 
 #if RN_PLATFORM_ANDROID
 	#include "RNOculusMobileWindow.h"
@@ -57,7 +58,7 @@ namespace PS
 		//RN::Kernel::GetSharedInstance()->Exit();
 	}
 
-	World::World(RN::VRWindow *vrWindow, RN::uint8 msaa, bool wantsPreview, bool debug) : _levelNodes(new RN::Array()), _shaderLibrary(nullptr), _vrWindow(nullptr), _msaa(msaa), _wantsPreviewWindow(wantsPreview), _debug(debug), _audioWorld(nullptr), _shadowCamera(nullptr), _vrCamera(nullptr), _previewWindow(nullptr), _copyEyeToScreenMaterial(nullptr), _isPaused(false), _isDash(false)
+	World::World(RN::VRWindow *vrWindow, RN::uint8 msaa, bool wantsPreview, bool debug) : _levelNodes(new RN::Array()), _grabbableObjects(new RN::Array()), _shaderLibrary(nullptr), _vrWindow(nullptr), _msaa(msaa), _wantsPreviewWindow(wantsPreview), _debug(debug), _audioWorld(nullptr), _shadowCamera(nullptr), _vrCamera(nullptr), _previewWindow(nullptr), _copyEyeToScreenMaterial(nullptr), _isPaused(false), _isDash(false)
 	{
 		if(vrWindow)
 			_vrWindow = vrWindow->Retain();
@@ -245,16 +246,18 @@ namespace PS
 		}
 	}
 	
-	void World::AddLevelNode(RN::SceneNode *node)
+	void World::AddLevelNode(RN::SceneNode *node, bool _isGrabbable)
 	{
 		AddNode(node);
 		_levelNodes->AddObject(node);
+		if(_isGrabbable) _grabbableObjects->AddObject(node);
 	}
 	
 	void World::RemoveLevelNode(RN::SceneNode *node)
 	{
 		RemoveNode(node);
 		_levelNodes->RemoveObject(node);
+		_grabbableObjects->RemoveObject(node);
 	}
 	
 	void World::ClearLevel()
@@ -282,7 +285,7 @@ namespace PS
 		}
 		
 		_levelEntity = new RN::Entity(levelModel);
-		AddLevelNode(_levelEntity->Autorelease());
+		AddLevelNode(_levelEntity->Autorelease(), false);
 		
 		RN::Model *tableModel = RN::Model::WithName(RNCSTR("models/table.sgm"));
 		RN::Model::LODStage *tableLodStage = levelModel->GetLODStage(0);
@@ -295,20 +298,20 @@ namespace PS
 		}
 		
 		RN::Entity *tableEntity = new RN::Entity(tableModel);
-		AddLevelNode(tableEntity->Autorelease());
+		AddLevelNode(tableEntity->Autorelease(), false);
 		
-		RN::Entity *dnaEntity = new RN::Entity(RN::Model::WithName(RNCSTR("models/dna.sgm")));
-		AddLevelNode(dnaEntity->Autorelease());
-		dnaEntity->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.0f));
+		Helix *helix = new Helix();
+		AddLevelNode(helix->Autorelease(), false);
+		helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.0f));
 		
-		auto stevelet = new PS::Stevelet();
-		AddLevelNode(stevelet->Autorelease());
+		auto stevelet = new Stevelet();
+		AddLevelNode(stevelet->Autorelease(), true);
 		stevelet->SetWorldPosition(RN::Vector3(0.0f, 0.8f, 1.5f));
 		stevelet->SetWorldRotation(RN::Vector3(90.0f, 0.0f, 0.0f));
 		
-		stevelet = new PS::Stevelet();
-		AddLevelNode(stevelet->Autorelease());
-		stevelet->SetWorldPosition(RN::Vector3(1.5f, 0.8f, 0.0f));
+		stevelet = new Stevelet();
+		AddLevelNode(stevelet->Autorelease(), true);
+		stevelet->SetWorldPosition(RN::Vector3(0.5f, 0.8f, 0.0f));
 		stevelet->SetWorldRotation(RN::Vector3(0.0f, 0.0f, 0.0f));
 		
 /*		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
@@ -424,5 +427,22 @@ namespace PS
 
 		_physicsWorld->SetPaused(_isPaused);
 		_navigationWorld->SetPaused(_isPaused);
+	}
+
+	RN::SceneNode *World::GetClosestGrabbableObject(RN::Vector3 position)
+	{
+		RN::SceneNode *closestObject = nullptr;
+		float closestDistance = 1000.0f;
+		
+		_grabbableObjects->Enumerate<RN::SceneNode>([&](RN::SceneNode *node, size_t index, bool &stop){
+			float distance = node->GetWorldPosition().GetSquaredDistance(position);
+			if(distance < closestDistance)
+			{
+				closestDistance = distance;
+				closestObject = node;
+			}
+		});
+		
+		return closestObject;
 	}
 }
