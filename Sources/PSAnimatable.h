@@ -28,6 +28,11 @@ namespace PS
 	protected:
 		RN::Model* _model;
 		bool _isGrabbed;
+		bool _wantsThrow;
+		
+		RN::Vector3 _previousPosition;
+		RN::Vector3 _currentGrabbedSpeed;
+		RN::Vector3 _currentGrabbedRotationSpeed;
 		
 	private:
 		float _animationTimer;

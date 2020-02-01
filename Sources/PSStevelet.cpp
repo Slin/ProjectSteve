@@ -21,7 +21,7 @@ namespace PS
 		_physicsBody->SetCollisionFilter(World::CollisionType::Players, World::CollisionType::All);
 		AddAttachment(_physicsBody);
 		
-		_physicsBody->SetEnableKinematic(true);
+		//_physicsBody->SetEnableKinematic(true);
 	}
 
 	void Stevelet::Update(float delta)
@@ -34,8 +34,7 @@ namespace PS
 		{
 			if(_isMoving)
 			{
-				direction.y = _physicsBody->GetLinearVelocity().y;
-				_physicsBody->SetLinearVelocity(direction.Normalize());
+				_physicsBody->ApplyForce(direction.Normalize() * 0.02f);
 			}
 		}
 		else
@@ -46,6 +45,17 @@ namespace PS
 		if(!_isMoving)
 		{
 			SetTargetPosition(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomVector3Range(RN::Vector3(-2.0f, 0.15f, -2.0f), RN::Vector3(2.0f, 0.15f, 2.0f)));
+		}
+		
+		if(_isGrabbed)
+		{
+			_physicsBody->SetLinearVelocity(RN::Vector3());
+		}
+		
+		if(_wantsThrow)
+		{
+			_physicsBody->ApplyForce(_currentGrabbedSpeed);
+			_wantsThrow = false;
 		}
 	}
 
