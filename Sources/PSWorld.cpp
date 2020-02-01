@@ -427,9 +427,9 @@ namespace PS
 		_navigationWorld->SetPaused(_isPaused);
 	}
 
-	RN::SceneNode *World::GetClosestGrabbableObject(RN::Vector3 position)
+	Grabbable* World::GetClosestGrabbableObject(RN::Vector3 position)
 	{
-		RN::SceneNode *closestObject = nullptr;
+		Grabbable* closestObject = nullptr;
 		float closestDistance = 1000.0f;
 		
 		_grabbableObjects->Enumerate<Grabbable>([&](Grabbable* node, size_t index, bool &stop){
@@ -446,9 +446,9 @@ namespace PS
 		return closestObject;
 	}
 
-	std::pair<RN::SceneNode*, float> World::GetClosestGrabbableObject(RN::Vector2 coordinate)
+	std::pair<Grabbable*, float> World::GetClosestGrabbableObject(RN::Vector2 coordinate)
 	{
-		RN::SceneNode* closestObject = nullptr;
+		Grabbable* closestObject = nullptr;
 		float closestDistance = 1000.0f;
 		const RN::Camera* camera = static_cast<RN::Camera*>(GetCamera());
 		// GetInverseProjectionMatrix
