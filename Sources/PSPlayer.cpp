@@ -235,97 +235,47 @@ namespace PS
 		
 		if(vrCamera)
 		{
-			RN::VRControllerTrackingState leftController = vrCamera->GetControllerTrackingState(0);
-			RN::VRControllerTrackingState rightController = vrCamera->GetControllerTrackingState(1);
-			
-			leftController.position = vrCamera->GetWorldRotation().GetRotatedVector(leftController.position);
-			leftController.rotation = vrCamera->GetWorldRotation() * leftController.rotation;
-			rightController.position = vrCamera->GetWorldRotation().GetRotatedVector(rightController.position);
-			rightController.rotation = vrCamera->GetWorldRotation() * rightController.rotation;
-			
-			//Hand placement
-			_handEntity[0]->SetRotation(leftController.rotation * RN::Vector3(0.0f, -45.0f, 0.0f));
-			_handEntity[0]->SetPosition(vrCamera->GetWorldPosition() - GetWorldPosition() + leftController.position - _handEntity[0]->GetRotation().GetRotatedVector(RN::Vector3(0.0f, 0.0f, 0.0f)));
-			_handEntity[1]->SetRotation(rightController.rotation * RN::Vector3(0.0f, -45.0f, 0.0f));
-			_handEntity[1]->SetPosition(vrCamera->GetWorldPosition() - GetWorldPosition() + rightController.position - _handEntity[1]->GetRotation().GetRotatedVector(RN::Vector3(-0.0f, 0.0f, -0.0f)));
-
-
-			if(leftController.active && leftController.handTrigger > 0.1f)
-			{
-				if(!_isHandGrabbing[0])
-				{
-					RN::SceneNode *grabbedObject = World::GetSharedInstance()->GetClosestGrabbableObject(_handEntity[0]->GetWorldPosition());
-					if(_handEntity[0]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
-					{
-						_grabbedObject[0] = grabbedObject;
-						_grabbedObjectOffset[0] = grabbedObject->GetWorldPosition() - _handEntity[0]->GetWorldPosition();
-						_grabbedObjectRotationOffset[0] = _handEntity[0]->GetWorldRotation().GetConjugated() * grabbedObject->GetWorldRotation();
-						_grabbedObjectStartRotation[0] = grabbedObject->GetWorldRotation();
-					}
-				}
-				_isHandGrabbing[0] = true;
-				
-				if(_grabbedObject[0])
-				{
-					RN::Quaternion rotationDiff = _grabbedObjectStartRotation[0].GetConjugated() * _handEntity[0]->GetWorldRotation();
-					_grabbedObject[0]->SetWorldPosition(_handEntity[0]->GetWorldPosition() + rotationDiff.GetRotatedVector(_grabbedObjectOffset[0]));
-					_grabbedObject[0]->SetWorldRotation(_handEntity[0]->GetWorldRotation() * _grabbedObjectRotationOffset[0]);
-				}
-			}
-			else
-			{
-				_isHandGrabbing[0] = false;
-				_grabbedObject[0] = nullptr;
-			}
-			if(rightController.active && rightController.handTrigger > 0.1f)
-			{
-				if(!_isHandGrabbing[1])
-				{
-					RN::SceneNode *grabbedObject = World::GetSharedInstance()->GetClosestGrabbableObject(_handEntity[1]->GetWorldPosition());
-					if(_handEntity[1]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
-					{
-						_grabbedObject[1] = grabbedObject;
-						_grabbedObjectOffset[1] = grabbedObject->GetWorldPosition() - _handEntity[1]->GetWorldPosition();
-						_grabbedObjectRotationOffset[1] = _handEntity[1]->GetWorldRotation().GetConjugated() * grabbedObject->GetWorldRotation();
-						_grabbedObjectStartRotation[1] = grabbedObject->GetWorldRotation();
-					}
-				}
-				_isHandGrabbing[1] = true;
-				
-				if(_grabbedObject[1])
-				{
-					RN::Quaternion rotationDiff = _grabbedObjectStartRotation[0].GetConjugated() * _handEntity[1]->GetWorldRotation();
-					_grabbedObject[1]->SetWorldPosition(_handEntity[1]->GetWorldPosition() + rotationDiff.GetRotatedVector(_grabbedObjectOffset[1]));
-					_grabbedObject[1]->SetWorldRotation(_handEntity[1]->GetWorldRotation() * _grabbedObjectRotationOffset[1]);
-				}
-			}
-			else
-			{
-				_isHandGrabbing[1] = false;
-				_grabbedObject[1] = nullptr;
-			}
-
 			int activeHand = _lastActiveHand;
-			if(leftController.active == rightController.active)
+			for(int i = 0; i < 2; i++)
 			{
-				if(leftController.indexTrigger > 0.1f)
+				RN::VRControllerTrackingState controller = vrCamera->GetControllerTrackingState(i);
+				controller.position = vrCamera->GetWorldRotation().GetRotatedVector(controller.position);
+				controller.rotation = vrCamera->GetWorldRotation() * controller.rotation;
+				
+				_handEntity[i]->SetRotation(controller.rotation * RN::Vector3(0.0f, -45.0f, 0.0f));
+				_handEntity[i]->SetPosition(vrCamera->GetWorldPosition() - GetWorldPosition() + controller.position - _handEntity[i]->GetRotation().GetRotatedVector(RN::Vector3(0.0f, 0.0f, 0.0f)));
+				
+				if(controller.active && controller.handTrigger > 0.1f)
 				{
-					activeHand = 0;
-				}
-				else if(rightController.indexTrigger > 0.1f)
-				{
-					activeHand = 1;
-				}
-			}
-			else
-			{
-				if(leftController.active)
-				{
-					activeHand = 0;
+					if(!_isHandGrabbing[i])
+					{
+						RN::SceneNode *grabbedObject = World::GetSharedInstance()->GetClosestGrabbableObject(_handEntity[i]->GetWorldPosition());
+						if(_handEntity[i]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
+						{
+							_grabbedObject[i] = grabbedObject;
+							_grabbedObjectOffset[i] = grabbedObject->GetWorldPosition() - _handEntity[i]->GetWorldPosition();
+							_grabbedObjectRotationOffset[i] = _handEntity[i]->GetWorldRotation().GetConjugated() * grabbedObject->GetWorldRotation();
+							_grabbedObjectStartRotation[i] = _handEntity[i]->GetWorldRotation();
+						}
+					}
+					_isHandGrabbing[i] = true;
+					
+					if(_grabbedObject[i])
+					{
+						RN::Quaternion rotationDiff = _grabbedObjectStartRotation[i].GetConjugated() * _handEntity[i]->GetWorldRotation();
+						_grabbedObject[i]->SetWorldPosition(_handEntity[i]->GetWorldPosition() + rotationDiff.GetRotatedVector(_grabbedObjectOffset[i]));
+						_grabbedObject[i]->SetWorldRotation(_handEntity[i]->GetWorldRotation() * _grabbedObjectRotationOffset[i]);
+					}
 				}
 				else
 				{
-					activeHand = 1;
+					_isHandGrabbing[i] = false;
+					_grabbedObject[i] = nullptr;
+				}
+				
+				if(controller.active && controller.indexTrigger > 0.1f)
+				{
+					activeHand = i;
 				}
 			}
 			
