@@ -12,6 +12,8 @@
 #include "PSStevelet.h"
 #include "PSPlayer.h"
 #include "PSHelix.h"
+#include "PSLevel.h"
+#include "PSObstacle.h"
 
 #if RN_PLATFORM_ANDROID
 	#include "RNOculusMobileWindow.h"
@@ -304,12 +306,12 @@ namespace PS
 		AddLevelNode(helix->Autorelease(), false);
 		helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.0f));
 		
-		auto stevelet = new Stevelet();
+		/*auto stevelet = new Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
 		stevelet->SetWorldPosition(RN::Vector3(0.0f, 0.95f, 1.5f));
-		stevelet->SetWorldRotation(RN::Vector3(90.0f, 0.0f, 0.0f));
+		stevelet->SetWorldRotation(RN::Vector3(90.0f, 0.0f, 0.0f));*/
 		
-		stevelet = new Stevelet();
+		/*stevelet = new Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
 		stevelet->SetWorldPosition(RN::Vector3(0.5f, 0.95f, 0.0f));
 		stevelet->SetWorldRotation(RN::Vector3(0.0f, 0.0f, 0.0f));
@@ -317,7 +319,18 @@ namespace PS
 		stevelet = new PS::Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
 		stevelet->SetWorldPosition(RN::Vector3(1.5f, 1.0f, -1.8f));
-		stevelet->SetWorldRotation(RN::Vector3(0.0f, 180.0f, 0.0f));
+		stevelet->SetWorldRotation(RN::Vector3(0.0f, 180.0f, 0.0f));*/
+
+		auto level = new PS::Level();
+		AddLevelNode(level->Autorelease(), false);
+		level->SetWorldPosition(RN::Vector3(1.5f, 1.0f, -0.6f));
+
+		for (int i = 0; i < 7; i++) {
+			auto obs = new PS::Obstacle(RNCSTR("sprites/Fire.png"), level);
+			level -> AddObstacle(obs);
+			AddLevelNode(obs->Autorelease(), false);
+		}
+		
 		
 /*		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
 		RN::PhysXCompoundShape *levelShape = RN::PhysXCompoundShape::WithModel(levelModel, levelPhysicsMaterial->Autorelease(), true);

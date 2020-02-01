@@ -13,7 +13,7 @@ namespace PS
 {
 	RNDefineMeta(Stevelet, Animatable)
 	
-	Stevelet::Stevelet() : Animatable(RNCSTR("models/stevelet.sgm")), _animationTimer(0.0f)
+	Stevelet::Stevelet() : Animatable(RNCSTR("sprites/Pyxel2DBlob_Arms_Idle.png")), _animationTimer(0.0f)
 	{
 		
 	}

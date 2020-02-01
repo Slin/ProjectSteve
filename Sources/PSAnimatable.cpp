@@ -2,7 +2,7 @@
 //  PSPlayer.cpp
 //  ProjectSteve
 //
-//  Copyright 2018 by SlinDev. All rights reserved.
+//  Copyright 2018 by SlinDev & BlueIceshard. All rights reserved.
 //  Unauthorized use is punishable by torture, mutilation, and vivisection.
 //
 
@@ -13,9 +13,9 @@ namespace PS
 {
 	RNDefineMeta(Animatable, RN::Entity)
 	
-	Animatable::Animatable(RN::String const* modelName) 
+	Animatable::Animatable(RN::String const* spriteName) 
 		: _animationTimer(0.0f), 
-		_model(RN::Model::WithName(modelName)->Copy()),
+		_model(RN::Model::WithName(RNCSTR("models/stevelet.sgm"))->Copy()),
 		_isGrabbed(false)
 	{
 		RN::ShaderLibrary *shaderLibrary = World::GetSharedInstance()->GetShaderLibrary();
@@ -23,7 +23,10 @@ namespace PS
 		RN::Shader::Options *shaderOptions = RN::Shader::Options::WithMesh(_model->GetLODStage(0)->GetMeshAtIndex(0));
 		shaderOptions->AddDefine(RNCSTR("PS_SPRITESHEET"), RNCSTR("1"));
 		
-		RN::Material *material = _model->GetLODStage(0)->GetMaterialAtIndex(0);
+		RN::Material *material = _model->GetLODStage(0)->GetMaterialAtIndex(0)->Copy();
+		_model->GetLODStage(0)->ReplaceMaterial(material, 0);
+		material->RemoveAllTextures();
+		material->AddTexture(RN::Texture::WithName(spriteName));
 		material->SetAlphaToCoverage(true);
 		material->SetVertexShader(shaderLibrary->GetShaderWithName(RNCSTR("main_vertex"), shaderOptions), RN::Shader::UsageHint::Default);
 		material->SetFragmentShader(shaderLibrary->GetShaderWithName(RNCSTR("main_fragment"), shaderOptions), RN::Shader::UsageHint::Default);
