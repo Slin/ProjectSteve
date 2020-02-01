@@ -20,7 +20,6 @@ namespace PS
 	class SteveStats
 	{
 	public:
-		SteveStats();
 		~SteveStats() = default;
 		enum struct Attributes {
 			STRENGTH, 
@@ -46,7 +45,7 @@ namespace PS
 		const int& operator[](Attributes index) const { return _attr[static_cast<int>(index)]; }
 		int& operator[](Attributes index) { return _attr[static_cast<int>(index)]; }
 	private:
-		std::array<int, static_cast<int>(Attributes::COUNT)> _attr;
+		std::array<int, static_cast<int>(Attributes::COUNT)> _attr{};
 	};
 }
 
