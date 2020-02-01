@@ -15,7 +15,7 @@ namespace PS
 	
 	Stevelet::Stevelet() {
 		RN::Mesh* cube = RN::Mesh::WithTexturedCube(
-				{1, 1, 1});
+				{0.1, 0.1, 0.1});
 		RN::Material* mat = new RN::Material(
 			RN::Renderer::GetActiveRenderer()->GetDefaultShader(
 				RN::Shader::Type::Vertex,

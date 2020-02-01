@@ -35,7 +35,7 @@ namespace PS
 		RN::ShaderLibrary *shaderLibrary = world->GetShaderLibrary();
 		
 		RN::Model *handModel = RN::Model::WithName(RNCSTR("models/hand.sgm"));
-		handModel->GetLODStage(0)->GetMaterialAtIndex(0)->SetAlphaToCoverage(true);
+		handModel->GetLODStage(0)->GetMaterialAtIndex(0)->SetAlphaToCoverage(false);
 		for(int i = 0; i < 2; i++)
 		{
 			_handEntity[i] = new RN::Entity(handModel);
