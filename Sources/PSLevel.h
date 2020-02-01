@@ -27,6 +27,7 @@ namespace PS
 		void AddObstacle(Obstacle* obs);
 		void AssignStevelet(Stevelet* steve);
 		void FreeStevelet(Stevelet* steve, Obstacle* obs);
+		void RemoveStevelet(Stevelet* steve);
 		void Update(float delta) override;
 	private:
 		std::vector<Obstacle*> _obstacles;

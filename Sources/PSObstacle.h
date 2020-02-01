@@ -27,6 +27,8 @@ namespace PS
 		void AssignStevelet(Stevelet* steve);
 		bool Contains(Stevelet* steve);
 		void Update(float delta) override;
+		bool IsReached(float z);
+		float GetZTreshold();
 	private:
 		std::vector<Stevelet*> _steves;
 		Level* _parent;

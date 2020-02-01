@@ -27,11 +27,15 @@ namespace PS
 		++current;
 		if (current == _obstacles.end()) {
 			_winners.push_back({ 2.0f, steve });
-			steve->StopMovement();
-			steve->ResumePhysics();
+			RemoveStevelet(steve);
 			return;
 		}
 		(*current)->AssignStevelet(steve);
+	}
+
+	void Level::RemoveStevelet(Stevelet* steve) {
+		steve->StopMovement();
+		steve->ResumePhysics();
 	}
 
 	void Level::AssignStevelet(Stevelet* steve) {
@@ -49,9 +53,18 @@ namespace PS
 			if (steve == std::get<Stevelet*>(tuple)) return;
 		}
 
-		_obstacles.front()->AssignStevelet(steve);
+		//_obstacles.front()->AssignStevelet(steve)
+		for (auto it = _obstacles.rbegin(); it != _obstacles.rend(); ++it) {
+			if ((*it)->IsReached(steve->GetWorldPosition().z)) {
+				(*it)->AssignStevelet(steve);
+
+				auto position = RN::Vector3(GetWorldPosition().x, GetWorldPosition().y, (*it)->GetZTreshold());
+				steve->SetWorldPosition(position);
+				break;
+			}
+		}
+
 		steve->FreezePhysics();
-		steve->SetWorldPosition(GetWorldPosition());
 		steve->MoveForward();
 	}
 

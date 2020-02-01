@@ -22,11 +22,25 @@ namespace PS
 		return std::find(_steves.begin(), _steves.end(), steve) != _steves.end();
 	}
 
+	bool Obstacle::IsReached(float z) {
+		return z > GetZTreshold();
+	}
+
+	float Obstacle::GetZTreshold() {
+		return GetBoundingBox().position.z + GetBoundingBox().minExtend.z;
+	}
+
 	void Obstacle::Update(float delta) {
 		PS::Animatable::Update(delta);
 
 		for (Stevelet* &steve : _steves) {
 			if (!steve) continue;
+			if (steve->IsGrabbed()) {
+				_parent->RemoveStevelet(steve);
+				steve = nullptr;
+				continue;
+			}
+
 			auto aabb = GetBoundingBox();
 			if (!aabb.Contains(steve->GetWorldPosition())) {
 				if (steve->GetWorldPosition().z > aabb.position.z + aabb.maxExtend.z) {
