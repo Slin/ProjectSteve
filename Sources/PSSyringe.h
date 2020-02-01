@@ -1,13 +1,13 @@
 //
-//  PSPlayer.h
+//  PSSyringe.h
 //  ProjectSteve
 //
 //  Copyright 2018 by SlinDev. All rights reserved.
 //  Unauthorized use is punishable by torture, mutilation, and vivisection.
 //
 
-#ifndef __ProjectSteve_STEVELET_H_
-#define __ProjectSteve_STEVELET_H_
+#ifndef __ProjectSteve_SYRINGE_H_
+#define __ProjectSteve_SYRINGE_H_
 
 #include <Rayne.h>
 #include <RNPhysXWorld.h>
@@ -18,24 +18,28 @@
 namespace PS
 {
 	class World;
-	class Stevelet : public Animatable
+	class Syringe : public Animatable
 	{
 	public:
-		Stevelet();
-		~Stevelet() = default;
+		Syringe();
+		~Syringe() = default;
+		
 		void Update(float delta) override;
 		
-		void SetTargetPosition(RN::Vector3 position);
+		void SetPercentage(float percentage);
+		void Trigger();
+		void Reset();
 		
 	private:
-		SteveStats _stats;
-		RN::Vector3 _targetPosition;
-		bool _isMoving;
-		
 		RN::PhysXDynamicBody *_physicsBody;
+		RN::Entity *_fluidEntity;
+		RN::Entity *_pumpEntity;
 		
-		RNDeclareMeta(Stevelet)
+		float _fillPercentage;
+		bool _isAnimating;
+		
+		RNDeclareMeta(Syringe)
 	};
 }
 
-#endif /* defined(__ProjectSteve_STEVELET_H_) */
+#endif /* defined(__ProjectSteve_SYRINGE_H_) */

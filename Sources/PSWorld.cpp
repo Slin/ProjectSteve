@@ -12,6 +12,7 @@
 #include "PSStevelet.h"
 #include "PSPlayer.h"
 #include "PSHelix.h"
+#include "PSSyringe.h"
 #include "PSLevel.h"
 #include "PSObstacle.h"
 
@@ -302,6 +303,10 @@ namespace PS
 		AddLevelNode(helix->Autorelease(), false);
 		helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.0f));
 		
+		Syringe *syringe = new Syringe();
+		AddLevelNode(syringe->Autorelease(), true);
+		syringe->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));
+		
 		auto stevelet = new Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
 		stevelet->SetWorldPosition(RN::Vector3(0.0f, 0.95f, 1.5f));
@@ -329,12 +334,6 @@ namespace PS
 		
 		stevelet->SetWorldPosition(RN::Vector3(1.5f, 0.95f, -1.8f));
 		stevelet->SetWorldRotation(RN::Vector3(0.0f, 180.0f, 0.0f));
-		
-/*
-		RN::Entity *skyEntity = new RN::Entity(RN::Model::WithSkydome(RNCSTR("m}odels/sky_lightblue.*")));
-		skyEntity->SetScale(RN::Vector3(1000.0f));
-		skyEntity->SetWorldRotation(RN::Vector3(200.0f, 0.0f, 0.0f));
-		AddNode(skyEntity->Autorelease());*/
 	}
 
 	void World::UpdateForWindowSize() const
@@ -383,23 +382,6 @@ namespace PS
 		}
 		
 		RN::Scene::WillUpdate(delta);
-		
-		
-		RN::InputManager *manager = RN::InputManager::GetSharedInstance();
-
-		RN::Vector3 rotation(0.0);
-
-		rotation.x = manager->GetMouseDelta().x;
-		rotation.y = manager->GetMouseDelta().y;
-		rotation = -rotation;
-
-		RN::Vector3 translation(0.0);
-
-		translation.x = ((int)manager->IsControlToggling(RNCSTR("D")) - (int)manager->IsControlToggling(RNCSTR("A"))) * 15.0f;
-		translation.z = ((int)manager->IsControlToggling(RNCSTR("S")) - (int)manager->IsControlToggling(RNCSTR("W"))) * 15.0f;
-
-		_mainCamera->Rotate(rotation * delta * 15.0f);
-		_mainCamera->TranslateLocal(translation * delta);
 	}
 
 	void World::DidUpdate(float delta)

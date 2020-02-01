@@ -14,11 +14,22 @@ namespace PS
 	RNDefineMeta(Animatable, RN::Entity)
 	
 	Animatable::Animatable(RN::String const* spriteName) 
-		: _animationTimer(0.0f), 
-		_model(RN::Model::WithName(RNCSTR("models/stevelet.sgm"))->Copy()),
+		: _animationTimer(0.0f),
 		_isGrabbed(false),
+		_isTriggered(false),
 		_wantsThrow(false)
 	{
+		bool isSprite = false;
+		if(spriteName->HasSuffix(RNCSTR(".sgm")))
+		{
+			_model = RN::Model::WithName(spriteName)->Copy();
+		}
+		else
+		{
+			_model = RN::Model::WithName(RNCSTR("models/stevelet.sgm"))->Copy();
+			isSprite = true;
+		}
+		
 		RN::ShaderLibrary *shaderLibrary = World::GetSharedInstance()->GetShaderLibrary();
 		
 		RN::Shader::Options *shaderOptions = RN::Shader::Options::WithMesh(_model->GetLODStage(0)->GetMeshAtIndex(0));
@@ -26,8 +37,11 @@ namespace PS
 		
 		RN::Material *material = _model->GetLODStage(0)->GetMaterialAtIndex(0)->Copy();
 		_model->GetLODStage(0)->ReplaceMaterial(material, 0);
-		material->RemoveAllTextures();
-		material->AddTexture(RN::Texture::WithName(spriteName));
+		if(isSprite)
+		{
+			material->RemoveAllTextures();
+			material->AddTexture(RN::Texture::WithName(spriteName));
+		}
 		material->SetAlphaToCoverage(true);
 		material->SetVertexShader(shaderLibrary->GetShaderWithName(RNCSTR("main_vertex"), shaderOptions), RN::Shader::UsageHint::Default);
 		material->SetFragmentShader(shaderLibrary->GetShaderWithName(RNCSTR("main_fragment"), shaderOptions), RN::Shader::UsageHint::Default);
@@ -74,5 +88,10 @@ namespace PS
 			_wantsThrow = !isGrabbed;
 		}
 		_isGrabbed = isGrabbed;
+	}
+
+	void Animatable::SetIsTriggered(bool isTriggered)
+	{
+		_isTriggered = isTriggered;
 	}
 }

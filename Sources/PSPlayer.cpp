@@ -97,6 +97,8 @@ namespace PS
 		if(!active) _didActivate = false;
 		if(!_didActivate) _isActivating = active;
 		else _isActivating = false;
+		
+		RN::Vector3 stickTranslation;
 
 		if(vrCamera)
 		{
@@ -191,6 +193,12 @@ namespace PS
 				{
 					_didSnapTurn = false;
 				}
+				
+				RN::Vector3 controllerRotation = leftController.rotation.GetEulerAngle();
+				controllerRotation.y = 0.0f;
+				stickTranslation += (_cameraRotation * RN::Quaternion(controllerRotation)).GetRotatedVector(RN::Vector3(leftController.thumbstick.x, 0.0f, -leftController.thumbstick.y));
+				stickTranslation.y = 0.0f;
+				stickTranslation.Normalize(5.0f * delta);
 			}
 		}
 		
@@ -213,7 +221,7 @@ namespace PS
 			_previousHeadPosition = vrCamera->GetHead()->GetPosition();
 			localMovement.y = 0.0f;
 
-			globalTranslation += _camera->GetWorldRotation().GetRotatedVector(localMovement);
+			globalTranslation += _camera->GetWorldRotation().GetRotatedVector(localMovement) + stickTranslation;
 		}
 		else
 		{
@@ -302,6 +310,15 @@ namespace PS
 					
 					_isHandGrabbing[i] = false;
 					_grabbedObject[i] = nullptr;
+				}
+				
+				if(_grabbedObject[i])
+				{
+					Animatable *animatable = _grabbedObject[i]->Downcast<Animatable>();
+					if(animatable)
+					{
+						animatable->SetIsTriggered((controller.active && controller.indexTrigger > 0.1f));
+					}
 				}
 				
 				if(controller.active && controller.indexTrigger > 0.1f)
