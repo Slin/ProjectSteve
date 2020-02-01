@@ -12,10 +12,10 @@
 namespace PS
 {
 	const std::array<RN::Color, 4> GENE_COLORS = { {
-		{1.f, 1.f, 1.f},
-		{0.f, 0.f, 1.f},
-		{0.f, 1.f, 0.f},
-		{1.f, 0.f, 0.f}
+		{0.5f, 0.5f, 0.5f},
+		{0.2f, 0.4f, 0.84f},
+		{0.77f, 0.23f, 0.16f},
+		{0.92f, 0.38f, 0.f}
 	} };
 
 	static std::array<RN::Model*, 4> geneModels;

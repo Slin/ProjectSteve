@@ -8,6 +8,7 @@
 
 #include "PSSyringe.h"
 #include "PSWorld.h"
+#include "PSStevelet.h"
 
 namespace PS
 {
@@ -53,6 +54,18 @@ namespace PS
 			_fillPercentage += delta;
 			if(_fillPercentage > 1.0f) _fillPercentage = 1.0f;
 			SetPercentage(_fillPercentage);
+			
+			if(_fillPercentage < 1.0f-RN::k::EpsilonFloat)
+			{
+				SteveStats steveStats;
+				World::GetSharedInstance()->GetGrabbableObjects()->Enumerate<Grabbable>([&](Grabbable *grabbable, size_t index, bool &stop){
+					Stevelet *stevelet = grabbable->Downcast<Stevelet>();
+					if(stevelet && stevelet->GetWorldPosition().GetDistance(GetWorldPosition() + GetRight()*0.08f) < 0.15)
+					{
+						stevelet->SetSteveletStats(steveStats);
+					}
+				});
+			}
 		}
 	}
 

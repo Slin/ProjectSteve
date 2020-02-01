@@ -10,10 +10,6 @@
 #define __ProjectSteve_STEVESTATS_H_
 
 #include <Rayne.h>
-#include <RNPhysXWorld.h>
-#include <RNOpenALWorld.h>
-#include "PSAnimatable.h"
-#include "PSSteveStats.h"
 
 namespace PS
 {
@@ -44,6 +40,9 @@ namespace PS
 		};
 		const int& operator[](Attributes index) const { return _attr[static_cast<int>(index)]; }
 		int& operator[](Attributes index) { return _attr[static_cast<int>(index)]; }
+		
+		RN::String *GetSteveletFileName();
+		
 	private:
 		std::array<int, static_cast<int>(Attributes::COUNT)> _attr{};
 	};

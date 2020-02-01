@@ -72,6 +72,7 @@ set(SOURCES
 	Sources/PSPlayer.cpp
 	Sources/main.cpp
 	Sources/PSStevelet.cpp
+	Sources/PSSteveStats.cpp
 	Sources/PSAnimatable.cpp
 	Sources/PSHelix.cpp
 	Sources/PSSyringe.cpp
