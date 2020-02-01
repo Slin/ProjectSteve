@@ -282,10 +282,34 @@ namespace PS
 		}
 		
 		_levelEntity = new RN::Entity(levelModel);
-		AddNode(_levelEntity->Autorelease());
+		AddLevelNode(_levelEntity->Autorelease());
+		
+		RN::Model *tableModel = RN::Model::WithName(RNCSTR("models/table.sgm"));
+		RN::Model::LODStage *tableLodStage = levelModel->GetLODStage(0);
+		for(int i = 0; i < tableLodStage->GetCount(); i++)
+		{
+			RN::Material *material = tableLodStage->GetMaterialAtIndex(i);
+			RN::Shader::Options *shaderOptions = RN::Shader::Options::WithMesh(levelLodStage->GetMeshAtIndex(i));
+			material->SetVertexShader(_shaderLibrary->GetShaderWithName(RNCSTR("main_vertex"), shaderOptions), RN::Shader::UsageHint::Default);
+			material->SetFragmentShader(_shaderLibrary->GetShaderWithName(RNCSTR("main_fragment"), shaderOptions), RN::Shader::UsageHint::Default);
+		}
+		
+		RN::Entity *tableEntity = new RN::Entity(tableModel);
+		AddLevelNode(tableEntity->Autorelease());
+		
+		RN::Entity *dnaEntity = new RN::Entity(RN::Model::WithName(RNCSTR("models/dna.sgm")));
+		AddLevelNode(dnaEntity->Autorelease());
+		dnaEntity->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.0f));
+		
 		auto stevelet = new PS::Stevelet();
-		stevelet->SetWorldPosition({ -1, 0, 0 });
-		AddNode(stevelet->Autorelease());
+		AddLevelNode(stevelet->Autorelease());
+		stevelet->SetWorldPosition(RN::Vector3(0.0f, 0.8f, 1.5f));
+		stevelet->SetWorldRotation(RN::Vector3(90.0f, 0.0f, 0.0f));
+		
+		stevelet = new PS::Stevelet();
+		AddLevelNode(stevelet->Autorelease());
+		stevelet->SetWorldPosition(RN::Vector3(1.5f, 0.8f, 0.0f));
+		stevelet->SetWorldRotation(RN::Vector3(0.0f, 0.0f, 0.0f));
 		
 /*		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
 		RN::PhysXCompoundShape *levelShape = RN::PhysXCompoundShape::WithModel(levelModel, levelPhysicsMaterial->Autorelease(), true);
