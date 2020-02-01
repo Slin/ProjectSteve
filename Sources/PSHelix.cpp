@@ -50,6 +50,7 @@ namespace PS
 		newGene.SetRotation(gene.GetWorldRotation());
 		newGene.SetWorldPosition(gene.GetWorldPosition());
 		world->AddLevelNode(newGene.Autorelease(), true);
+		newGene.EnablePhysics();
 
 		return &newGene;
 	}
@@ -61,5 +62,48 @@ namespace PS
 		world->RemoveLevelNode(&newGene);
 	}
 
-	RNDefineMeta(Gene, RN::Entity)
+	RNDefineMeta(Gene, Grabbable)
+
+	Gene::Gene(RN::Model *model) : Grabbable(model), _physicsBody(nullptr)
+	{
+		
+	}
+
+	void Gene::EnablePhysics()
+	{
+		if(_physicsBody) return;
+		
+		RN::PhysXMaterial *material = new RN::PhysXMaterial();
+		RN::PhysXShape *shape = RN::PhysXBoxShape::WithHalfExtents(RN::Vector3(0.08f, 0.01f, 0.01f), material->Autorelease());
+		_physicsBody = RN::PhysXDynamicBody::WithShape(shape, 0.1f);
+		_physicsBody->SetCollisionFilter(World::CollisionType::Players, World::CollisionType::All);
+		AddAttachment(_physicsBody);
+	}
+
+	void Gene::DisablePhysics()
+	{
+		if(!_physicsBody) return;
+		
+		RemoveAttachment(_physicsBody);
+		_physicsBody = nullptr;
+	}
+
+	void Gene::Update(float delta)
+	{
+		Grabbable::Update(delta);
+		
+		if(_physicsBody)
+		{
+			if(_isGrabbed)
+			{
+				_physicsBody->SetLinearVelocity(RN::Vector3());
+			}
+			
+			if(_wantsThrow)
+			{
+				_physicsBody->SetLinearVelocity(_currentGrabbedSpeed);
+				_wantsThrow = false;
+			}
+		}
+	}
 }

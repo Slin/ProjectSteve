@@ -309,9 +309,21 @@ namespace PS
 		AddLevelNode(helix->Autorelease(), false);
 		helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.01f));
 		
-		Spawner *syringeSpawner = new Spawner(RNCSTR("models/syringe_body.sgm"), Spawner::ObjectType::SyringeType, 20);
+		Spawner *syringeSpawner = new Spawner(Spawner::ObjectType::SyringeType, 20);
 		AddLevelNode(syringeSpawner->Autorelease(), false);
 		syringeSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));
+		
+		Spawner *geneGreenSpawner = new Spawner(Spawner::ObjectType::GeneType, 20);
+		AddLevelNode(geneGreenSpawner->Autorelease(), false);
+		geneGreenSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.3f));
+		
+		Spawner *geneBlueSpawner = new Spawner(Spawner::ObjectType::GeneType, 20);
+		AddLevelNode(geneBlueSpawner->Autorelease(), false);
+		geneBlueSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.1f));
+		
+/*		Spawner *steveletSpawner = new Spawner(Spawner::ObjectType::SteveletType, 5);
+		AddLevelNode(steveletSpawner->Autorelease(), false);
+		steveletSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));*/
 
 		auto stevelet = new PS::Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
