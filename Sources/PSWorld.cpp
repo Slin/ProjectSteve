@@ -303,15 +303,12 @@ namespace PS
 		AddLevelNode(helix->Autorelease(), false);
 		helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.0f));
 		
-<<<<<<< HEAD
 		/*auto stevelet = new Stevelet();
-=======
 		Syringe *syringe = new Syringe();
 		AddLevelNode(syringe->Autorelease(), true);
 		syringe->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));
 		
 		auto stevelet = new Stevelet();
->>>>>>> 122fa0cc41a4eebd16050dece95f9af0bb8cb23e
 		AddLevelNode(stevelet->Autorelease(), true);
 		stevelet->SetWorldPosition(RN::Vector3(0.0f, 0.95f, 1.5f));
 		stevelet->SetWorldRotation(RN::Vector3(90.0f, 0.0f, 0.0f));

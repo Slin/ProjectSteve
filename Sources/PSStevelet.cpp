@@ -36,13 +36,11 @@ namespace PS
 	}
 
 	void Stevelet::FreezePhysics() {
-		//_physicsBody->SetEnableKinematic(true);
 		_physicsBody->ClearForces();
 		_physicsEnabled = false;
 	}
 
 	void Stevelet::ResumePhysics() {
-		//_physicsBody->SetEnableKinematic(false);
 		StopMovement();
 		_physicsEnabled = true;
 		_isMoving = false;
@@ -82,18 +80,20 @@ namespace PS
 			_wantsThrow = false;
 		}
 		
-		RN::Quaternion startRotation = GetWorldRotation();
-		if(_targetRotation.GetDotProduct(startRotation) > 0.0f)
-			startRotation = startRotation.GetConjugated();
-		RN::Quaternion rotationSpeed = _targetRotation*startRotation;
-		RN::Vector4 axisAngleSpeed = rotationSpeed.GetAxisAngle();
-		if(axisAngleSpeed.w > 180.0f)
-			axisAngleSpeed.w -= 360.0f;
-		RN::Vector3 angularVelocity(axisAngleSpeed.x, axisAngleSpeed.y, axisAngleSpeed.z);
-		angularVelocity *= axisAngleSpeed.w*M_PI;
-		angularVelocity /= 180.0f;
-		angularVelocity /= delta;
-		_physicsBody->SetAngularVelocity(angularVelocity);
+		if (delta > RN::k::EpsilonFloat) {
+			RN::Quaternion startRotation = GetWorldRotation();
+			if (_targetRotation.GetDotProduct(startRotation) > 0.0f)
+				startRotation = startRotation.GetConjugated();
+			RN::Quaternion rotationSpeed = _targetRotation * startRotation;
+			RN::Vector4 axisAngleSpeed = rotationSpeed.GetAxisAngle();
+			if (axisAngleSpeed.w > 180.0f)
+				axisAngleSpeed.w -= 360.0f;
+			RN::Vector3 angularVelocity(axisAngleSpeed.x, axisAngleSpeed.y, axisAngleSpeed.z);
+			angularVelocity *= axisAngleSpeed.w*M_PI;
+			angularVelocity /= 180.0f;
+			angularVelocity /= delta;
+			_physicsBody->SetAngularVelocity(angularVelocity);
+		}
 	}
 
 	void Stevelet::SetTargetPosition(RN::Vector3 position)
