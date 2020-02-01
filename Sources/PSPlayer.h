@@ -35,8 +35,8 @@ namespace PS
 		void ReleaseObjectFromHandIfNeeded(Grabbable *grabbable);
 
 	private:
-		RN::SceneNode* FindGrabbable(bool vrMode, RN::uint8 handIndex);
-		RN::SceneNode* Grab(RN::SceneNode* node, RN::uint8 handIndex);
+		Grabbable* FindGrabbable(bool vrMode, RN::uint8 handIndex);
+		Grabbable* Grab(Grabbable* node, RN::uint8 handIndex);
 		void ReleaseGrabbable(bool vrMode, RN::uint8 handIndex);
 
 		RN::SceneNode *_camera;
@@ -52,7 +52,7 @@ namespace PS
 		
 		RN::Entity *_handEntity[2];
 		bool _isHandGrabbing[2];
-		RN::SceneNode *_grabbedObject[2];
+		Grabbable*_grabbedObject[2];
 		RN::Vector3 _grabbedObjectOffset[2];
 		RN::Quaternion _grabbedObjectRotationOffset[2];
 		

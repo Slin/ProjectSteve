@@ -309,9 +309,21 @@ namespace PS
 		AddLevelNode(helix->Autorelease(), false);
 		helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.01f));
 		
-		Spawner *syringeSpawner = new Spawner(RNCSTR("models/syringe_body.sgm"), Spawner::ObjectType::SyringeType, 20);
+		Spawner *syringeSpawner = new Spawner(Spawner::ObjectType::SyringeType, 20);
 		AddLevelNode(syringeSpawner->Autorelease(), false);
 		syringeSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));
+		
+		Spawner *geneGreenSpawner = new Spawner(Spawner::ObjectType::GeneType, 20);
+		AddLevelNode(geneGreenSpawner->Autorelease(), false);
+		geneGreenSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.3f));
+		
+		Spawner *geneBlueSpawner = new Spawner(Spawner::ObjectType::GeneType, 20);
+		AddLevelNode(geneBlueSpawner->Autorelease(), false);
+		geneBlueSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.1f));
+		
+/*		Spawner *steveletSpawner = new Spawner(Spawner::ObjectType::SteveletType, 5);
+		AddLevelNode(steveletSpawner->Autorelease(), false);
+		steveletSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));*/
 
 		auto stevelet = new PS::Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
@@ -426,9 +438,9 @@ namespace PS
 		_navigationWorld->SetPaused(_isPaused);
 	}
 
-	RN::SceneNode *World::GetClosestGrabbableObject(RN::Vector3 position)
+	Grabbable* World::GetClosestGrabbableObject(RN::Vector3 position)
 	{
-		RN::SceneNode *closestObject = nullptr;
+		Grabbable* closestObject = nullptr;
 		float closestDistance = 1000.0f;
 		
 		_grabbableObjects->Enumerate<Grabbable>([&](Grabbable* node, size_t index, bool &stop){
@@ -449,9 +461,9 @@ namespace PS
 		return _grabbableObjects;
 	}
 
-	std::pair<RN::SceneNode*, float> World::GetClosestGrabbableObject(RN::Vector2 coordinate)
+	std::pair<Grabbable*, float> World::GetClosestGrabbableObject(RN::Vector2 coordinate)
 	{
-		RN::SceneNode* closestObject = nullptr;
+		Grabbable* closestObject = nullptr;
 		float closestDistance = 1000.0f;
 		const RN::Camera* camera = static_cast<RN::Camera*>(GetCamera());
 		// GetInverseProjectionMatrix

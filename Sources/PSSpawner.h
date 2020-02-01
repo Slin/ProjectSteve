@@ -23,10 +23,10 @@ namespace PS
 		{
 			SteveletType,
 			SyringeType,
-			DNAType
+			GeneType
 		};
 		
-		Spawner(RN::String *file, ObjectType type, size_t poolSize);
+		Spawner(ObjectType type, size_t poolSize);
 		~Spawner() = default;
 		void Update(float delta) override;
 		

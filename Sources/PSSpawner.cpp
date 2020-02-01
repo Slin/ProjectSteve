@@ -12,12 +12,14 @@
 #include "PSPlayer.h"
 #include "PSAnimatable.h"
 #include "PSSyringe.h"
+#include "PSHelix.h"
+#include "PSStevelet.h"
 
 namespace PS
 {
 	RNDefineMeta(Spawner, RN::SceneNode)
 	
-	Spawner::Spawner(RN::String *file, ObjectType type, size_t poolSize) : _type(type), _objectPool(new RN::Array()), _activeObjects(new RN::Array()), _currentObject(nullptr)
+	Spawner::Spawner(ObjectType type, size_t poolSize) : _type(type), _objectPool(new RN::Array()), _activeObjects(new RN::Array()), _currentObject(nullptr)
 	{
 		if(type == ObjectType::SyringeType)
 		{
@@ -25,6 +27,22 @@ namespace PS
 			{
 				Syringe *syringe = new Syringe();
 				_objectPool->AddObject(syringe->Autorelease());
+			}
+		}
+		else if(type == ObjectType::GeneType)
+		{
+			for(int i = 0; i < poolSize; i++)
+			{
+				Gene *gene = new Gene(RN::Model::WithName(RNCSTR("models/dna_blubb.sgm")));
+				_objectPool->AddObject(gene->Autorelease());
+			}
+		}
+		else if(type == ObjectType::SteveletType)
+		{
+			for(int i = 0; i < poolSize; i++)
+			{
+				Stevelet *stevlet = new Stevelet();
+				_objectPool->AddObject(stevlet->Autorelease());
 			}
 		}
 	}
@@ -49,6 +67,14 @@ namespace PS
 				lastObject->SetWorldPosition(GetWorldPosition());
 				lastObject->SetWorldRotation(GetWorldRotation());
 				_currentObject = lastObject;
+				
+				if(_currentObject)
+				{
+					if(_type == ObjectType::GeneType)
+					{
+						_currentObject->Downcast<Gene>()->EnablePhysics();
+					}
+				}
 			}
 			else
 			{

@@ -19,6 +19,8 @@
 namespace PS
 {
 	class Player;
+	class Grabbable;
+
 	class World : public RN::SceneBasic
 	{
 	public:
@@ -43,8 +45,8 @@ namespace PS
 		RN::SceneNode *GetCamera() const { return _mainCamera; }
 		Player *GetPlayer() const { return _player; }
 		
-		RN::SceneNode *GetClosestGrabbableObject(RN::Vector3 position);
-		std::pair<RN::SceneNode*,float> GetClosestGrabbableObject(RN::Vector2 coordinate);
+		Grabbable* GetClosestGrabbableObject(RN::Vector3 position);
+		std::pair<Grabbable*,float> GetClosestGrabbableObject(RN::Vector2 coordinate);
 
 		void AddLevelNode(RN::SceneNode *node, bool _isGrabbable);
 		void RemoveLevelNode(RN::SceneNode *node);

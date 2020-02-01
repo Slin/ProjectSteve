@@ -39,8 +39,17 @@ namespace PS
 	class Gene : public Grabbable
 	{
 	public:
-		using Grabbable::Grabbable;
+		Gene(RN::Model *model);
+		~Gene() = default;
+		
+		void Update(float delta) override;
+		
+		void EnablePhysics();
+		void DisablePhysics();
+		
 	private:
+		RN::PhysXDynamicBody *_physicsBody;
+		
 		RNDeclareMeta(Gene)
 	};
 }

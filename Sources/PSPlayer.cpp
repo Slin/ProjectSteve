@@ -8,7 +8,7 @@
 
 #include "PSPlayer.h"
 #include "PSWorld.h"
-#include "PSAnimatable.h"
+#include "PSGrabbable.h"
 #include "PSHelix.h"
 
 namespace PS
@@ -281,12 +281,11 @@ namespace PS
 				{
 					if(!_isHandGrabbing[i])
 					{
-						RN::SceneNode* grabbedObject;
+						Grabbable* grabbedObject;
 						if((grabbedObject = FindGrabbable(true, i)) && (grabbedObject = Grab(grabbedObject,i)))
 						{
 							_grabbedObjectOffset[i] = _handEntity[i]->GetWorldRotation().GetConjugated().GetRotatedVector(grabbedObject->GetWorldPosition() - _handEntity[i]->GetWorldPosition());
 							_grabbedObjectRotationOffset[i] = _handEntity[i]->GetWorldRotation().GetConjugated() * grabbedObject->GetWorldRotation();
-							
 						}
 					}
 					else
@@ -305,10 +304,10 @@ namespace PS
 				
 				if(_grabbedObject[i])
 				{
-					Animatable *animatable = _grabbedObject[i]->Downcast<Animatable>();
-					if(animatable)
+					Grabbable *grabbable = _grabbedObject[i]->Downcast<Grabbable>();
+					if(grabbable)
 					{
-						animatable->SetIsTriggered((controller.active && controller.indexTrigger > 0.1f));
+						grabbable->SetIsTriggered((controller.active && controller.indexTrigger > 0.1f));
 					}
 				}
 				
@@ -323,30 +322,35 @@ namespace PS
 		else // emulate grabbing with mouse
 		{
 			using namespace RN;
-			constexpr int i = 0;
-			if (manager->IsControlToggling(RNSTR("1")))
+
+			auto processHand = [&](int i, const char* key)
 			{
-				if (!_isHandGrabbing[i])
+				if (manager->IsControlToggling(RNSTR(key)))
 				{
-					SceneNode* grabbedObject;
-					if ((grabbedObject = FindGrabbable(false, i)) && (grabbedObject = Grab(grabbedObject, i)))
+					if (!_isHandGrabbing[i])
 					{
-						const RN::Vector3 v = grabbedObject->GetWorldPosition() - _camera->GetWorldPosition();
-			
-						_grabbedObjectOffset[i] = {};
-						_grabbedObjectOffset[i].z = -grabbedObject->GetWorldPosition().GetDistance(_camera->GetWorldPosition());
+						Grabbable* grabbedObject;
+						if ((grabbedObject = FindGrabbable(false, i)) && (grabbedObject = Grab(grabbedObject, i)))
+						{
+							_grabbedObjectOffset[i] = {};
+							_grabbedObjectOffset[i].z = -grabbedObject->GetWorldPosition().GetDistance(_camera->GetWorldPosition());
+						}
+					}
+					else
+					{
+						const Vector3 dir = _camera->GetWorldRotation().GetRotatedVector(_grabbedObjectOffset[i]);
+						_grabbedObject[i]->SetWorldPosition(_camera->GetWorldPosition() + dir);
+
+						_grabbedObject[i]->SetIsTriggered(manager->IsControlToggling(RNSTR("3")));
 					}
 				}
 				else
 				{
-					const Vector3 dir = _camera->GetWorldRotation().GetRotatedVector(_grabbedObjectOffset[i]);
-					_grabbedObject[i]->SetWorldPosition(_camera->GetWorldPosition() + dir);
+					if (_grabbedObject[i]) ReleaseGrabbable(false, i);
 				}
-			}
-			else
-			{
-				if (_grabbedObject[i]) ReleaseGrabbable(false, i);
-			}
+			};
+			processHand(0, "1");
+			processHand(1, "2");
 		}
 	}
 	
@@ -360,12 +364,12 @@ namespace PS
 		_didActivate = true;
 	}
 
-	RN::SceneNode* Player::FindGrabbable(bool vrMode, RN::uint8 handIndex)
+	Grabbable* Player::FindGrabbable(bool vrMode, RN::uint8 handIndex)
 	{
 		PS::World* world = World::GetSharedInstance();
 		if (vrMode)
 		{
-			RN::SceneNode* grabbedObject = Grab(world->GetClosestGrabbableObject(_handEntity[handIndex]->GetWorldPosition()), handIndex);
+			Grabbable* grabbedObject = world->GetClosestGrabbableObject(_handEntity[handIndex]->GetWorldPosition());
 			if(grabbedObject && _handEntity[handIndex]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
 				return grabbedObject;
 		}
@@ -373,7 +377,7 @@ namespace PS
 		{
 			// no C++17 :(
 			auto res = world->GetClosestGrabbableObject(RN::Vector2(0.f, 0.f));
-			RN::SceneNode* grabbedObject = res.first;
+			Grabbable* grabbedObject = res.first;
 			const float dist = res.second;
 			if (dist < 0.1f)
 				return grabbedObject;
@@ -381,7 +385,7 @@ namespace PS
 		return nullptr;
 	}
 
-	RN::SceneNode* Player::Grab(RN::SceneNode* node, RN::uint8 handIndex)
+	Grabbable* Player::Grab(Grabbable* node, RN::uint8 handIndex)
 	{
 		if (!node) return nullptr;
 
