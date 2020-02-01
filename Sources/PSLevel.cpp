@@ -26,6 +26,7 @@ namespace PS
 		auto current = std::find(_obstacles.begin(), _obstacles.end(), obs);
 		++current;
 		if (current == _obstacles.end()) {
+			_winners.push_back({ 2.0f, steve });
 			steve->StopMovement();
 			steve->ResumePhysics();
 			return;
@@ -36,6 +37,16 @@ namespace PS
 	void Level::AssignStevelet(Stevelet* steve) {
 		for (auto o : _obstacles) {
 			if (o->Contains(steve)) return;
+		}
+
+		_winners.erase(
+			std::remove_if(
+				_winners.begin(), 
+				_winners.end(), 
+				[](std::tuple<float, Stevelet*> t) { return std::get<float>(t) < RN::k::EpsilonFloat; }),
+			_winners.end());
+		for (auto tuple : _winners) {
+			if (steve == std::get<Stevelet*>(tuple)) return;
 		}
 
 		_obstacles.front()->AssignStevelet(steve);
@@ -53,12 +64,16 @@ namespace PS
 	}
 
 	void Level::Update(float delta) {
+		for (auto& t : _winners) {
+			std::get<float>(t) -= delta;
+		}
+
 		auto grabbables = World::GetSharedInstance()->GetGrabbableObjects();
 
 		for (int i = 0; i < grabbables->GetCount(); i++) {
 			auto entity = (*grabbables)[i]->Downcast<Stevelet>();
 			if (entity) {
-				if (_startTrigger.Contains(entity->GetWorldPosition())) {
+				if (!entity->IsGrabbed() && _startTrigger.Contains(entity->GetWorldPosition())) {
 					AssignStevelet(entity);
 				}
 			}
@@ -101,6 +116,15 @@ namespace PS
 		} else {
 			_startTrigger.minExtend.z = -MinDim / 2.0f;
 			_startTrigger.maxExtend.z = MinDim / 2.0f;
+		}
+
+		for (auto& o : _obstacles) {
+			auto aabb = o->GetBoundingBox();
+			aabb.minExtend.x = _startTrigger.minExtend.x;
+			aabb.minExtend.y = _startTrigger.minExtend.y;
+			aabb.maxExtend.x = _startTrigger.maxExtend.x;
+			aabb.maxExtend.y = _startTrigger.maxExtend.y;
+			o->SetBoundingBox(aabb);
 		}
 	}
 }

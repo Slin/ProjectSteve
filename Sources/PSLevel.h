@@ -33,6 +33,7 @@ namespace PS
 		RN::Vector3 CalculateEndPosition();
 		void UpdateBoundingBox();
 
+		std::vector<std::tuple<float, Stevelet*>> _winners;
 		RN::AABB _startTrigger;
 
 		RNDeclareMeta(Level)

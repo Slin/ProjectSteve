@@ -43,6 +43,7 @@ namespace PS
 
 	void Stevelet::FreezePhysics() {
 		_physicsBody->ClearForces();
+		_physicsBody->SetLinearVelocity(RN::Vector3());
 		_physicsEnabled = false;
 	}
 

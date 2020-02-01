@@ -28,7 +28,6 @@ namespace PS
 		for (Stevelet* &steve : _steves) {
 			if (!steve) continue;
 			auto aabb = GetBoundingBox();
-			RNDebug("STEVE: " << steve->GetWorldPosition().z);
 			if (!aabb.Contains(steve->GetWorldPosition())) {
 				if (steve->GetWorldPosition().z > aabb.position.z + aabb.maxExtend.z) {
 					_parent->FreeStevelet(steve, this);
@@ -41,8 +40,8 @@ namespace PS
 		}
 
 
-		/*_steves.erase(
-			_steves.begin(), 
-			std::remove_if(_steves.begin(), _steves.end(), [](Stevelet const* steve) { return steve == nullptr; }));*/
+		_steves.erase(
+			std::remove_if(_steves.begin(), _steves.end(), [](Stevelet const* steve) { return steve == nullptr; }),
+			_steves.end());
 	}
 }
