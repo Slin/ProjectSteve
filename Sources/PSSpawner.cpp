@@ -33,7 +33,7 @@ namespace PS
 		{
 			for(int i = 0; i < poolSize; i++)
 			{
-				Gene *gene = new Gene(RN::Model::WithName(RNCSTR("models/dna_blubb.sgm")));
+				Gene *gene = new Gene(Gene::Type::A);
 				_objectPool->AddObject(gene->Autorelease());
 			}
 		}
