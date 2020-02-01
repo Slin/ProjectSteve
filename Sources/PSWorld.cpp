@@ -315,7 +315,7 @@ namespace PS
 		stevelet->SetWorldRotation(RN::Vector3(0.0f, 0.0f, 0.0f));
 
 		stevelet = new PS::Stevelet();
-		AddLevelNode(stevelet->Autorelease());
+		AddLevelNode(stevelet->Autorelease(), true);
 		stevelet->SetWorldPosition(RN::Vector3(1.5f, 1.0f, -1.8f));
 		stevelet->SetWorldRotation(RN::Vector3(0.0f, 180.0f, 0.0f));
 		

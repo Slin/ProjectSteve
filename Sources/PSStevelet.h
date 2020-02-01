@@ -13,6 +13,7 @@
 #include <RNPhysXWorld.h>
 #include <RNOpenALWorld.h>
 #include "PSAnimatable.h"
+#include "PSSteveStats.h"
 
 namespace PS
 {
@@ -25,6 +26,7 @@ namespace PS
 		void Update(float delta) override;
 	private:
 		float _animationTimer;
+		SteveStats _stats;
 		
 		RNDeclareMeta(Stevelet)
 	};

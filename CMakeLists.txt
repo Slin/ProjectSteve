@@ -81,6 +81,7 @@ set(HEADERS
 	Sources/PSWorld.h
 	Sources/PSPlayer.h
 	Sources/PSStevelet.h
+	Sources/PSSteveStats.h
 	Sources/PSAnimatable.h
 	Sources/PSHelix.h)
 

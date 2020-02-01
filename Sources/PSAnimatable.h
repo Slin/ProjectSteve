@@ -22,9 +22,13 @@ namespace PS
 		Animatable(RN::String const* modelName);
 		~Animatable() = default;
 		
+		void SetIsGrabbed(bool isGrabbed);
+		
 		void Update(float delta) override;
 	protected:
 		RN::Model* _model;
+		bool _isGrabbed;
+		
 	private:
 		float _animationTimer;
 		

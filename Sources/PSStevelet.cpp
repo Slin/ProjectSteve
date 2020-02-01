@@ -11,7 +11,7 @@
 
 namespace PS
 {
-	RNDefineMeta(Stevelet, RN::Entity)
+	RNDefineMeta(Stevelet, Animatable)
 	
 	Stevelet::Stevelet() : Animatable(RNCSTR("models/stevelet.sgm")), _animationTimer(0.0f)
 	{
