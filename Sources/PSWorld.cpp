@@ -306,12 +306,12 @@ namespace PS
 		
 		auto stevelet = new Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
-		stevelet->SetWorldPosition(RN::Vector3(0.0f, 0.8f, 1.5f));
+		stevelet->SetWorldPosition(RN::Vector3(0.0f, 0.95f, 1.5f));
 		stevelet->SetWorldRotation(RN::Vector3(90.0f, 0.0f, 0.0f));
 		
 		stevelet = new Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
-		stevelet->SetWorldPosition(RN::Vector3(0.5f, 0.8f, 0.0f));
+		stevelet->SetWorldPosition(RN::Vector3(0.5f, 0.95f, 0.0f));
 		stevelet->SetWorldRotation(RN::Vector3(0.0f, 0.0f, 0.0f));
 		
 /*		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
