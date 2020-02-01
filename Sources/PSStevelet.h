@@ -24,6 +24,12 @@ namespace PS
 		Stevelet();
 		~Stevelet() = default;
 		void Update(float delta) override;
+
+		void Kill();
+		void MoveForward();
+		void StopMovement();
+		void FreezePhysics();
+		void ResumePhysics();
 		
 		void SetTargetPosition(RN::Vector3 position);
 		
@@ -34,6 +40,7 @@ namespace PS
 		bool _isMoving;
 		
 		RN::PhysXDynamicBody *_physicsBody;
+		bool _physicsEnabled = true;
 		
 		RNDeclareMeta(Stevelet)
 	};

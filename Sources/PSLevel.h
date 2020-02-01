@@ -25,9 +25,12 @@ namespace PS
 		Level() = default;
 		~Level() = default;
 		void AddObstacle(Obstacle* obs);
-		void FreeSteve(Stevelet* steve, Obstacle* obs);
+		void AssignStevelet(Stevelet* steve);
+		void FreeStevelet(Stevelet* steve, Obstacle* obs);
 	private:
 		std::vector<Obstacle*> _obstacles;
+		RN::Vector3 Level::_CalculateEndPosition();
+
 		RNDeclareMeta(Level)
 	};
 }

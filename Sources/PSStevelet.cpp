@@ -24,6 +24,32 @@ namespace PS
 		//_physicsBody->SetEnableKinematic(true);
 	}
 
+	void Stevelet::Kill() {
+		//World::GetSharedInstance()->RemoveLevelNode(this);
+		StopMovement();
+	}
+
+	void Stevelet::MoveForward() {
+		_physicsBody->SetLinearVelocity(GetForward().GetNormalized());
+	}
+
+	void Stevelet::StopMovement() {
+		_physicsBody->SetLinearVelocity(RN::Vector3());
+	}
+
+	void Stevelet::FreezePhysics() {
+		//_physicsBody->SetEnableKinematic(true);
+		_physicsBody->ClearForces();
+		_physicsEnabled = false;
+	}
+
+	void Stevelet::ResumePhysics() {
+		//_physicsBody->SetEnableKinematic(false);
+		StopMovement();
+		_physicsEnabled = true;
+		_isMoving = false;
+	}
+
 	void Stevelet::Update(float delta)
 	{
 		Animatable::Update(delta);
@@ -32,7 +58,7 @@ namespace PS
 		direction.y = 0.0f;
 		if(direction.GetLength() > 0.2f)
 		{
-			if(_isMoving)
+			if(_isMoving && _physicsEnabled)
 			{
 				_physicsBody->ApplyForce(direction.Normalize() * 0.02f);
 			}
@@ -47,12 +73,12 @@ namespace PS
 			SetTargetPosition(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomVector3Range(RN::Vector3(-2.0f, 0.15f, -2.0f), RN::Vector3(2.0f, 0.15f, 2.0f)));
 		}
 		
-		if(_isGrabbed)
+		if(_isGrabbed && _physicsEnabled)
 		{
 			_physicsBody->SetLinearVelocity(RN::Vector3());
 		}
 		
-		if(_wantsThrow)
+		if(_wantsThrow && _physicsEnabled)
 		{
 			_physicsBody->ApplyForce(_currentGrabbedSpeed);
 			_wantsThrow = false;

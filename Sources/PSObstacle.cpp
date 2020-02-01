@@ -22,15 +22,22 @@ namespace PS
 		PS::Animatable::Update(delta);
 
 		for (Stevelet* &steve : _steves) {
+			if (!steve) continue;
 			auto aabb = GetBoundingBox();
+			RNDebug("STEVE: " << steve->GetWorldPosition().z);
 			if (!aabb.Contains(steve->GetWorldPosition())) {
-				if (steve->GetWorldPosition().x > aabb.position.x + aabb.maxExtend.x) {
-					_parent->FreeSteve(steve, this);
+				if (steve->GetWorldPosition().z > aabb.position.z + aabb.maxExtend.z) {
+					_parent->FreeStevelet(steve, this);
+					steve = nullptr;
 				} else {
-					World::GetSharedInstance()->RemoveLevelNode(steve);
+					steve->Kill();
 					steve = nullptr;
 				}
 			}
 		}
+
+		/*_steves.erase(
+			_steves.begin(), 
+			std::remove_if(_steves.begin(), _steves.end(), [](Stevelet const* steve) { return steve == nullptr; }));*/
 	}
 }
