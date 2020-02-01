@@ -23,18 +23,20 @@ namespace PS
 		~Animatable() = default;
 		
 		void SetIsGrabbed(bool isGrabbed);
+		void SetIsTriggered(bool isTriggered);
 		
 		void Update(float delta) override;
+		
 	protected:
 		RN::Model* _model;
 		bool _isGrabbed;
 		bool _wantsThrow;
+		bool _isTriggered;
 		
 		RN::Vector3 _previousPosition;
 		RN::Vector3 _currentGrabbedSpeed;
 		RN::Vector3 _currentGrabbedRotationSpeed;
 		
-	private:
 		float _animationTimer;
 		
 		RNDeclareMeta(Animatable)

@@ -74,6 +74,7 @@ set(SOURCES
 	Sources/PSStevelet.cpp
 	Sources/PSAnimatable.cpp
 	Sources/PSHelix.cpp
+	Sources/PSSyringe.cpp
 	Sources/PSObstacle.cpp
 	Sources/PSLevel.cpp)
 
@@ -86,6 +87,7 @@ set(HEADERS
 	Sources/PSSteveStats.h
 	Sources/PSAnimatable.h
 	Sources/PSHelix.h
+	Sources/PSSyringe.h
 	Sources/PSObstacle.h
 	Sources/PSLevel.h)
 

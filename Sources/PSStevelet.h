@@ -32,11 +32,12 @@ namespace PS
 		void ResumePhysics();
 		
 		void SetTargetPosition(RN::Vector3 position);
+		void SetTargetRotation(RN::Vector3 rotation);
 		
 	private:
-		float _animationTimer;
 		SteveStats _stats;
 		RN::Vector3 _targetPosition;
+		RN::Quaternion _targetRotation;
 		bool _isMoving;
 		
 		RN::PhysXDynamicBody *_physicsBody;
