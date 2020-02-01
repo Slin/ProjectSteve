@@ -18,7 +18,7 @@ namespace PS
 		RN::PhysXMaterial *material = new RN::PhysXMaterial();
 		RN::PhysXShape *shape = RN::PhysXSphereShape::WithRadius(0.15, material);
 		_physicsBody = RN::PhysXDynamicBody::WithShape(shape, 0.5f);
-		_physicsBody->SetCollisionFilter(World::CollisionType::Players, World::CollisionType::All);
+		_physicsBody->SetCollisionFilter(World::CollisionType::Players, World::CollisionType::Level);
 		AddAttachment(_physicsBody);
 	}
 
@@ -32,7 +32,7 @@ namespace PS
 		{
 			if(_isMoving)
 			{
-				_physicsBody->ApplyForce(direction.Normalize() * 0.02f);
+				_physicsBody->ApplyForce(direction.Normalize() * 0.08f);
 			}
 		}
 		else
@@ -42,7 +42,7 @@ namespace PS
 		
 		if(!_isMoving)
 		{
-			SetTargetPosition(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomVector3Range(RN::Vector3(-2.0f, 0.15f, -2.0f), RN::Vector3(2.0f, 0.15f, 2.0f)));
+			SetTargetPosition(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomVector3Range(RN::Vector3(-1.7f, 0.15f, -1.7f), RN::Vector3(1.7f, 0.15f, 1.7f)));
 		}
 		
 		if(_isGrabbed)
@@ -55,11 +55,29 @@ namespace PS
 			_physicsBody->SetLinearVelocity(_currentGrabbedSpeed);
 			_wantsThrow = false;
 		}
+		
+		RN::Quaternion startRotation = GetWorldRotation();
+		if(_targetRotation.GetDotProduct(startRotation) > 0.0f)
+			startRotation = startRotation.GetConjugated();
+		RN::Quaternion rotationSpeed = _targetRotation*startRotation;
+		RN::Vector4 axisAngleSpeed = rotationSpeed.GetAxisAngle();
+		if(axisAngleSpeed.w > 180.0f)
+			axisAngleSpeed.w -= 360.0f;
+		RN::Vector3 angularVelocity(axisAngleSpeed.x, axisAngleSpeed.y, axisAngleSpeed.z);
+		angularVelocity *= axisAngleSpeed.w*M_PI;
+		angularVelocity /= 180.0f;
+		angularVelocity /= delta;
+		_physicsBody->SetAngularVelocity(angularVelocity);
 	}
 
 	void Stevelet::SetTargetPosition(RN::Vector3 position)
 	{
 		_targetPosition = position;
 		_isMoving = true;
+	}
+
+	void Stevelet::SetTargetRotation(RN::Vector3 rotation)
+	{
+		_targetRotation = rotation;
 	}
 }
