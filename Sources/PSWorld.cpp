@@ -12,6 +12,8 @@
 #include "PSStevelet.h"
 #include "PSPlayer.h"
 #include "PSHelix.h"
+#include "PSLevel.h"
+#include "PSObstacle.h"
 
 #if RN_PLATFORM_ANDROID
 	#include "RNOculusMobileWindow.h"
@@ -312,6 +314,19 @@ namespace PS
 
 		stevelet = new PS::Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
+		stevelet->SetWorldPosition(RN::Vector3(1.5f, 1.0f, -1.8f));
+		stevelet->SetWorldRotation(RN::Vector3(0.0f, 180.0f, 0.0f));
+
+		auto level = new PS::Level();
+		AddLevelNode(level->Autorelease(), false);
+		level->SetWorldPosition(RN::Vector3(1.5f, 1.0f, -0.6f));
+
+		for (int i = 0; i < 7; i++) {
+			auto obs = new PS::Obstacle(RNCSTR("sprites/Fire.png"), level);
+			level -> AddObstacle(obs);
+			AddLevelNode(obs->Autorelease(), false);
+		}
+		
 		stevelet->SetWorldPosition(RN::Vector3(1.5f, 0.95f, -1.8f));
 		stevelet->SetWorldRotation(RN::Vector3(0.0f, 180.0f, 0.0f));
 		

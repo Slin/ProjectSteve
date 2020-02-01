@@ -2,7 +2,7 @@
 //  PSPlayer.h
 //  ProjectSteve
 //
-//  Copyright 2018 by SlinDev. All rights reserved.
+//  Copyright 2018 by SlinDev & BlueIceshard. All rights reserved.
 //  Unauthorized use is punishable by torture, mutilation, and vivisection.
 //
 

@@ -13,7 +13,7 @@ namespace PS
 {
 	RNDefineMeta(Stevelet, Animatable)
 	
-	Stevelet::Stevelet() : Animatable(RNCSTR("models/stevelet.sgm")), _animationTimer(0.0f), _isMoving(false)
+	Stevelet::Stevelet() : Animatable(RNCSTR("sprites/Pyxel2DBlob_Arms_Idle.png")), _animationTimer(0.0f), _isMoving(false)
 	{
 		RN::PhysXMaterial *material = new RN::PhysXMaterial();
 		RN::PhysXShape *shape = RN::PhysXSphereShape::WithRadius(0.15, material);
@@ -21,7 +21,7 @@ namespace PS
 		_physicsBody->SetCollisionFilter(World::CollisionType::Players, World::CollisionType::All);
 		AddAttachment(_physicsBody);
 		
-		_physicsBody->SetEnableKinematic(true);
+		//_physicsBody->SetEnableKinematic(true);
 	}
 
 	void Stevelet::Update(float delta)
@@ -34,8 +34,7 @@ namespace PS
 		{
 			if(_isMoving)
 			{
-				direction.y = _physicsBody->GetLinearVelocity().y;
-				_physicsBody->SetLinearVelocity(direction.Normalize());
+				_physicsBody->ApplyForce(direction.Normalize() * 0.02f);
 			}
 		}
 		else
@@ -46,6 +45,17 @@ namespace PS
 		if(!_isMoving)
 		{
 			SetTargetPosition(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomVector3Range(RN::Vector3(-2.0f, 0.15f, -2.0f), RN::Vector3(2.0f, 0.15f, 2.0f)));
+		}
+		
+		if(_isGrabbed)
+		{
+			_physicsBody->SetLinearVelocity(RN::Vector3());
+		}
+		
+		if(_wantsThrow)
+		{
+			_physicsBody->ApplyForce(_currentGrabbedSpeed);
+			_wantsThrow = false;
 		}
 	}
 
