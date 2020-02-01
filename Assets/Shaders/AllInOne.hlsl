@@ -76,7 +76,7 @@ float4 main_fragment(FragmentVertex vert) : SV_TARGET
 
 #if RN_UV0
 	color *= texture0.Sample(linearRepeatSampler, vert.texCoords0);
-	color.a = 1.0;
+	if(color.a > 0.5) color.a = 1.0;
 #endif
 
 	color.rgb *= cameraAmbientColor.rgb * color.a;

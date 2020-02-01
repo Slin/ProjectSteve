@@ -268,9 +268,8 @@ namespace PS
 						if(_handEntity[i]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
 						{
 							_grabbedObject[i] = grabbedObject;
-							_grabbedObjectOffset[i] = grabbedObject->GetWorldPosition() - _handEntity[i]->GetWorldPosition();
+							_grabbedObjectOffset[i] = _handEntity[i]->GetWorldRotation().GetConjugated().GetRotatedVector(grabbedObject->GetWorldPosition() - _handEntity[i]->GetWorldPosition());
 							_grabbedObjectRotationOffset[i] = _handEntity[i]->GetWorldRotation().GetConjugated() * grabbedObject->GetWorldRotation();
-							_grabbedObjectStartRotation[i] = _handEntity[i]->GetWorldRotation();
 							
 							if(grabbedObject)
 							{
@@ -286,8 +285,7 @@ namespace PS
 					
 					if(_grabbedObject[i])
 					{
-						RN::Quaternion rotationDiff = _grabbedObjectStartRotation[i].GetConjugated() * _handEntity[i]->GetWorldRotation();
-						_grabbedObject[i]->SetWorldPosition(_handEntity[i]->GetWorldPosition() + rotationDiff.GetRotatedVector(_grabbedObjectOffset[i]));
+						_grabbedObject[i]->SetWorldPosition(_handEntity[i]->GetWorldPosition() + _handEntity[i]->GetWorldRotation().GetRotatedVector(_grabbedObjectOffset[i]));
 						_grabbedObject[i]->SetWorldRotation(_handEntity[i]->GetWorldRotation() * _grabbedObjectRotationOffset[i]);
 					}
 				}

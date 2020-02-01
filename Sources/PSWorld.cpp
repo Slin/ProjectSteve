@@ -302,17 +302,17 @@ namespace PS
 		
 		auto stevelet = new Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
-		stevelet->SetWorldPosition(RN::Vector3(0.0f, 1.95f, 1.5f));
+		stevelet->SetWorldPosition(RN::Vector3(0.0f, 0.95f, 1.5f));
 		stevelet->SetWorldRotation(RN::Vector3(90.0f, 0.0f, 0.0f));
 		
 		stevelet = new Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
-		stevelet->SetWorldPosition(RN::Vector3(0.5f, 1.95f, 0.0f));
+		stevelet->SetWorldPosition(RN::Vector3(0.5f, 0.95f, 0.0f));
 		stevelet->SetWorldRotation(RN::Vector3(0.0f, 0.0f, 0.0f));
 
 		stevelet = new PS::Stevelet();
 		AddLevelNode(stevelet->Autorelease(), true);
-		stevelet->SetWorldPosition(RN::Vector3(1.5f, 1.0f, -1.8f));
+		stevelet->SetWorldPosition(RN::Vector3(1.5f, 0.95f, -1.8f));
 		stevelet->SetWorldRotation(RN::Vector3(0.0f, 180.0f, 0.0f));
 		
 /*

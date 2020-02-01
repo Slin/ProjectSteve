@@ -20,6 +20,8 @@ namespace PS
 		_physicsBody = RN::PhysXDynamicBody::WithShape(shape, 0.5f);
 		_physicsBody->SetCollisionFilter(World::CollisionType::Players, World::CollisionType::All);
 		AddAttachment(_physicsBody);
+		
+		_physicsBody->SetEnableKinematic(true);
 	}
 
 	void Stevelet::Update(float delta)
@@ -45,8 +47,6 @@ namespace PS
 		{
 			SetTargetPosition(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomVector3Range(RN::Vector3(-2.0f, 0.15f, -2.0f), RN::Vector3(2.0f, 0.15f, 2.0f)));
 		}
-
-		//Translate(GetForward() * delta * 0.1f);
 	}
 
 	void Stevelet::SetTargetPosition(RN::Vector3 position)
