@@ -17,7 +17,33 @@
 namespace PS
 {
 	class World;
-	class Gene;
+
+	class Gene : public Grabbable
+	{
+	public:
+		enum struct Type
+		{
+			C,
+			G,
+			A,
+			T
+		};
+
+		Gene(Type type);
+		~Gene() = default;
+
+		void Update(float delta) override;
+
+		void EnablePhysics();
+		void DisablePhysics();
+
+		Type GetType() const { return _type; }
+		void SetType(Type type);
+	private:
+		RN::PhysXDynamicBody* _physicsBody;
+		Type _type;
+		RNDeclareMeta(Gene)
+	};
 
 	class Helix : public RN::Entity
 	{
@@ -32,25 +58,7 @@ namespace PS
 		void PlaceGene(Gene& target, Gene& newGene);
 	private:
 		std::array<Gene*, 12> _genes;
-		RN::Model* _geneModel;
 		RNDeclareMeta(Helix)
-	};
-
-	class Gene : public Grabbable
-	{
-	public:
-		Gene(RN::Model *model);
-		~Gene() = default;
-		
-		void Update(float delta) override;
-		
-		void EnablePhysics();
-		void DisablePhysics();
-		
-	private:
-		RN::PhysXDynamicBody *_physicsBody;
-		
-		RNDeclareMeta(Gene)
 	};
 }
 

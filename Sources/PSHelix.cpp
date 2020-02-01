@@ -11,6 +11,16 @@
 
 namespace PS
 {
+	const std::array<RN::Color, 4> GENE_COLORS = { {
+		{1.f, 1.f, 1.f},
+		{0.f, 0.f, 1.f},
+		{0.f, 1.f, 0.f},
+		{1.f, 0.f, 0.f}
+	} };
+
+	static std::array<RN::Model*, 4> geneModels;
+
+
 	RNDefineMeta(Helix, RN::Entity)
 	
 	Helix::Helix(World& _world)
@@ -20,11 +30,19 @@ namespace PS
 		RN::Model *model = RN::Model::WithName(RNCSTR("models/dna.sgm"))->Copy();
 		SetModel(model);
 		
-		_geneModel = RN::Model::WithName(RNCSTR("models/dna_blubb.sgm"));
+		geneModels[0] = RN::Model::WithName(RNCSTR("models/dna_blubb.sgm"));
+		geneModels[0]->GetLODStage(0)->GetMaterialAtIndex(0)->SetDiffuseColor(GENE_COLORS[0]);
+		for (size_t i = 1; i < geneModels.size(); ++i)
+		{
+			geneModels[i] = geneModels[0]->Copy();
+			geneModels[i]->GetLODStage(0)->ReplaceMaterial(geneModels[1]->GetLODStage(0)->GetMaterialAtIndex(0)->Copy(), 0);
+			geneModels[i]->GetLODStage(0)->GetMaterialAtIndex(0)->SetDiffuseColor(GENE_COLORS[i]);
+		}
+
 		float currentHeight = 0.04f;
 		for(int i = 0; i < 12; i++)
 		{
-			_genes[i] = new Gene(_geneModel);
+			_genes[i] = new Gene(static_cast<Gene::Type>(i % 4));
 			AddChild(_genes[i]);
 			_world.RegisterGrabbable(_genes[i]);
 			_genes[i]->SetPosition(RN::Vector3(0.0f, currentHeight, 0.0f));
@@ -46,7 +64,8 @@ namespace PS
 
 		gene.AddFlags(RN::SceneNode::Flags::Hidden);
 		World* world = World::GetSharedInstance();
-		Gene& newGene = *new Gene(_geneModel);
+		const Gene::Type t = gene.GetType();
+		Gene& newGene = *new Gene(t);
 		newGene.SetRotation(gene.GetWorldRotation());
 		newGene.SetWorldPosition(gene.GetWorldPosition());
 		world->AddLevelNode(newGene.Autorelease(), true);
@@ -58,13 +77,17 @@ namespace PS
 	void Helix::PlaceGene(Gene& target, Gene& newGene)
 	{
 		target.RemoveFlags(RN::SceneNode::Flags::Hidden);
+		target.SetType(newGene.GetType());
 		World* world = World::GetSharedInstance();
 		world->RemoveLevelNode(&newGene);
 	}
 
 	RNDefineMeta(Gene, Grabbable)
 
-	Gene::Gene(RN::Model *model) : Grabbable(model), _physicsBody(nullptr)
+	Gene::Gene(Type type)
+		: Grabbable(geneModels[static_cast<size_t>(type)]),
+		_physicsBody(nullptr), 
+		_type(type)
 	{
 		
 	}
@@ -105,5 +128,11 @@ namespace PS
 				_wantsThrow = false;
 			}
 		}
+	}
+
+	void Gene::SetType(Type type)
+	{
+		_type = type;
+		this->SetModel(geneModels[static_cast<size_t>(type)]);
 	}
 }
