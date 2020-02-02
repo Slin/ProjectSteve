@@ -20,6 +20,12 @@ namespace PS {
 
 	void Grabbable::Update(float delta)
 	{
+		if(_isFirstUpdate)
+		{
+			_isFirstUpdate = false;
+			_startPosition = GetWorldPosition();
+		}
+		
 		if (IsGrabbed())
 		{
 			RN::Vector3 currentSpeed = (GetWorldPosition() - _previousPosition) / delta;
@@ -28,9 +34,10 @@ namespace PS {
 
 		_previousPosition = GetWorldPosition();
 		
-		if(GetWorldPosition().y < - 2.0f)
+		if(GetWorldPosition().y < -2.0f)
 		{
-			_spawner->ReturnToPool(this);
+			if(_spawner) _spawner->ReturnToPool(this);
+			else SetWorldPosition(_startPosition);
 		}
 	}
 
@@ -41,6 +48,6 @@ namespace PS {
 
 	void Grabbable::Reset()
 	{
-		
+		_isFirstUpdate = true;
 	}
 }

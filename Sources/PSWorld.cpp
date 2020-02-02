@@ -314,7 +314,7 @@ namespace PS
 		AddLevelNode(detailsEntity->Autorelease(), false);
 		
 		
-		Spawner *syringeSpawner = new Spawner(Spawner::ObjectType::SyringeType, 20);
+		Spawner *syringeSpawner = new Spawner(Spawner::ObjectType::SyringeType, 10);
 		AddLevelNode(syringeSpawner->Autorelease(), false);
 		syringeSpawner->SetWorldPosition(RN::Vector3(1.6 - (1.0f+0.8f), 0.82f, -1.75f));
 		syringeSpawner->Rotate(RN::Vector3(90.0f, 0.0f, 0.0f));
@@ -328,22 +328,22 @@ namespace PS
 		AddLevelNode(_helix->Autorelease(), false);
 		_helix->SetWorldPosition(RN::Vector3(1.6 - (0.625f+0.8f), 0.8f, -1.75f));
 		
-		Spawner *geneGreenSpawner = new Spawner(Spawner::ObjectType::GeneCType, 20);
+		Spawner *geneGreenSpawner = new Spawner(Spawner::ObjectType::GeneCType, 10);
 		AddLevelNode(geneGreenSpawner->Autorelease(), false);
 		geneGreenSpawner->SetWorldPosition(RN::Vector3(1.6 - (0.25f+0.8f), 0.82f, -1.75f));
 		geneGreenSpawner->Rotate(RN::Vector3(90.0f, 0.0f, 0.0f));
 		
-		Spawner *geneBlueSpawner = new Spawner(Spawner::ObjectType::GeneGType, 20);
+		Spawner *geneBlueSpawner = new Spawner(Spawner::ObjectType::GeneGType, 10);
 		AddLevelNode(geneBlueSpawner->Autorelease(), false);
 		geneBlueSpawner->SetWorldPosition(RN::Vector3(1.6 - (0.0f+0.8f), 0.82f, -1.75f));
 		geneBlueSpawner->Rotate(RN::Vector3(90.0f, 0.0f, 0.0f));
 		
-		Spawner *geneYellowSpawner = new Spawner(Spawner::ObjectType::GeneAType, 20);
+		Spawner *geneYellowSpawner = new Spawner(Spawner::ObjectType::GeneAType, 10);
 		AddLevelNode(geneYellowSpawner->Autorelease(), false);
 		geneYellowSpawner->SetWorldPosition(RN::Vector3(1.6 - (-0.25f+0.8f), 0.82f, -1.75f));
 		geneYellowSpawner->Rotate(RN::Vector3(90.0f, 0.0f, 0.0f));
 		
-		Spawner *geneRedSpawner = new Spawner(Spawner::ObjectType::GeneTType, 20);
+		Spawner *geneRedSpawner = new Spawner(Spawner::ObjectType::GeneTType, 10);
 		AddLevelNode(geneRedSpawner->Autorelease(), false);
 		geneRedSpawner->SetWorldPosition(RN::Vector3(1.6 - (-0.5f+0.8f), 0.82f, -1.75f));
 		geneRedSpawner->Rotate(RN::Vector3(90.0f, 0.0f, 0.0f));

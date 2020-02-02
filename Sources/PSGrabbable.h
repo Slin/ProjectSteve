@@ -23,7 +23,7 @@ namespace PS {
 		Spawner *GetSpawner() const { return _spawner; }
 
 	protected:
-		Spawner *_spawner;
+		Spawner *_spawner = nullptr;
 		
 		bool _isGrabbed = false;
 		bool _wantsThrow = false;
@@ -32,6 +32,9 @@ namespace PS {
 		RN::Vector3 _previousPosition;
 		RN::Vector3 _currentGrabbedSpeed;
 		RN::Vector3 _currentGrabbedRotationSpeed;
+		
+		bool _isFirstUpdate = true;
+		RN::Vector3 _startPosition;
 
 		RNDeclareMeta(Grabbable)
 	};
