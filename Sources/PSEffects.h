@@ -32,6 +32,10 @@ namespace PS
 	public:
 		void executeChallenge(Stevelet* steve) override;
 	};
+	class WindEffect : public Effect {
+	public:
+		void executeChallenge(Stevelet* steve) override;
+	};
 	class MilkEffect : public Effect {
 	public:
 		void executeChallenge(Stevelet* steve) override;

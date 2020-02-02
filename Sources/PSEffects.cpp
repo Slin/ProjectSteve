@@ -37,6 +37,13 @@ namespace PS
 		steve->SetVelocity(log10(std::max(stats[Attr::SPEED] / 2 + stats[Attr::DEXTERITY] / 2 - stats[Attr::SIZE] * 2 + stats[Attr::WEIGHT], 1)));
 	}
 
+	void WindEffect::executeChallenge(Stevelet* steve) {
+		// Speed, Dexterity, -Gr��e		~(3, 4, -4) = 3
+		SteveStats const& stats = steve->GetSteveletStats();
+
+		steve->SetVelocity(log10(std::max(stats[Attr::SPEED] + stats[Attr::DEXTERITY] - stats[Attr::SIZE] * 4 + stats[Attr::WEIGHT] / 2, 1)));
+	}
+
 	void MilkEffect::executeChallenge(Stevelet* steve) {
 		// Lactose lul
 		SteveStats const& stats = steve->GetSteveletStats();
