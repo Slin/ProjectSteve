@@ -20,6 +20,21 @@ namespace PS
 		{0.92f, 0.38f, 0.f}
 	} };
 
+	const std::array<Gene::Type, 12> DEFAULT_DNA =
+	{
+		Gene::Type::C,
+		Gene::Type::G,
+		Gene::Type::G,
+		Gene::Type::G,
+		Gene::Type::G,
+		Gene::Type::G,
+		Gene::Type::G,
+		Gene::Type::C,
+		Gene::Type::C,
+		Gene::Type::T,
+		Gene::Type::G
+	};
+
 	static std::array<RN::Model*, 4> geneModels;
 
 
@@ -45,8 +60,7 @@ namespace PS
 		for(int i = 0; i < 12; i++)
 		{
 			/*_genes[i] = new Gene(static_cast<Gene::Type>(i % 4));*/
-			if(i == 6) _genes[i] = new Gene(static_cast<Gene::Type>(i % 4));
-			else _genes[i] = new Gene(Gene::Type::C);
+			_genes[i] = new Gene(DEFAULT_DNA[i]);
 			AddChild(_genes[i]);
 			_world.RegisterGrabbable(_genes[i]);
 			_genes[i]->SetPosition(RN::Vector3(0.0f, currentHeight, 0.0f));
