@@ -343,26 +343,26 @@ namespace PS
 		AddLevelNode(level->Autorelease(), false);
 		level->SetWorldPosition(RN::Vector3(1.5f, 0.0f, -1.75f));
 
-		auto obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), level);
+		auto obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
 			
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_pit.sgm"), level);
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_pit.sgm"), nullptr, level);
 		obs->SetEffect(new PitEffect());
 		level -> AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), level);
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
 		
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_wall.sgm"), level);
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_wall.sgm"), nullptr, level);
 		obs->SetEffect(new WallEffect());
 		level -> AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
 		
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_web.sgm"), level);
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_web.sgm"), RNCSTR("models/obstacle_web_collision.sgm"), level);
 		obs->SetEffect(new SlowEffect());
 		level -> AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);

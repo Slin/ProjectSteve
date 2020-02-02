@@ -23,7 +23,7 @@ namespace PS
 	class Obstacle : public RN::Entity
 	{
 	public:
-		Obstacle(RN::String const* modelName, Level* parent);
+		Obstacle(RN::String const* modelName, const RN::String *collisionModelName, Level* parent);
 		~Obstacle();
 		void SetEffect(Effect* effect);
 		void AssignStevelet(Stevelet* steve);

@@ -14,10 +14,13 @@ namespace PS
 {
 	RNDefineMeta(Obstacle, RN::Entity)
 
-	Obstacle::Obstacle(RN::String const* modelName, Level* parent) : RN::Entity(RN::Model::WithName(modelName)), _parent{ parent }
+	Obstacle::Obstacle(RN::String const* modelName, const RN::String *collisionModelName, Level* parent) : RN::Entity(RN::Model::WithName(modelName)), _parent{ parent }
 	{
+		RN::Model *collisionModel = GetModel();
+		if(collisionModelName != nullptr) collisionModel = RN::Model::WithName(collisionModelName);
+		
 		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
-		RN::PhysXCompoundShape *levelShape = RN::PhysXCompoundShape::WithModel(GetModel(), levelPhysicsMaterial->Autorelease(), true);
+		RN::PhysXCompoundShape *levelShape = RN::PhysXCompoundShape::WithModel(collisionModel, levelPhysicsMaterial->Autorelease(), true);
 		RN::PhysXStaticBody *levelBody = RN::PhysXStaticBody::WithShape(levelShape);
 		levelBody->SetCollisionFilter(World::CollisionType::Level, World::CollisionType::All);
 		AddAttachment(levelBody);
