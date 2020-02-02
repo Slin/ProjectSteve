@@ -388,6 +388,13 @@ namespace PS
 		level->AddObstacle(obs);
 		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
+		RN::OpenALSource *fireAudioSource = new RN::OpenALSource(RN::AudioAsset::WithName(RNCSTR("audio/fire.ogg")));
+		fireAudioSource->SetGain(0.2f);
+		fireAudioSource->SetRepeat(true);
+		fireAudioSource->Seek(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0.0f, 19.0f));
+		fireAudioSource->SetPosition(RN::Vector3(0.0f, 0.5f, 0.0f));
+		obs->AddChild(fireAudioSource->Autorelease());
+		fireAudioSource->Play();
 
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_wall.sgm"), nullptr, level);
 		obs->SetEffect(new WallEffect());
@@ -420,6 +427,13 @@ namespace PS
 		level->AddObstacle(obs);
 		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
+		fireAudioSource = new RN::OpenALSource(RN::AudioAsset::WithName(RNCSTR("audio/fire.ogg")));
+		fireAudioSource->SetGain(0.4f);
+		fireAudioSource->SetRepeat(true);
+		fireAudioSource->Seek(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0.0f, 19.0f));
+		fireAudioSource->SetPosition(RN::Vector3(0.0f, 0.5f, 0.0f));
+		obs->AddChild(fireAudioSource->Autorelease());
+		fireAudioSource->Play();
 		
 		
 		level = new PS::Level(false);
@@ -429,11 +443,7 @@ namespace PS
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
-
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
-		level->AddObstacle(obs);
-		AddLevelNode(obs->Autorelease(), false);
-
+		
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		Animatable *milk = new Animatable(RNCSTR("sprites/Milk.png"));
 		milk->isAnimated = false;
@@ -441,11 +451,43 @@ namespace PS
 		milk->GetModel()->GetLODStage(0)->GetMaterialAtIndex(0)->SetSpecularColor(RN::Color::WithRGBA(1.0f, 4.0f, 0.0f, 0.0f));
 		obs->AddChild(milk->Autorelease());
 		milk->SetPosition(RN::Vector3(0.0f, 0.64f, 0.0f));
-
+		level->AddObstacle(obs);
+		required.push_back(obs);
+		AddLevelNode(obs->Autorelease(), false);
+		
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_windtunnel.sgm"), nullptr, level);
+		obs->SetEffect(new WindEffect());
+		level->AddObstacle(obs);
+		required.push_back(obs);
+		AddLevelNode(obs->Autorelease(), false);
+		RN::OpenALSource *windAudioSource = new RN::OpenALSource(RN::AudioAsset::WithName(RNCSTR("audio/fire.ogg")));
+		windAudioSource->SetGain(1.0f);
+		windAudioSource->SetRepeat(true);
+		windAudioSource->Seek(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0.0f, 90.0f));
+		windAudioSource->SetPosition(RN::Vector3(0.0f, 0.6f, 0.0f));
+		obs->AddChild(windAudioSource->Autorelease());
+		windAudioSource->Play();
+		
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
+		
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		RN::Entity *iceBear = new RN::Entity(RN::Model::WithName(RNCSTR("models/cow.sgm")));
+		obs->AddChild(iceBear->Autorelease());
+		iceBear->SetPosition(RN::Vector3(-0.07f, 0.5f, 0.0f));
+		iceBear->SetRotation(RN::Vector3(180.0f, 0.0f, 0.0f));
+		obs->SetEffect(new FightEffect());
 		level->AddObstacle(obs);
 		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_web.sgm"), RNCSTR("models/obstacle_web_collision.sgm"), level);
+		obs->SetEffect(new SlowEffect());
+		level->AddObstacle(obs);
+		required.push_back(obs);
+		AddLevelNode(obs->Autorelease(), false);
+		
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		for (float x = -0.1; x < 0.2f; x += 0.2f)
 		{
@@ -460,28 +502,13 @@ namespace PS
 		level->AddObstacle(obs);
 		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
-
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_windtunnel.sgm"), nullptr, level);
-		obs->SetEffect(new WindEffect());
-		level->AddObstacle(obs);
-		required.push_back(obs);
-		AddLevelNode(obs->Autorelease(), false);
-
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_web.sgm"), RNCSTR("models/obstacle_web_collision.sgm"), level);
-		obs->SetEffect(new SlowEffect());
-		level->AddObstacle(obs);
-		required.push_back(obs);
-		AddLevelNode(obs->Autorelease(), false);
-		
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
-		RN::Entity *iceBear = new RN::Entity(RN::Model::WithName(RNCSTR("models/cow.sgm")));
-		obs->AddChild(iceBear->Autorelease());
-		iceBear->SetPosition(RN::Vector3(-0.07f, 0.5f, 0.0f));
-		iceBear->SetRotation(RN::Vector3(180.0f, 0.0f, 0.0f));
-		obs->SetEffect(new FightEffect());
-		level->AddObstacle(obs);
-		required.push_back(obs);
-		AddLevelNode(obs->Autorelease(), false);
+		fireAudioSource = new RN::OpenALSource(RN::AudioAsset::WithName(RNCSTR("audio/fire.ogg")));
+		fireAudioSource->SetGain(0.6f);
+		fireAudioSource->SetRepeat(true);
+		fireAudioSource->Seek(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0.0f, 19.0f));
+		fireAudioSource->SetPosition(RN::Vector3(0.0f, 0.5f, 0.0f));
+		obs->AddChild(fireAudioSource->Autorelease());
+		fireAudioSource->Play();
  
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		obs->SetEffect(new FinishEffect(required, obs));

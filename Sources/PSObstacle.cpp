@@ -44,7 +44,7 @@ namespace PS
 		_steves.push_back(steve);
 		if(_isZOriented) steve->EnterObstacleCourse({ GetWorldPosition().x, GetWorldPosition().y, GetWorldPosition().z + 1.0f});
 		else  steve->EnterObstacleCourse({ GetWorldPosition().x + 1.0f, GetWorldPosition().y, GetWorldPosition().z });
-		_effect->executeChallenge(steve);
+		_effect->executeChallenge(steve, this);
 	}
 
 	void Obstacle::FreeStevelet(Stevelet* steve) {

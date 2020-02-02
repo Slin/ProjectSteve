@@ -42,6 +42,8 @@ namespace PS
 		
 		SteveStats _stats;
 		
+		RN::OpenALSource *_audioSource;
+		
 		RNDeclareMeta(Syringe)
 	};
 }

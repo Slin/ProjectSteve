@@ -13,9 +13,10 @@
 namespace PS
 {
 	class Stevelet;
+	class Obstacle;
 	class Effect{
 	public:
-		virtual void executeChallenge(Stevelet* steve) = 0;
+		virtual void executeChallenge(Stevelet* steve, Obstacle *obstacle) = 0;
 	private:
 	};
 }

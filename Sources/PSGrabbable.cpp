@@ -1,4 +1,5 @@
 #include "PSGrabbable.h"
+#include "PSSpawner.h"
 
 namespace PS {
 
@@ -26,6 +27,11 @@ namespace PS {
 		}
 
 		_previousPosition = GetWorldPosition();
+		
+		if(GetWorldPosition().y < - 2.0f)
+		{
+			_spawner->ReturnToPool(this);
+		}
 	}
 
 	void Grabbable::SetIsTriggered(bool isTriggered)

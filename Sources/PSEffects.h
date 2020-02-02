@@ -18,44 +18,44 @@ namespace PS
 	class Stevelet;
 	class NoEffect : public Effect {
 	public:
-		void executeChallenge(Stevelet* steve) override {};
+		void executeChallenge(Stevelet* steve, Obstacle *obstacle) override {};
 	};
 
 	class BurnEffect : public Effect {
 	public:
 		BurnEffect(int _intensity = 5);
-		void executeChallenge(Stevelet* steve) override;
+		void executeChallenge(Stevelet* steve, Obstacle *obstacle) override;
 	private:
 		int intensity;
 	};
 	class SlowEffect : public Effect {
 	public:
-		void executeChallenge(Stevelet* steve) override;
+		void executeChallenge(Stevelet* steve, Obstacle *obstacle) override;
 	};
 	class WindEffect : public Effect {
 	public:
-		void executeChallenge(Stevelet* steve) override;
+		void executeChallenge(Stevelet* steve, Obstacle *obstacle) override;
 	};
 	class MilkEffect : public Effect {
 	public:
-		void executeChallenge(Stevelet* steve) override;
+		void executeChallenge(Stevelet* steve, Obstacle *obstacle) override;
 	};
 	class FightEffect : public Effect {
 	public:
-		void executeChallenge(Stevelet* steve) override;
+		void executeChallenge(Stevelet* steve, Obstacle *obstacle) override;
 	};
 	class PitEffect : public Effect {
 	public:
-		void executeChallenge(Stevelet* steve) override;
+		void executeChallenge(Stevelet* steve, Obstacle *obstacle) override;
 	};
 	class WallEffect : public Effect {
 	public:
-		void executeChallenge(Stevelet* steve) override;
+		void executeChallenge(Stevelet* steve, Obstacle *obstacle) override;
 	};
 	class FinishEffect : public Effect {
 	public:
 		FinishEffect(std::vector<Obstacle*> requirement, Obstacle* finish) : _req { requirement }, _finish{ finish } {};
-		void executeChallenge(Stevelet* steve) override;
+		void executeChallenge(Stevelet* steve, Obstacle *obstacle) override;
 	private:
 		std::vector<Obstacle*> _req;
 		Obstacle* _finish;

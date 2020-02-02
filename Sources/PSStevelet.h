@@ -20,11 +20,12 @@ namespace PS
 {
 	class World;
 	class Obstacle;
+	class Syringe;
 	class Stevelet : public Animatable
 	{
 	public:
 		Stevelet();
-		~Stevelet() = default;
+		~Stevelet();
 		void Update(float delta) override;
 
 		void Kill();
@@ -42,7 +43,7 @@ namespace PS
 
 		bool DidFinish(Obstacle* obs);
 		
-		void SetSteveletStats(const SteveStats &stats);
+		void SetSteveletStats(const SteveStats &stats, bool playSound, Syringe *syringe);
 		SteveStats const& GetSteveletStats();
 		
 	private:
@@ -51,6 +52,15 @@ namespace PS
 		RN::Quaternion _targetRotation;
 		bool _isMoving;
 		bool _isInObstacle;
+		
+		Syringe *_lastSyringe;
+		
+		RN::AudioAsset *_idleAudioAssets[5];
+		RN::AudioAsset *_dieAudioAsset;
+		RN::AudioAsset *_changeAudioAsset;
+		
+		RN::OpenALSource *_audioSource;
+		float _idleAudioTimer;
 
 		std::set<Obstacle*> _completedObstacles;
 		

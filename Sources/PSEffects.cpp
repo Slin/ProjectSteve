@@ -16,7 +16,7 @@ namespace PS
 {
 	BurnEffect::BurnEffect(int _intensity) : intensity{ _intensity } {};
 
-	void BurnEffect::executeChallenge(Stevelet* steve) {
+	void BurnEffect::executeChallenge(Stevelet* steve, Obstacle *obstacle) {
 		// Speed, KFA, Shell			~(4, 3, /) = 7
 		// Speed, Dexterity, Strength	~(3, 4, 4) = 11
 		SteveStats const& stats = steve->GetSteveletStats();
@@ -30,21 +30,21 @@ namespace PS
 		}
 	}
 	
-	void SlowEffect::executeChallenge(Stevelet* steve) {
+	void SlowEffect::executeChallenge(Stevelet* steve, Obstacle *obstacle) {
 		// Speed, Dexterity, -Gr��e		~(3, 4, -4) = 3
 		SteveStats const& stats = steve->GetSteveletStats();
 
 		steve->SetVelocity(log10(std::max(stats[Attr::SPEED] / 2 + stats[Attr::DEXTERITY] / 2 - stats[Attr::SIZE] * 2 + stats[Attr::WEIGHT], 1)));
 	}
 
-	void WindEffect::executeChallenge(Stevelet* steve) {
+	void WindEffect::executeChallenge(Stevelet* steve, Obstacle *obstacle) {
 		// Speed, Dexterity, -Gr��e		~(3, 4, -4) = 3
 		SteveStats const& stats = steve->GetSteveletStats();
 
 		steve->SetVelocity(log10(std::max(stats[Attr::SPEED] + stats[Attr::DEXTERITY] - stats[Attr::SIZE] * 4 + stats[Attr::WEIGHT] / 2, 1)));
 	}
 
-	void MilkEffect::executeChallenge(Stevelet* steve) {
+	void MilkEffect::executeChallenge(Stevelet* steve, Obstacle *obstacle) {
 		// Lactose lul
 		SteveStats const& stats = steve->GetSteveletStats();
 
@@ -53,9 +53,15 @@ namespace PS
 		}
 	}
 
-	void FightEffect::executeChallenge(Stevelet* steve) {
+	void FightEffect::executeChallenge(Stevelet* steve, Obstacle *obstacle) {
 		// Aggro, Shell, Strength		~(4, /, 4) = 8
 		// Speed, Dexterity				~(3, 4)    = 7
+		
+		RN::OpenALSource *audioSource = new RN::OpenALSource(RN::AudioAsset::WithName(RNCSTR("audio/bear.ogg")));
+		audioSource->SetSelfdestruct(true);
+		obstacle->AddChild(audioSource->Autorelease());
+		audioSource->SetPosition(RN::Vector3(0.0f, 0.6f, 0.0f));
+		audioSource->Play();
 
 		SteveStats const& stats = steve->GetSteveletStats();
 		if (stats[Attr::AGGRO] > 4) {
@@ -67,7 +73,7 @@ namespace PS
 		}
 	}
 
-	void PitEffect::executeChallenge(Stevelet *steve)
+	void PitEffect::executeChallenge(Stevelet *steve, Obstacle *obstacle)
 	{
 		SteveStats const& stats = steve->GetSteveletStats();
 		if(stats[Attr::FLYING])
@@ -82,7 +88,7 @@ namespace PS
 		} 
 	}
 
-	void WallEffect::executeChallenge(Stevelet *steve)
+	void WallEffect::executeChallenge(Stevelet *steve, Obstacle *obstacle)
 	{
 		SteveStats const& stats = steve->GetSteveletStats();
 		if(stats[Attr::FLYING])
@@ -100,7 +106,7 @@ namespace PS
 	}
 
 
-	void FinishEffect::executeChallenge(Stevelet *steve) {
+	void FinishEffect::executeChallenge(Stevelet *steve, Obstacle *obstacle) {
 		
 		bool finished = true;
 		for(auto& e : _req) {

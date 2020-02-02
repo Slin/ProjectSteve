@@ -112,7 +112,7 @@ namespace PS
 					if(_type == ObjectType::SteveletType)
 					{
 						SteveStats stats;
-						_currentObject->Downcast<Stevelet>()->SetSteveletStats(stats);
+						_currentObject->Downcast<Stevelet>()->SetSteveletStats(stats, false, nullptr);
 					}
 				}
 			}

@@ -51,7 +51,7 @@ namespace PS
 
 	void Animatable::Update(float delta)
 	{
-		RN::Entity::Update(delta);
+		Grabbable::Update(delta);
 		
 		if(!isAnimated) return;
 		

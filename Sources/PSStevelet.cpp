@@ -10,23 +10,49 @@
 #include "PSWorld.h"
 #include "PSSpawner.h"
 #include "PSObstacle.h"
+#include "PSSyringe.h"
 
 namespace PS
 {
 	RNDefineMeta(Stevelet, Animatable)
 	
-	Stevelet::Stevelet() : Animatable(RNCSTR("sprites/stevelet/0000000.png")), _isMoving(false), _isInObstacle(false), _flightTime(0.0f), _flightHeight(0.0f)
+Stevelet::Stevelet() : Animatable(RNCSTR("sprites/stevelet/0000000.png")), _isMoving(false), _isInObstacle(false), _flightTime(0.0f), _flightHeight(0.0f), _idleAudioTimer(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0.0f, 20.0f)), _lastSyringe(nullptr)
 	{
 		RN::PhysXMaterial *material = new RN::PhysXMaterial();
 		RN::PhysXShape *shape = RN::PhysXSphereShape::WithRadius(0.15, material);
 		_physicsBody = RN::PhysXDynamicBody::WithShape(shape, 0.5f);
 		_physicsBody->SetCollisionFilter(World::CollisionType::Players, World::CollisionType::Level);
 		AddAttachment(_physicsBody);
+		
+		_idleAudioAssets[0] = RN::AudioAsset::WithName(RNCSTR("audio/quietsch_1.ogg"))->Retain();
+		_idleAudioAssets[1] = RN::AudioAsset::WithName(RNCSTR("audio/quietsch_2.ogg"))->Retain();
+		_idleAudioAssets[2] = RN::AudioAsset::WithName(RNCSTR("audio/quietsch_3.ogg"))->Retain();
+		_idleAudioAssets[3] = RN::AudioAsset::WithName(RNCSTR("audio/quietsch_4.ogg"))->Retain();
+		_idleAudioAssets[4] = RN::AudioAsset::WithName(RNCSTR("audio/quietsch_5.ogg"))->Retain();
+		
+		_dieAudioAsset = RN::AudioAsset::WithName(RNCSTR("audio/die.ogg"))->Retain();
+		_changeAudioAsset = RN::AudioAsset::WithName(RNCSTR("audio/transition.ogg"))->Retain();
+		
+		_audioSource = new RN::OpenALSource(nullptr);
+		AddChild(_audioSource->Autorelease());
+	}
+
+	Stevelet::~Stevelet()
+	{
+		_idleAudioAssets[0]->Release();
+		_idleAudioAssets[1]->Release();
+		_idleAudioAssets[2]->Release();
+		_idleAudioAssets[3]->Release();
+		_idleAudioAssets[4]->Release();
+		
+		_dieAudioAsset->Release();
+		_changeAudioAsset->Release();
 	}
 
 	void Stevelet::Kill() {
 		_isMoving = false;
 		_isInObstacle = false;
+		ResetVelocity();
 
 		_completedObstacles.clear();
 
@@ -35,6 +61,13 @@ namespace PS
 			return;
 		}
 
+		RN::OpenALSource *source = new RN::OpenALSource(_dieAudioAsset);
+		World::GetSharedInstance()->AddNode(source->Autorelease());
+		source->SetWorldPosition(GetWorldPosition());
+		source->SetSelfdestruct(true);
+		source->Seek(0.0f);
+		source->Play();
+		
 		RNDebug("kill");
 		_spawner->ReturnToPool(this);
 	}
@@ -105,6 +138,18 @@ namespace PS
 		delta = std::min(0.05f, delta);
 		Animatable::Update(delta);
 		
+		if(_idleAudioTimer < 0.0f)
+		{
+			if(!_audioSource->IsPlaying() && !_isInObstacle)
+			{
+				_audioSource->SetAudioAsset(_idleAudioAssets[RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomInt32Range(0, 4)]);
+				_audioSource->Seek(0.0f);
+				_audioSource->Play();
+			}
+			_idleAudioTimer = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0.0f, 20.0f);
+		}
+		_idleAudioTimer -= delta;
+		
 		if(_flightTime > 0.0f)
 		{
 			_physicsBody->ApplyForce({0.0f, 9.81f*0.5f*0.013f, 0.0f});
@@ -141,7 +186,7 @@ namespace PS
 		
 		if(!_isMoving)
 		{
-			SetTargetPosition(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomVector3Range(RN::Vector3(-1.0f, 0.15f, -1.7f), RN::Vector3(1.7f, 0.15f, 1.0f)));
+			SetTargetPosition(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomVector3Range(RN::Vector3(-1.3f, 0.15f, -1.7f), RN::Vector3(1.7f, 0.15f, 1.3f)));
 		}
 		
 		if(_isGrabbed)
@@ -192,8 +237,18 @@ namespace PS
 		_targetRotation = rotation;
 	}
 
-	void Stevelet::SetSteveletStats(const SteveStats &stats)
+	void Stevelet::SetSteveletStats(const SteveStats &stats, bool playSound, Syringe *syringe)
 	{
+		if(syringe && syringe == _lastSyringe) return;
+		_lastSyringe = syringe;
+		
+		if(playSound)
+		{
+			_audioSource->SetAudioAsset(_changeAudioAsset);
+			_audioSource->Seek(0.0f);
+			_audioSource->Play();
+		}
+		
 		_stats = stats;
 		SetTexture(_stats.GetSteveletFileName());
 	}

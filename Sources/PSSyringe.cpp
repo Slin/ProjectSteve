@@ -28,6 +28,9 @@ namespace PS
 		
 		AddChild(_pumpEntity->Autorelease());
 		AddChild(_fluidEntity->Autorelease());
+		
+		_audioSource = new RN::OpenALSource(RN::AudioAsset::WithName(RNCSTR("audio/syringe.ogg")));
+		AddChild(_audioSource->Retain());
 	}
 
 	void Syringe::Update(float delta)
@@ -63,7 +66,7 @@ namespace PS
 					Stevelet *stevelet = grabbable->Downcast<Stevelet>();
 					if(stevelet && stevelet->GetWorldPosition().GetDistance(GetWorldPosition() - GetRight()*0.08f) < 0.15)
 					{
-						stevelet->SetSteveletStats(_stats);
+						stevelet->SetSteveletStats(_stats, true, this);
 						StatsKnowledge::Discover(_stats);
 						// update possibly new attributes
 						world->GetIPad()->UpdateAttributes(world->GetHelix()->GetDNA());
@@ -92,6 +95,12 @@ namespace PS
 
 	void Syringe::Trigger()
 	{
+		if(!_isAnimating)
+		{
+			_audioSource->Seek(0.0f);
+			_audioSource->Play();
+		}
+		
 		_isAnimating = true;
 	}
 
