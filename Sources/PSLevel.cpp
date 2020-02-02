@@ -14,20 +14,19 @@ namespace PS
 {
 	RNDefineMeta(Level, RN::Entity)
 
-	Level::Level() {
-	/*	auto obs = new PS::Obstacle(0.5f, this);
-		AddObstacle(obs);
-		PS::World::GetSharedInstance()->AddLevelNode(obs->Autorelease(), false);*/
-	}
-
 	void Level::AddObstacle(Obstacle* obst) {
 		auto position = CalculateEndPosition();
 		obst->SetWorldPosition(position);
 		_obstacles.push_back(obst);
-		
+		obst->SetZOriented(_isZOriented);
+
 		_startTrigger.position = GetWorldPosition() - RN::Vector3(0.0f, 0.0f, 0.0f);
 		_startTrigger.minExtend = RN::Vector3(-0.25f, 0.0f, -0.25f);
-		_startTrigger.maxExtend = RN::Vector3(0.25f, 1.5f, position.z - GetWorldPosition().z + 0.25f);
+		if (_isZOriented) {
+			_startTrigger.maxExtend = RN::Vector3(0.25f, 1.5f, position.z - GetWorldPosition().z + 0.25f);
+		} else {
+			_startTrigger.maxExtend = RN::Vector3(position.z - GetWorldPosition().z + 0.25f, 1.5f, 0.25f);
+		}
 	}
 
 	void Level::FreeStevelet(Stevelet* steve, Obstacle* obs) {
@@ -61,8 +60,10 @@ namespace PS
 		}
 
 		for (auto it = _obstacles.rbegin(); it != _obstacles.rend(); ++it) {
-			if ((*it)->IsReached(steve->GetWorldPosition().z)) {
+			auto axisTreshold = _isZOriented ? steve->GetWorldPosition().z : steve->GetWorldPosition().x;
+			if ((*it)->IsReached(axisTreshold)) {
 				auto position = RN::Vector3(GetWorldPosition().x, GetWorldPosition().y + 0.65f, (*it)->GetZTreshold() + 0.05f);
+				if(!_isZOriented) position = RN::Vector3((*it)->GetZTreshold() + 0.05f, GetWorldPosition().y + 0.65f, GetWorldPosition().z);
 				steve->SetWorldPosition(position);
 				(*it)->AssignStevelet(steve);
 				break;
@@ -73,7 +74,8 @@ namespace PS
 	RN::Vector3 Level::CalculateEndPosition() {
 		auto position = GetWorldPosition();
 		for (auto o : _obstacles) {
-			position.z += 0.5f;
+			if(_isZOriented) position.z += 0.5f;
+			else position.x += 0.5f;
 		}
 		return position;
 	}

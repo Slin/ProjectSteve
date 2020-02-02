@@ -35,9 +35,15 @@ namespace PS
 		_effect = effect;
 	}
 	
+	void Obstacle::SetZOriented(bool zOriented) {
+		_isZOriented = zOriented;
+		if (!_isZOriented) Rotate(RN::Vector3(90.0f, 0.0f, 0.0f));
+	}
+
 	void Obstacle::AssignStevelet(Stevelet* steve) {
 		_steves.push_back(steve);
-		steve->EnterObstacleCourse({ GetWorldPosition().x, GetWorldPosition().y, GetWorldPosition().z + 1.0f});
+		if(_isZOriented) steve->EnterObstacleCourse({ GetWorldPosition().x, GetWorldPosition().y, GetWorldPosition().z + 1.0f});
+		else  steve->EnterObstacleCourse({ GetWorldPosition().x + 1.0f, GetWorldPosition().y, GetWorldPosition().z });
 		_effect->executeChallenge(steve);
 	}
 
@@ -50,7 +56,8 @@ namespace PS
 	}
 
 	float Obstacle::GetZTreshold() {
-		return GetBoundingBox().position.z + GetBoundingBox().minExtend.z;
+		if(_isZOriented) return GetBoundingBox().position.z + GetBoundingBox().minExtend.z;
+		else return GetBoundingBox().position.x + GetBoundingBox().minExtend.x;
 	}
 
 	void Obstacle::Update(float delta) {
@@ -67,10 +74,16 @@ namespace PS
 			auto aabb = GetBoundingBox();
 			aabb.maxExtend.y = 2.0f;
 			aabb.minExtend.y = 0.45f;
-			aabb.maxExtend.z -= 0.05f;
-			aabb.minExtend.z -= 0.05f;
+			if (_isZOriented) {
+				aabb.maxExtend.z -= 0.05f;
+				aabb.minExtend.z -= 0.05f;
+			} else {
+				aabb.maxExtend.x -= 0.05f;
+				aabb.minExtend.x -= 0.05f;
+			}
 			if (!aabb.Contains(steve->GetWorldPosition())) {
-				if (steve->GetWorldPosition().z > aabb.position.z + aabb.maxExtend.z) {
+				bool condition = _isZOriented ? (steve->GetWorldPosition().z > aabb.position.z + aabb.maxExtend.z) : (steve->GetWorldPosition().x > aabb.position.x + aabb.maxExtend.x);
+				if (condition) {
 					_parent->FreeStevelet(steve, this);
 					steve = nullptr;
 				} else {

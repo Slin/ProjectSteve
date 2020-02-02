@@ -53,7 +53,8 @@ namespace PS
 	
 	void Stevelet::SetClimbing(float duration) {
 		_climbTime = duration;
-		_climbZ = GetWorldPosition().z;
+		
+		_climbZ = GetForward().z > GetForward().x ? GetWorldPosition().z : GetWorldPosition().x;
 	}
 
 	void Stevelet::ResetVelocity() {
@@ -97,7 +98,8 @@ namespace PS
 			if(_physicsBody->GetLinearVelocity().y < 1.0f) _physicsBody->ApplyForce({ 0.0f, 13.0f * 0.5f * delta, 0.0f });
 			_climbTime -= delta;
 
-			if ((GetWorldPosition().z - _climbZ) > 0.1f) {
+			float newPos = GetForward().z > GetForward().x ? GetWorldPosition().z : GetWorldPosition().x;
+			if ((newPos - _climbZ) > 0.1f) {
 				_climbTime = 0.0f;
 				_physicsBody->ClearForces();
 			}

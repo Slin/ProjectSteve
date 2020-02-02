@@ -26,6 +26,7 @@ namespace PS
 		Obstacle(RN::String const* modelName, const RN::String *collisionModelName, Level* parent);
 		~Obstacle();
 		void SetEffect(Effect* effect);
+		void SetZOriented(bool zOriented);
 		void AssignStevelet(Stevelet* steve);
 		bool Contains(Stevelet* steve);
 		void Update(float delta) override;
@@ -35,6 +36,7 @@ namespace PS
 		std::vector<Stevelet*> _steves;
 		Level* _parent;
 		Effect* _effect = new NoEffect();
+		bool _isZOriented = true;
 		
 		RNDeclareMeta(Obstacle)
 	};

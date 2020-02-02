@@ -339,27 +339,32 @@ namespace PS
 		AddLevelNode(steveletSpawner->Autorelease(), false);
 		steveletSpawner->SetWorldPosition(RN::Vector3(0.3f, 0.2f, 1.5f));
 
-		auto level = new PS::Level();
+		GenerateLevel(RN::Vector3(1.5f, 0.0f, -1.75f), true);
+		GenerateLevel(RN::Vector3(-1.5f, 0.0f, -1.75f), false);
+	}
+
+	void World::GenerateLevel(RN::Vector3 start, bool zOriented) {
+		auto level = new PS::Level(zOriented);
 		AddLevelNode(level->Autorelease(), false);
-		level->SetWorldPosition(RN::Vector3(1.5f, 0.0f, -1.75f));
+		level->SetWorldPosition(start);
 
 		auto obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
-			
+
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_pit.sgm"), nullptr, level);
 		obs->SetEffect(new PitEffect());
-		level -> AddObstacle(obs);
+		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
-		
+
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
-		for(float x = -0.1; x < 0.2f; x += 0.2f)
+		for (float x = -0.1; x < 0.2f; x += 0.2f)
 		{
-			for(float z = -0.1f; z < 0.2f; z += 0.2f)
+			for (float z = -0.1f; z < 0.2f; z += 0.2f)
 			{
 				Animatable *flame = new Animatable(RNCSTR("sprites/Fire.png"));
 				obs->AddChild(flame->Autorelease());
@@ -369,15 +374,15 @@ namespace PS
 		obs->SetEffect(new BurnEffect(1));
 		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
-		
+
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_wall.sgm"), nullptr, level);
 		obs->SetEffect(new WallEffect());
-		level -> AddObstacle(obs);
+		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
-		
+
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_web.sgm"), RNCSTR("models/obstacle_web_collision.sgm"), level);
 		obs->SetEffect(new SlowEffect());
-		level -> AddObstacle(obs);
+		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
 	}
 

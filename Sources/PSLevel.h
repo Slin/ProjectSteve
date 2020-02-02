@@ -22,7 +22,7 @@ namespace PS
 	class Level : public RN::Entity
 	{
 	public:
-		Level();
+		Level(bool zOriented = true) : _isZOriented{ zOriented } {};
 		~Level() = default;
 		void AddObstacle(Obstacle* obs);
 		void AssignStevelet(Stevelet* steve);
@@ -32,7 +32,8 @@ namespace PS
 	private:
 		std::vector<Obstacle*> _obstacles;
 		RN::Vector3 CalculateEndPosition();
-		void UpdateBoundingBox();
+
+		bool _isZOriented = true;
 
 		std::vector<std::tuple<float, Stevelet*>> _winners;
 		RN::AABB _startTrigger;

@@ -55,6 +55,8 @@ namespace PS
 		void RegisterGrabbable(RN::SceneNode* node);
 		RN::Array* GetGrabbableObjects();
 
+		void GenerateLevel(RN::Vector3 start, bool zOriented);
+
 		RN::Model *AssignDefaultShader(RN::Model *model, bool transparent);
 		
 		bool IsPaused() const { return _isPaused; }
