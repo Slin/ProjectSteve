@@ -78,12 +78,12 @@ namespace PS {
 	{
 		SteveStats& self = *this;
 		std::array<int, 7> phenoType = { {
-			(self[Attr::SHELL] + self[Attr::DEXTERITY]) / 13.f * 9.f, // armor 3
+			mapV(static_cast<int>((self[Attr::SHELL] + self[Attr::DEXTERITY]) / 13.f * 9.f)), // armor 3
 			self[Attr::HANDS] ? 1 : 0, // arms 1
-			self[Attr::AGGRO], // evil 3
+			mapV(self[Attr::AGGRO]), // evil 3
 			self[Attr::LEGS] ? 1 : 0, // feet 1
-			self[Attr::INTELLIGENCE], // int 3
-			self[Attr::STRENGTH], // testosterone 3
+			mapV(self[Attr::INTELLIGENCE]), // int 3
+			mapV(self[Attr::STRENGTH]), // testosterone 3
 			self[Attr::WINGS] ? 1 : 0// wings 1
 		} };
 		return RNSTR("sprites/stevelet/" << numbersToString(phenoType) << ".png");
