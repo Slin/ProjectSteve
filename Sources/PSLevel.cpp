@@ -34,8 +34,7 @@ namespace PS
 	}
 
 	void Level::RemoveStevelet(Stevelet* steve) {
-		steve->StopMovement();
-		steve->ResumePhysics();
+		steve->LeaveObstacleCourse();
 	}
 
 	void Level::AssignStevelet(Stevelet* steve) {
@@ -64,8 +63,7 @@ namespace PS
 			}
 		}
 
-		steve->FreezePhysics();
-		steve->MoveForward();
+		steve->EnterObstacleCourse();
 	}
 
 	RN::Vector3 Level::CalculateEndPosition() {
