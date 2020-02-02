@@ -30,6 +30,7 @@ namespace PS
 		void SetVelocity(float velocity);
 		void Jump(float intensity);
 		void SetFlying(float height, float distance);
+		void SetClimbing(float duration);
 		void Vanish();
 		void EnterObstacleCourse();
 		void LeaveObstacleCourse();
@@ -53,6 +54,9 @@ namespace PS
 		
 		float _flightTime;
 		float _flightHeight;
+
+		float _climbTime;
+		float _climbZ;
 		
 		RN::PhysXDynamicBody *_physicsBody;
 		

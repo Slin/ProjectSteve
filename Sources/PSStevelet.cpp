@@ -49,6 +49,11 @@ namespace PS
 		_flightTime = distance/_targetVelocity;
 		_flightHeight = height;
 	}
+	
+	void Stevelet::SetClimbing(float duration) {
+		_climbTime = duration;
+		_climbZ = GetWorldPosition().z;
+	}
 
 	void Stevelet::ResetVelocity() {
 		_targetVelocity = _defaultVelocity;
@@ -84,6 +89,13 @@ namespace PS
 			_physicsBody->ApplyForce({0.0f, 9.81f*0.4f*delta, 0.0f});
 		}
 		_flightTime -= delta;
+
+		if (_climbTime > 0.0f) {
+			_physicsBody->ApplyForce({ 0.0f, 15.0f * 0.5f * delta, 0.0f });
+			_climbTime -= delta;
+
+			if ((_climbZ - GetWorldPosition().z) > 0.05f) _climbTime = 0.0f;
+		}
 		
 		RN::Vector3 direction = _targetPosition - GetWorldPosition();
 		direction.y = 0.0f;

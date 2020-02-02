@@ -50,7 +50,7 @@ namespace PS
 		else
 		{
 			steve->Jump(std::max(std::min(stats[Attr::SPEED] / 2 + stats[Attr::DEXTERITY] + stats[Attr::STRENGTH] + stats[Attr::BOUNCE], 11), 0) / 6.0f);
-		}
+		} 
 	}
 
 	void WallEffect::executeChallenge(Stevelet *steve)
@@ -60,9 +60,12 @@ namespace PS
 		{
 			steve->SetFlying(0.25f, 0.5f);
 		}
+		else if (stats[Attr::CLIMB]) {
+			steve->SetClimbing((stats[Attr::STRENGTH] - stats[Attr::WEIGHT] + stats[Attr::DEXTERITY] / 2) / 2.0f);
+		}
 		else
 		{
-			steve->Jump(std::max(std::min(stats[Attr::SPEED] / 2 + stats[Attr::DEXTERITY] + stats[Attr::STRENGTH] + stats[Attr::BOUNCE], 11), 0) / 6.0f);
+			steve->Jump(std::max(std::min(stats[Attr::SPEED] / 2 + stats[Attr::DEXTERITY] / 2 + stats[Attr::STRENGTH] / 2 + stats[Attr::BOUNCE], 11), 0) / 6.0f);
 		}
 	}
 }
