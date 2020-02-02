@@ -346,7 +346,7 @@ namespace PS
 
 		auto level = new PS::Level();
 		AddLevelNode(level->Autorelease(), false);
-		level->SetWorldPosition(RN::Vector3(1.5f, 0.0f, -1.75f));
+		level->SetWorldPosition(RN::Vector3(1.75f, 0.0f, -1.75f));
 
 		auto obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		level->AddObstacle(obs);
@@ -388,8 +388,17 @@ namespace PS
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		RN::Entity *iceBear = new RN::Entity(RN::Model::WithName(RNCSTR("models/cow.sgm")));
 		obs->AddChild(iceBear->Autorelease());
-		iceBear->SetPosition(RN::Vector3(0.1f, 0.5f, 0.0f));
+		iceBear->SetPosition(RN::Vector3(0.07f, 0.5f, 0.0f));
 		obs->SetEffect(new BurnEffect(1));
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
+		
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		Animatable *flag = new Animatable(RNCSTR("sprites/Flag.png"));
+		flag->isAnimated = false;
+		flag->GetModel()->GetLODStage(0)->GetMaterialAtIndex(0)->SetSpecularColor(RN::Color::WithRGBA(1.0f, 4.0f, 0.0f, 0.0f));
+		obs->AddChild(flag->Autorelease());
+		flag->SetPosition(RN::Vector3(0.0f, 0.64f, 0.0f));
 		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
 	}

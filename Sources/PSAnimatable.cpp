@@ -53,6 +53,8 @@ namespace PS
 	{
 		RN::Entity::Update(delta);
 		
+		if(!isAnimated) return;
+		
 		_animationTimer += delta*2.0f;
 		
 		while(_animationTimer > 1.0f)
