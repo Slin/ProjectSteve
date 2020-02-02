@@ -117,6 +117,7 @@ namespace PS
 		
 		if(_physicsBody)
 		{
+			_physicsBody->SetEnableKinematic(_isGrabbed);
 			if(_isGrabbed)
 			{
 				_physicsBody->SetLinearVelocity(RN::Vector3());

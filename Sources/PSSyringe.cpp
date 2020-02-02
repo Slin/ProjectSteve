@@ -33,6 +33,7 @@ namespace PS
 	{
 		Grabbable::Update(delta);
 		
+		_physicsBody->SetEnableKinematic(_isGrabbed);
 		if(_isGrabbed)
 		{
 			_physicsBody->SetLinearVelocity(RN::Vector3());

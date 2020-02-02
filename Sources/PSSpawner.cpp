@@ -108,6 +108,12 @@ namespace PS
 					{
 						_currentObject->Downcast<Gene>()->EnablePhysics();
 					}
+					
+					if(_type == ObjectType::SteveletType)
+					{
+						SteveStats stats;
+						_currentObject->Downcast<Stevelet>()->SetSteveletStats(stats);
+					}
 				}
 			}
 			else

@@ -242,6 +242,7 @@ namespace PS
 		Grabbable::Update(delta);
 		UpdateCursorPosition();
 		
+		_physicsBody->SetEnableKinematic(_isGrabbed);
 		if(_isGrabbed)
 		{
 			_physicsBody->SetLinearVelocity(RN::Vector3());
