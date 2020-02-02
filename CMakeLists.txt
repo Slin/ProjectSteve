@@ -79,7 +79,8 @@ set(SOURCES
 	Sources/PSObstacle.cpp
 	Sources/PSLevel.cpp
 	Sources/PSSpawner.cpp
-	Sources/PSGrabbable.cpp)
+	Sources/PSGrabbable.cpp
+	Sources/PSIPad.cpp)
 
 set(HEADERS
 	Sources/PSApplication.h
@@ -94,7 +95,8 @@ set(HEADERS
 	Sources/PSObstacle.h
 	Sources/PSLevel.h
 	Sources/PSGrabbable.h
-	Sources/PSSpawner.h)
+	Sources/PSSpawner.h
+	Sources/PSIPad.h)
 
 set(RESOURCES
 	manifest.json
