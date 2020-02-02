@@ -52,4 +52,17 @@ namespace PS
 			steve->Jump(std::max(std::min(stats[Attr::SPEED] / 2 + stats[Attr::DEXTERITY] + stats[Attr::STRENGTH] + stats[Attr::BOUNCE], 11), 0) / 6.0f);
 		}
 	}
+
+	void WallEffect::executeChallenge(Stevelet *steve)
+	{
+		SteveStats const& stats = steve->GetSteveletStats();
+		if(stats[Attr::FLYING])
+		{
+			steve->SetFlying(0.25f, 0.5f);
+		}
+		else
+		{
+			steve->Jump(std::max(std::min(stats[Attr::SPEED] / 2 + stats[Attr::DEXTERITY] + stats[Attr::STRENGTH] + stats[Attr::BOUNCE], 11), 0) / 6.0f);
+		}
+	}
 }

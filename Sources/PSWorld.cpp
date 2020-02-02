@@ -353,12 +353,12 @@ namespace PS
 		AddLevelNode(obs->Autorelease(), false);
 		
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_wall.sgm"), level);
-		obs->SetEffect(new BurnEffect(2));
+		obs->SetEffect(new WallEffect());
 		level -> AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
 		
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_web.sgm"), level);
-		obs->SetEffect(new BurnEffect(3));
+		obs->SetEffect(new SlowEffect());
 		level -> AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
 	}
