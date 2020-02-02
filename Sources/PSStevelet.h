@@ -32,7 +32,7 @@ namespace PS
 		void ResumePhysics();
 		
 		void SetTargetPosition(RN::Vector3 position);
-		void SetTargetRotation(RN::Vector3 rotation);
+		void SetTargetRotation(RN::Quaternion rotation);
 		
 		void SetSteveletStats(const SteveStats &stats);
 		

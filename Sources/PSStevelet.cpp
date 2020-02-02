@@ -100,7 +100,7 @@ namespace PS
 			angularVelocity *= axisAngleSpeed.w*M_PI;
 			angularVelocity /= 180.0f;
 			angularVelocity /= delta;
-			_physicsBody->SetAngularVelocity(angularVelocity);
+			_physicsBody->SetAngularVelocity(angularVelocity * 0.1f);
 		}
 
 		if (_isWalking) {
@@ -112,9 +112,17 @@ namespace PS
 	{
 		_targetPosition = position;
 		_isMoving = true;
+		
+		RN::Vector3 direction = _targetPosition - GetWorldPosition();
+		direction.y = 0.0f;
+		direction.Normalize();
+		
+		_targetRotation = RN::Quaternion::WithLookAt(-direction, RN::Vector3(0.0f, 1.0f, 0.0f), false);
+		RN::Vector3 blubb = _targetRotation.GetEulerAngle();
+		RNDebug("yo: (" << blubb.x << ", " << blubb.y << ", " << blubb.z << ")");
 	}
 
-	void Stevelet::SetTargetRotation(RN::Vector3 rotation)
+	void Stevelet::SetTargetRotation(RN::Quaternion rotation)
 	{
 		_targetRotation = rotation;
 	}
