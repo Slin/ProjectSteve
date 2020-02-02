@@ -60,7 +60,7 @@ namespace PS
 				SteveStats steveStats;
 				World::GetSharedInstance()->GetGrabbableObjects()->Enumerate<Grabbable>([&](Grabbable *grabbable, size_t index, bool &stop){
 					Stevelet *stevelet = grabbable->Downcast<Stevelet>();
-					if(stevelet && stevelet->GetWorldPosition().GetDistance(GetWorldPosition() + GetRight()*0.08f) < 0.15)
+					if(stevelet && stevelet->GetWorldPosition().GetDistance(GetWorldPosition() - GetRight()*0.08f) < 0.15)
 					{
 						stevelet->SetSteveletStats(steveStats);
 					}
