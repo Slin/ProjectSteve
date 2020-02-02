@@ -51,7 +51,6 @@ namespace PS
 		float _targetVelocity = _defaultVelocity;
 		
 		RN::PhysXDynamicBody *_physicsBody;
-		bool _physicsEnabled = true;
 		
 		RNDeclareMeta(Stevelet)
 	};

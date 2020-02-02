@@ -24,8 +24,9 @@ namespace PS
 	}
 
 	void Stevelet::Kill() {
+		_isMoving = false;
+
 		if (_isGrabbed) {
-			_isMoving = false;
 			LeaveObstacleCourse();
 			return;
 		}
@@ -34,7 +35,7 @@ namespace PS
 	}
 
 	void Stevelet::Vanish() {
-		SetWorldPosition({ 42, 42, 42 });
+		SetWorldPosition({ 0, 0, -42 });
 	}
 
 	void Stevelet::Jump(float intensity) {
@@ -70,7 +71,7 @@ namespace PS
 		direction.y = 0.0f;
 		if(direction.GetLength() > 0.2f)
 		{
-			if(_isMoving && _physicsEnabled)
+			if(_isMoving)
 			{
 				if(_physicsBody->GetLinearVelocity().GetLength() < _targetVelocity)
 					_physicsBody->ApplyForce(direction.Normalize() * 0.08f);
@@ -86,19 +87,17 @@ namespace PS
 			SetTargetPosition(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomVector3Range(RN::Vector3(-1.7f, 0.15f, -1.7f), RN::Vector3(1.7f, 0.15f, 1.7f)));
 		}
 		
-		if(_physicsEnabled)
+		if(_isGrabbed)
 		{
-			if(_isGrabbed)
-			{
-				_physicsBody->SetLinearVelocity(RN::Vector3(0.0f, 9.81f*delta, 0.0f));
-			}
-			
-			if(_wantsThrow)
-			{
-				_physicsBody->SetLinearVelocity(_currentGrabbedSpeed);
-				_wantsThrow = false;
-			}
+			_physicsBody->SetLinearVelocity(RN::Vector3(0.0f, 9.81f*delta, 0.0f));
 		}
+			
+		if(_wantsThrow)
+		{
+			_physicsBody->SetLinearVelocity(_currentGrabbedSpeed);
+			_wantsThrow = false;
+		}
+		
 		
 		if(delta > RN::k::EpsilonFloat)
 		{

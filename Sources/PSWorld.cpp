@@ -337,7 +337,7 @@ namespace PS
 		
 		Spawner *steveletSpawner = new Spawner(Spawner::ObjectType::SteveletType, 5);
 		AddLevelNode(steveletSpawner->Autorelease(), false);
-		steveletSpawner->SetWorldPosition(RN::Vector3(1.5f, 0.2f, 0.75f));
+		steveletSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.2f, 0.75f));
 
 		auto level = new PS::Level();
 		AddLevelNode(level->Autorelease(), false);

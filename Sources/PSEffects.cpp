@@ -18,7 +18,7 @@ namespace PS
 		// Speed, Dexterity, Strength	~(3, 4, 4) = 11
 		SteveStats const& stats = steve->GetSteveletStats();
 		
-		if (stats[Attr::SPEED] + stats[Attr::FAT_CONTENT] + stats[Attr::SHELL] > intensity) {
+		if (stats[Attr::SPEED] / 2 + stats[Attr::FAT_CONTENT] / 2 + stats[Attr::SHELL] > intensity) {
 			steve->SetVelocity(1.5f);
 		} else if (stats[Attr::SPEED] / 2 + stats[Attr::DEXTERITY] + stats[Attr::STRENGTH] + stats[Attr::BOUNCE]) {
 			steve->Jump(1.0f);
