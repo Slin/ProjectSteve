@@ -86,7 +86,9 @@ Stevelet::Stevelet() : Animatable(RNCSTR("sprites/stevelet/0000000.png")), _isMo
 		source->Seek(0.0f);
 		source->Play();
 		
-		SetWorldPosition({ 0, 0, -42 });
+		RN::Vector3 position = GetWorldPosition();
+		position.y = 42.0f;
+		SetWorldPosition(position);
 	}
 
 	void Stevelet::Jump(float intensity, float velocity) {
