@@ -26,6 +26,8 @@ namespace PS
 	void Stevelet::Kill() {
 		_isMoving = false;
 
+		_completedObstacles.clear();
+
 		if (_isGrabbed) {
 			LeaveObstacleCourse();
 			return;
@@ -34,6 +36,8 @@ namespace PS
 		RNDebug("kill");
 		_spawner->ReturnToPool(this);
 	}
+
+
 
 	void Stevelet::Vanish() {
 		SetWorldPosition({ 0, 0, -42 });
@@ -79,8 +83,12 @@ namespace PS
 	{
 		float offset = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(1.3f, 2.4f);
 		SetTargetPosition(RN::Vector3(GetWorldPosition().x - offset, GetWorldPosition().y, GetWorldPosition().z));
-		
+
 		RNDebug("Leave ObstacleBlubb");
+	}
+
+	bool Stevelet::DidFinish(Obstacle* obs) {
+		return _completedObstacles.find(obs) != _completedObstacles.end();
 	}
 
 	void Stevelet::Update(float delta)

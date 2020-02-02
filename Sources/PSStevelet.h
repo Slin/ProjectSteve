@@ -14,6 +14,8 @@
 #include <RNOpenALWorld.h>
 #include "PSAnimatable.h"
 #include "PSSteveStats.h"
+#include "PSObstacle.h"
+#include <set>
 
 namespace PS
 {
@@ -37,6 +39,8 @@ namespace PS
 		
 		void SetTargetPosition(RN::Vector3 position);
 		void SetTargetRotation(RN::Quaternion rotation);
+
+		bool DidFinish(Obstacle* obs);
 		
 		void SetSteveletStats(const SteveStats &stats);
 		SteveStats const& GetSteveletStats();
@@ -46,6 +50,8 @@ namespace PS
 		RN::Vector3 _targetPosition;
 		RN::Quaternion _targetRotation;
 		bool _isMoving;
+
+		std::set<Obstacle*> _completedObstacles;
 		
 		void SetTexture(RN::String *file);
 		size_t _textureHash = 0;

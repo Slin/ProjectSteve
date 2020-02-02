@@ -47,6 +47,12 @@ namespace PS
 		_effect->executeChallenge(steve);
 	}
 
+	void Obstacle::FreeStevelet(Stevelet* steve) {
+		_parent->FreeStevelet(steve, this);
+		auto pos = std::find(_steves.begin(), _steves.end(), steve);
+		*pos = nullptr;
+	}
+
 	bool Obstacle::Contains(Stevelet* steve) {
 		return std::find(_steves.begin(), _steves.end(), steve) != _steves.end();
 	}

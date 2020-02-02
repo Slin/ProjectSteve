@@ -103,6 +103,11 @@ namespace PS
 		LoadLevel();
 	}
 
+	void World::TriggerSteveletWin(Stevelet* steve) {
+		// TODO: WIN
+		RNDebug("Wow, you did it!");
+	}
+
 	void World::InitializePlatform()
 	{
 		RN::Vector2 resolution(960, 540);

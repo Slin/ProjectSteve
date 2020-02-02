@@ -47,6 +47,14 @@ namespace PS
 	public:
 		void executeChallenge(Stevelet* steve) override;
 	};
+	class FinishEffect : public Effect {
+	public:
+		FinishEffect(std::vector<Obstacle*> requirement, Obstacle* finish) _req { requirement }, _finish{ finish } {};
+		void executeChallenge(Stevelet* steve) override;
+	private:
+		std::vector<Obstacle*> _req;
+		Obstacle* _finish;
+	};
 }
 
 #endif /* defined(__ProjectSteve_STEVELET_H_) */

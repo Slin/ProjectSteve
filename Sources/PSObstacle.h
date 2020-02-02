@@ -28,6 +28,7 @@ namespace PS
 		void SetEffect(Effect* effect);
 		void SetZOriented(bool zOriented);
 		void AssignStevelet(Stevelet* steve);
+		void FreeStevelet(Stevelet* steve);
 		bool Contains(Stevelet* steve);
 		void Update(float delta) override;
 		bool IsReached(float z);

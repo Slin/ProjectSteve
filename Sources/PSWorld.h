@@ -57,6 +57,8 @@ namespace PS
 
 		void GenerateLevel(RN::Vector3 start, bool zOriented);
 
+		void World::TriggerSteveletWin(Stevelet* steve);
+
 		RN::Model *AssignDefaultShader(RN::Model *model, bool transparent);
 		
 		bool IsPaused() const { return _isPaused; }

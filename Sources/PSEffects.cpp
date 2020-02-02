@@ -7,6 +7,7 @@
 //
 
 #include "PSEffects.h"
+#include "PSWorld.h"
 
 using Attr = PS::SteveStats::Attributes;
 namespace PS
@@ -74,4 +75,17 @@ namespace PS
 				std::max(std::min(stats[Attr::SPEED] / 2 + stats[Attr::DEXTERITY] / 2 + stats[Attr::STRENGTH] / 2 + stats[Attr::BOUNCE], 11), 0) / 6.0f);
 		}
 	}
+
+
+	void FinishEffect::executeChallenge(Stevelet *steve) {
+		
+		bool finished = true;
+		for(auto& e : _req) {
+			if (!steve->DidFinish(e)) finished = false;
+		}
+		_finish->FreeStevelet(steve);
+
+		if (finished) World::GetSharedInstance()->TriggerSteveletWin(steve);
+	}
+
 }
