@@ -61,12 +61,15 @@ Stevelet::Stevelet() : Animatable(RNCSTR("sprites/stevelet/0000000.png")), _isMo
 			return;
 		}
 
-		RN::OpenALSource *source = new RN::OpenALSource(_dieAudioAsset);
-		World::GetSharedInstance()->AddNode(source->Autorelease());
-		source->SetWorldPosition(GetWorldPosition());
-		source->SetSelfdestruct(true);
-		source->Seek(0.0f);
-		source->Play();
+		if(GetWorldPosition().z > -40.0f)
+		{
+			RN::OpenALSource *source = new RN::OpenALSource(_dieAudioAsset);
+			World::GetSharedInstance()->AddNode(source->Autorelease());
+			source->SetWorldPosition(GetWorldPosition());
+			source->SetSelfdestruct(true);
+			source->Seek(0.0f);
+			source->Play();
+		}
 		
 		RNDebug("kill");
 		_spawner->ReturnToPool(this);
@@ -75,6 +78,14 @@ Stevelet::Stevelet() : Animatable(RNCSTR("sprites/stevelet/0000000.png")), _isMo
 
 
 	void Stevelet::Vanish() {
+		
+		RN::OpenALSource *source = new RN::OpenALSource(_dieAudioAsset);
+		World::GetSharedInstance()->AddNode(source->Autorelease());
+		source->SetWorldPosition(GetWorldPosition());
+		source->SetSelfdestruct(true);
+		source->Seek(0.0f);
+		source->Play();
+		
 		SetWorldPosition({ 0, 0, -42 });
 	}
 

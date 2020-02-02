@@ -208,7 +208,7 @@ namespace PS
 				controllerRotation.y = 0.0f;
 				stickTranslation += (_cameraRotation * RN::Quaternion(controllerRotation)).GetRotatedVector(RN::Vector3(leftController.thumbstick.x, 0.0f, -leftController.thumbstick.y));
 				stickTranslation.y = 0.0f;
-				stickTranslation.Normalize(5.0f * delta);
+				stickTranslation.Normalize(3.0f * delta);
 			}
 		}
 		
