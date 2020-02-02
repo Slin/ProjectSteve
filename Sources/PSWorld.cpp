@@ -434,6 +434,7 @@ namespace PS
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		Animatable *milk = new Animatable(RNCSTR("sprites/Milk.png"));
 		milk->isAnimated = false;
+		obs->SetEffect(new MilkEffect());
 		milk->GetModel()->GetLODStage(0)->GetMaterialAtIndex(0)->SetSpecularColor(RN::Color::WithRGBA(1.0f, 4.0f, 0.0f, 0.0f));
 		obs->AddChild(milk->Autorelease());
 		milk->SetPosition(RN::Vector3(0.0f, 0.64f, 0.0f));
@@ -473,7 +474,7 @@ namespace PS
 		RN::Entity *iceBear = new RN::Entity(RN::Model::WithName(RNCSTR("models/cow.sgm")));
 		obs->AddChild(iceBear->Autorelease());
 		iceBear->SetPosition(RN::Vector3(0.07f, 0.5f, 0.0f));
-		obs->SetEffect(new BurnEffect(1));
+		obs->SetEffect(new FightEffect());
 		level->AddObstacle(obs);
 		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);

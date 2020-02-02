@@ -39,11 +39,25 @@ namespace PS
 
 	void MilkEffect::executeChallenge(Stevelet* steve) {
 		// Lactose lul
+		SteveStats const& stats = steve->GetSteveletStats();
+
+		if (!stats[Attr::LACTRASE] && stats[Attr::INTELLIGENCE] < 6) {
+			steve->Vanish();
+		}
 	}
 
 	void FightEffect::executeChallenge(Stevelet* steve) {
 		// Aggro, Shell, Strength		~(4, /, 4) = 8
 		// Speed, Dexterity				~(3, 4)    = 7
+
+		SteveStats const& stats = steve->GetSteveletStats();
+		if (stats[Attr::AGGRO] > 4) {
+			if (stats[Attr::STRENGTH] < 6) steve->Vanish();
+		}
+		else {
+			if(stats[Attr::SPEED] + stats[Attr::SHELL] > 5) steve->SetVelocity(1.5f);
+			else steve->SetVelocity(0.0f);
+		}
 	}
 
 	void PitEffect::executeChallenge(Stevelet *steve)
