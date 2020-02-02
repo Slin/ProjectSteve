@@ -68,8 +68,6 @@ namespace PS
 				break;
 			}
 		}
-
-		steve->EnterObstacleCourse();
 	}
 
 	RN::Vector3 Level::CalculateEndPosition() {

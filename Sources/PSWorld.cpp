@@ -351,6 +351,11 @@ namespace PS
 		obs->SetEffect(new PitEffect());
 		level -> AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
+
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), level);
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
+
 		
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_wall.sgm"), level);
 		obs->SetEffect(new WallEffect());

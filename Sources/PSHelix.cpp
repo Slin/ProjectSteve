@@ -43,7 +43,9 @@ namespace PS
 		float currentHeight = 0.04f;
 		for(int i = 0; i < 12; i++)
 		{
-			_genes[i] = new Gene(static_cast<Gene::Type>(i % 4));
+			/*_genes[i] = new Gene(static_cast<Gene::Type>(i % 4));*/
+			if(i == 6) _genes[i] = new Gene(static_cast<Gene::Type>(i % 4));
+			else _genes[i] = new Gene(Gene::Type::C);
 			AddChild(_genes[i]);
 			_world.RegisterGrabbable(_genes[i]);
 			_genes[i]->SetPosition(RN::Vector3(0.0f, currentHeight, 0.0f));

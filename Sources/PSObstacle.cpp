@@ -34,7 +34,7 @@ namespace PS
 	
 	void Obstacle::AssignStevelet(Stevelet* steve) {
 		_steves.push_back(steve);
-		steve->ResetVelocity();
+		steve->EnterObstacleCourse({ GetWorldPosition().x, GetWorldPosition().y, GetWorldPosition().z + 1.0f});
 		_effect->executeChallenge(steve);
 	}
 
@@ -43,7 +43,7 @@ namespace PS
 	}
 
 	bool Obstacle::IsReached(float z) {
-		return (z > GetZTreshold() - 0.05f);
+		return (z > GetZTreshold() - 0.1f);
 	}
 
 	float Obstacle::GetZTreshold() {
@@ -64,6 +64,8 @@ namespace PS
 			auto aabb = GetBoundingBox();
 			aabb.maxExtend.y = 2.0f;
 			aabb.minExtend.y = 0.45f;
+			aabb.maxExtend.z -= 0.05f;
+			aabb.minExtend.z -= 0.05f;
 			if (!aabb.Contains(steve->GetWorldPosition())) {
 				if (steve->GetWorldPosition().z > aabb.position.z + aabb.maxExtend.z) {
 					_parent->FreeStevelet(steve, this);

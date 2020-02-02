@@ -28,11 +28,11 @@ namespace PS
 		void Kill();
 		void ResetVelocity();
 		void SetVelocity(float velocity);
-		void Jump(float intensity);
+		void Jump(float intensity, float velocity = 0.4f);
 		void SetFlying(float height, float distance);
 		void SetClimbing(float duration);
 		void Vanish();
-		void EnterObstacleCourse();
+		void EnterObstacleCourse(RN::Vector3 position);
 		void LeaveObstacleCourse();
 		
 		void SetTargetPosition(RN::Vector3 position);

@@ -39,8 +39,9 @@ namespace PS
 		SetWorldPosition({ 0, 0, -42 });
 	}
 
-	void Stevelet::Jump(float intensity) {
+	void Stevelet::Jump(float intensity, float velocity) {
 		_physicsBody->ApplyForce({ 0, intensity, 0 });
+		SetVelocity(velocity);
 	}
 
 	void Stevelet::SetFlying(float height, float distance)
@@ -63,10 +64,12 @@ namespace PS
 		_targetVelocity = velocity;
 	}
 
-	void Stevelet::EnterObstacleCourse()
+	void Stevelet::EnterObstacleCourse(RN::Vector3 position)
 	{
 		_physicsBody->SetLinearVelocity(RN::Vector3());
-		SetTargetPosition(RN::Vector3(GetWorldPosition().x, GetWorldPosition().y, GetWorldPosition().z + 100.0f));
+		ResetVelocity();
+		SetTargetPosition(position);
+			//RN::Vector3(GetWorldPosition().x, GetWorldPosition().y, GetWorldPosition().z + 1.0f));
 		
 		RNDebug("Enter ObstacleBlubb");
 	}
@@ -91,10 +94,13 @@ namespace PS
 		_flightTime -= delta;
 
 		if (_climbTime > 0.0f) {
-			_physicsBody->ApplyForce({ 0.0f, 15.0f * 0.5f * delta, 0.0f });
+			if(_physicsBody->GetLinearVelocity().y < 1.0f) _physicsBody->ApplyForce({ 0.0f, 13.0f * 0.5f * delta, 0.0f });
 			_climbTime -= delta;
 
-			if ((_climbZ - GetWorldPosition().z) > 0.05f) _climbTime = 0.0f;
+			if ((GetWorldPosition().z - _climbZ) > 0.1f) {
+				_climbTime = 0.0f;
+				_physicsBody->ClearForces();
+			}
 		}
 		
 		RN::Vector3 direction = _targetPosition - GetWorldPosition();
