@@ -14,12 +14,12 @@
 #include <RNOpenALWorld.h>
 #include "PSAnimatable.h"
 #include "PSSteveStats.h"
-#include "PSObstacle.h"
 #include <set>
 
 namespace PS
 {
 	class World;
+	class Obstacle;
 	class Stevelet : public Animatable
 	{
 	public:

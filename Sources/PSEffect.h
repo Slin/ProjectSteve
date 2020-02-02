@@ -12,7 +12,7 @@
 
 namespace PS
 {
-
+	class Stevelet;
 	class Effect{
 	public:
 		virtual void executeChallenge(Stevelet* steve) = 0;

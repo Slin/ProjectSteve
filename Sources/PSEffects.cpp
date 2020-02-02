@@ -8,6 +8,8 @@
 
 #include "PSEffects.h"
 #include "PSWorld.h"
+#include "PSObstacle.h"
+#include "PSStevelet.h"
 
 using Attr = PS::SteveStats::Attributes;
 namespace PS

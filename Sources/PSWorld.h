@@ -21,6 +21,7 @@ namespace PS
 	class Player;
 	class Grabbable;
 	class Helix;
+	class Stevelet;
 
 	class World : public RN::SceneBasic
 	{

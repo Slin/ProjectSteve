@@ -354,6 +354,8 @@ namespace PS
 
 	void World::GenerateLevel()
 	{
+		std::vector<Obstacle*> required;
+
 		auto level = new PS::Level(true);
 		AddLevelNode(level->Autorelease(), false);
 		level->SetWorldPosition(RN::Vector3(-1.75f, 0.0f, -1.75f));
@@ -365,6 +367,7 @@ namespace PS
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_pit.sgm"), nullptr, level);
 		obs->SetEffect(new PitEffect());
 		level->AddObstacle(obs);
+		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
@@ -383,16 +386,19 @@ namespace PS
 		}
 		obs->SetEffect(new BurnEffect(1));
 		level->AddObstacle(obs);
+		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_wall.sgm"), nullptr, level);
 		obs->SetEffect(new WallEffect());
 		level->AddObstacle(obs);
+		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_web.sgm"), RNCSTR("models/obstacle_web_collision.sgm"), level);
 		obs->SetEffect(new SlowEffect());
 		level->AddObstacle(obs);
+		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
 		
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
@@ -401,6 +407,7 @@ namespace PS
 		iceBear->SetPosition(RN::Vector3(0.07f, 0.5f, 0.0f));
 		obs->SetEffect(new BurnEffect(1));
 		level->AddObstacle(obs);
+		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
 		
 		
@@ -412,13 +419,14 @@ namespace PS
 		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_pit.sgm"), nullptr, level);
-		obs->SetEffect(new PitEffect());
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_pit.sgm"), nullptr, level);
+		obs->SetEffect(new PitEffect());
 		level->AddObstacle(obs);
+		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
@@ -433,16 +441,19 @@ namespace PS
 		}
 		obs->SetEffect(new BurnEffect(1));
 		level->AddObstacle(obs);
+		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_wall.sgm"), nullptr, level);
 		obs->SetEffect(new WallEffect());
 		level->AddObstacle(obs);
+		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_web.sgm"), RNCSTR("models/obstacle_web_collision.sgm"), level);
 		obs->SetEffect(new SlowEffect());
 		level->AddObstacle(obs);
+		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
 		
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
@@ -451,9 +462,11 @@ namespace PS
 		iceBear->SetPosition(RN::Vector3(0.07f, 0.5f, 0.0f));
 		obs->SetEffect(new BurnEffect(1));
 		level->AddObstacle(obs);
+		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
 		
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		obs->SetEffect(new FinishEffect(required, obs));
 		Animatable *flag = new Animatable(RNCSTR("sprites/Flag.png"));
 		flag->isAnimated = false;
 		flag->GetModel()->GetLODStage(0)->GetMaterialAtIndex(0)->SetSpecularColor(RN::Color::WithRGBA(1.0f, 4.0f, 0.0f, 0.0f));

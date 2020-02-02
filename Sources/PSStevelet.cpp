@@ -9,6 +9,7 @@
 #include "PSStevelet.h"
 #include "PSWorld.h"
 #include "PSSpawner.h"
+#include "PSObstacle.h"
 
 namespace PS
 {
@@ -82,7 +83,9 @@ namespace PS
 	void Stevelet::LeaveObstacleCourse()
 	{
 		float offset = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(1.3f, 2.4f);
-		SetTargetPosition(RN::Vector3(GetWorldPosition().x - offset, GetWorldPosition().y, GetWorldPosition().z));
+		
+		if(GetForward().x > GetForward().z) SetTargetPosition(RN::Vector3(GetWorldPosition().x, GetWorldPosition().y, GetWorldPosition().z - offset));
+		else SetTargetPosition(RN::Vector3(GetWorldPosition().x - offset, GetWorldPosition().y, GetWorldPosition().z));
 
 		RNDebug("Leave ObstacleBlubb");
 	}
@@ -160,8 +163,8 @@ namespace PS
 			angularVelocity *= axisAngleSpeed.w*M_PI;
 			angularVelocity /= 180.0f;
 			angularVelocity /= delta;
-			const float l = angularVelocity.GetLength();
-			if(l > 60.f) angularVelocity *= 60.f / l;
+			//const float l = angularVelocity.GetLength();
+			//if(l > 60.f) angularVelocity *= 60.f / l;
 			_physicsBody->SetAngularVelocity(angularVelocity * 0.1f);
 		}
 	}
@@ -170,7 +173,7 @@ namespace PS
 	{
 		_targetPosition = position;
 		_isMoving = true;
-		
+
 		RN::Vector3 direction = _targetPosition - GetWorldPosition();
 		direction.y = 0.0f;
 		direction.Normalize();

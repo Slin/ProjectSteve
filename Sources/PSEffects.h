@@ -9,12 +9,13 @@
 #ifndef __ProjectSteve_EFFECTS_H_
 #define __ProjectSteve_EFFECTS_H_
 
-#include "PSStevelet.h"
 #include "PSSteveStats.h"
 #include "PSEffect.h"
 
 namespace PS
 {
+	class Obstacle;
+	class Stevelet;
 	class NoEffect : public Effect {
 	public:
 		void executeChallenge(Stevelet* steve) override {};
@@ -49,7 +50,7 @@ namespace PS
 	};
 	class FinishEffect : public Effect {
 	public:
-		FinishEffect(std::vector<Obstacle*> requirement, Obstacle* finish) _req { requirement }, _finish{ finish } {};
+		FinishEffect(std::vector<Obstacle*> requirement, Obstacle* finish) : _req { requirement }, _finish{ finish } {};
 		void executeChallenge(Stevelet* steve) override;
 	private:
 		std::vector<Obstacle*> _req;

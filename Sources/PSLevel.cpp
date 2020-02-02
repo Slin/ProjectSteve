@@ -25,7 +25,7 @@ namespace PS
 		if (_isZOriented) {
 			_startTrigger.maxExtend = RN::Vector3(0.25f, 1.5f, position.z - GetWorldPosition().z + 0.25f);
 		} else {
-			_startTrigger.maxExtend = RN::Vector3(position.z - GetWorldPosition().z + 0.25f, 1.5f, 0.25f);
+			_startTrigger.maxExtend = RN::Vector3(position.x - GetWorldPosition().x + 0.25f, 1.5f, 0.25f);
 		}
 	}
 
