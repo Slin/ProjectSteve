@@ -337,11 +337,11 @@ namespace PS
 		
 		Spawner *steveletSpawner = new Spawner(Spawner::ObjectType::SteveletType, 5);
 		AddLevelNode(steveletSpawner->Autorelease(), false);
-		steveletSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.2f, 0.75f));
+		steveletSpawner->SetWorldPosition(RN::Vector3(0.3f, 0.2f, 1.5f));
 
 		auto level = new PS::Level();
 		AddLevelNode(level->Autorelease(), false);
-		level->SetWorldPosition(RN::Vector3(1.5f, 0.4f, -1.75f));
+		level->SetWorldPosition(RN::Vector3(1.5f, 0.0f, -1.75f));
 
 		auto obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), level);
 		level->AddObstacle(obs);
