@@ -70,6 +70,9 @@ namespace PS
 		_physicsBody->SetLinearVelocity(RN::Vector3());
 		ResetVelocity();
 		SetTargetPosition(position);
+		
+		RN::Vector3 direction = position - GetWorldPosition();
+		SetTargetRotation(RN::Vector3(direction.x > 0.1f? 270:180.0f, 0.0f, 0.0f));
 			//RN::Vector3(GetWorldPosition().x, GetWorldPosition().y, GetWorldPosition().z + 1.0f));
 		
 		RNDebug("Enter ObstacleBlubb");
@@ -152,8 +155,8 @@ namespace PS
 			angularVelocity *= axisAngleSpeed.w*M_PI;
 			angularVelocity /= 180.0f;
 			angularVelocity /= delta;
-			const float l = angularVelocity.GetLength();
-			if(l > 60.f) angularVelocity *= 60.f / l;
+			//const float l = angularVelocity.GetLength();
+			//if(l > 60.f) angularVelocity *= 60.f / l;
 			_physicsBody->SetAngularVelocity(angularVelocity * 0.1f);
 		}
 	}

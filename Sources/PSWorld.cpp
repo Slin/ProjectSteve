@@ -460,11 +460,9 @@ namespace PS
 		obs->SetEffect(new BurnEffect(1));
 		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
-		
+ 
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		Animatable *flag = new Animatable(RNCSTR("sprites/Flag.png"));
-		flag->isAnimated = false;
-		flag->GetModel()->GetLODStage(0)->GetMaterialAtIndex(0)->SetSpecularColor(RN::Color::WithRGBA(1.0f, 4.0f, 0.0f, 0.0f));
 		obs->AddChild(flag->Autorelease());
 		flag->SetPosition(RN::Vector3(0.0f, 0.64f, 0.0f));
 		level->AddObstacle(obs);
