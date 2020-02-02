@@ -10,12 +10,14 @@
 #define __ProjectSteve_STEVESTATS_H_
 
 #include <Rayne.h>
+#include "PSHelix.h"
 
 namespace PS
 {
 	class SteveStats
 	{
 	public:
+		SteveStats(const DNA& dna);
 		~SteveStats() = default;
 		enum struct Attributes {
 			STRENGTH, 
