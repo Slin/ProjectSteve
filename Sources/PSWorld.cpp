@@ -460,7 +460,7 @@ namespace PS
 		level->AddObstacle(obs);
 		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
-		RN::OpenALSource *windAudioSource = new RN::OpenALSource(RN::AudioAsset::WithName(RNCSTR("audio/fire.ogg")));
+		RN::OpenALSource *windAudioSource = new RN::OpenALSource(RN::AudioAsset::WithName(RNCSTR("audio/wind.ogg")));
 		windAudioSource->SetGain(1.0f);
 		windAudioSource->SetRepeat(true);
 		windAudioSource->Seek(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0.0f, 90.0f));
