@@ -20,8 +20,11 @@ namespace PS {
 		virtual void Reset();
 		
 		void SetSpawner(Spawner *spawner) { _spawner = spawner; }
+		Spawner *GetSpawner() const { return _spawner; }
 
 	protected:
+		Spawner *_spawner;
+		
 		bool _isGrabbed = false;
 		bool _wantsThrow = false;
 		bool _isTriggered = false;
@@ -29,8 +32,6 @@ namespace PS {
 		RN::Vector3 _previousPosition;
 		RN::Vector3 _currentGrabbedSpeed;
 		RN::Vector3 _currentGrabbedRotationSpeed;
-		
-		Spawner *_spawner;
 
 		RNDeclareMeta(Grabbable)
 	};
