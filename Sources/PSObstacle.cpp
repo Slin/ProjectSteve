@@ -12,9 +12,9 @@
 
 namespace PS
 {
-	RNDefineMeta(Obstacle, Animatable)
+	RNDefineMeta(Obstacle, RN::Entity)
 
-	Obstacle::Obstacle(RN::String const* modelName, Level* parent) : Animatable(modelName), _parent{ parent }
+	Obstacle::Obstacle(RN::String const* modelName, Level* parent) : RN::Entity(RN::Model::WithName(modelName)), _parent{ parent }
 	{
 		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
 		RN::PhysXCompoundShape *levelShape = RN::PhysXCompoundShape::WithModel(GetModel(), levelPhysicsMaterial->Autorelease(), true);
@@ -51,7 +51,7 @@ namespace PS
 	}
 
 	void Obstacle::Update(float delta) {
-		PS::Animatable::Update(delta);
+		RN::Entity::Update(delta);
 
 		for (Stevelet* &steve : _steves) {
 			if (!steve) continue;
@@ -63,6 +63,7 @@ namespace PS
 
 			auto aabb = GetBoundingBox();
 			aabb.maxExtend.y = 1.0f;
+			aabb.minExtend.y = 0.45f;
 			if (!aabb.Contains(steve->GetWorldPosition())) {
 				if (steve->GetWorldPosition().z > aabb.position.z + aabb.maxExtend.z) {
 					_parent->FreeStevelet(steve, this);

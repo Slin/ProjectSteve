@@ -60,13 +60,11 @@ namespace PS
 			if (steve == std::get<Stevelet*>(tuple)) return;
 		}
 
-		//_obstacles.front()->AssignStevelet(steve)
 		for (auto it = _obstacles.rbegin(); it != _obstacles.rend(); ++it) {
 			if ((*it)->IsReached(steve->GetWorldPosition().z)) {
-				(*it)->AssignStevelet(steve);
-
 				auto position = RN::Vector3(GetWorldPosition().x, GetWorldPosition().y + 0.65f, (*it)->GetZTreshold() + 0.05f);
 				steve->SetWorldPosition(position);
+				(*it)->AssignStevelet(steve);
 				break;
 			}
 		}

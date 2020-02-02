@@ -20,7 +20,7 @@ namespace PS
 {
 	class World;
 	class Level;
-	class Obstacle : public Animatable
+	class Obstacle : public RN::Entity
 	{
 	public:
 		Obstacle(RN::String const* modelName, Level* parent);
