@@ -457,7 +457,7 @@ namespace PS
 		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_wall.sgm"), nullptr, level);
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_windtunnel.sgm"), nullptr, level);
 		obs->SetEffect(new WallEffect());
 		level->AddObstacle(obs);
 		required.push_back(obs);

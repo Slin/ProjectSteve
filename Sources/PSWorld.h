@@ -60,7 +60,7 @@ namespace PS
 
 		void GenerateLevel();
 
-		void World::TriggerSteveletWin(Stevelet* steve);
+		void TriggerSteveletWin(Stevelet* steve);
 
 		RN::Model *AssignDefaultShader(RN::Model *model, bool transparent);
 		
