@@ -124,7 +124,7 @@ namespace PS
 		
 		if(!_isMoving)
 		{
-			SetTargetPosition(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomVector3Range(RN::Vector3(-1.7f, 0.15f, -1.7f), RN::Vector3(1.0f, 0.15f, 1.7f)));
+			SetTargetPosition(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomVector3Range(RN::Vector3(-1.0f, 0.15f, -1.7f), RN::Vector3(1.7f, 0.15f, 1.0f)));
 		}
 		
 		if(_isGrabbed)
