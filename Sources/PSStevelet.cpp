@@ -152,7 +152,8 @@ namespace PS
 			angularVelocity *= axisAngleSpeed.w*M_PI;
 			angularVelocity /= 180.0f;
 			angularVelocity /= delta;
-		//	RNDebug(angularVelocity.GetLength());
+			const float l = angularVelocity.GetLength();
+			if(l > 60.f) angularVelocity *= 60.f / l;
 			_physicsBody->SetAngularVelocity(angularVelocity * 0.1f);
 		}
 	}
