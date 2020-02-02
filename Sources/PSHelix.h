@@ -44,7 +44,7 @@ namespace PS
 		Type _type;
 		RNDeclareMeta(Gene)
 	};
-
+	using DNA = std::array<Gene*, 12>;
 	class Helix : public RN::Entity
 	{
 	public:
@@ -57,7 +57,7 @@ namespace PS
 		Gene* PickGene(Gene& gene);
 		void PlaceGene(Gene& target, Gene& newGene);
 	private:
-		std::array<Gene*, 12> _genes;
+		DNA _genes;
 		RNDeclareMeta(Helix)
 	};
 }
