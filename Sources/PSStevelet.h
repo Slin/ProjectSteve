@@ -47,6 +47,7 @@ namespace PS
 		bool _isMoving;
 		
 		void SetTexture(RN::String *file);
+		size_t _textureHash = 0;
 
 		float const _defaultVelocity = 0.4f;
 		float _targetVelocity = _defaultVelocity;

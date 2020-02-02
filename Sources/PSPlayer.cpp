@@ -356,11 +356,11 @@ namespace PS
 			if (_isHandGrabbing[0] && _isHandGrabbing[1])
 			{
 				const RN::Vector3 left = _camera->GetWorldRotation().GetRotatedVector(Vector3(0.1f, 0.f, 0.f));
-				_grabbedObject[0]->Translate(left);
-				_grabbedObject[1]->Translate(-left);
+				_grabbedObject[0]->Translate(-left);
+				_grabbedObject[1]->Translate(left);
 				const RN::Vector3 forward = _camera->GetWorldRotation().GetRotatedVector(Vector3(0.f, 0.f, 1.f));
-				_grabbedObject[0]->SetWorldRotation(RN::Quaternion::WithLookAt(_grabbedObject[0]->IsKindOfClass(Syringe::GetMetaClass()) ? forward : left));
-				_grabbedObject[1]->SetWorldRotation(RN::Quaternion::WithLookAt(_grabbedObject[1]->IsKindOfClass(Syringe::GetMetaClass()) ? -forward : -left));
+				_grabbedObject[0]->SetWorldRotation(RN::Quaternion::WithLookAt(_grabbedObject[0]->IsKindOfClass(Syringe::GetMetaClass()) ? -forward : left));
+				_grabbedObject[1]->SetWorldRotation(RN::Quaternion::WithLookAt(_grabbedObject[1]->IsKindOfClass(Syringe::GetMetaClass()) ? forward : -left));
 			}
 		}
 	}

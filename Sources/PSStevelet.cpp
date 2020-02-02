@@ -132,6 +132,7 @@ namespace PS
 			angularVelocity *= axisAngleSpeed.w*M_PI;
 			angularVelocity /= 180.0f;
 			angularVelocity /= delta;
+		//	RNDebug(angularVelocity.GetLength());
 			_physicsBody->SetAngularVelocity(angularVelocity * 0.1f);
 		}
 	}
@@ -165,6 +166,10 @@ namespace PS
 
 	void Stevelet::SetTexture(RN::String *file)
 	{
+		const size_t hash = file->GetHash();
+		if (hash == _textureHash) return;
+
+		_textureHash = hash;
 		RN::Material *material = _model->GetLODStage(0)->GetMaterialAtIndex(0);
 		material->RemoveAllTextures();
 		material->AddTexture(RN::Texture::WithName(file));
