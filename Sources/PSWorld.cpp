@@ -316,10 +316,10 @@ namespace PS
 		syringeSpawner->SetWorldPosition(RN::Vector3(1.6 - (1.0f+0.8f), 0.82f, -1.75f));
 		syringeSpawner->Rotate(RN::Vector3(90.0f, 0.0f, 0.0f));
 		
-		IPad *ipad = new IPad();
-		AddLevelNode(ipad->Autorelease(), true);
-		ipad->SetWorldPosition(RN::Vector3(1.6 - (-0.875f+0.8f), 0.82f, -1.75f));
-		ipad->SetRotation(RN::Vector3(0.0f, -90.0f, 0.0f));
+		_ipad = new IPad();
+		AddLevelNode(_ipad->Autorelease(), true);
+		_ipad->SetWorldPosition(RN::Vector3(1.6 - (-0.875f+0.8f), 0.82f, -1.75f));
+		_ipad->SetRotation(RN::Vector3(0.0f, -90.0f, 0.0f));
 		
 		_helix = new Helix(*this);
 		AddLevelNode(_helix->Autorelease(), false);
@@ -371,7 +371,75 @@ namespace PS
 		AddLevelNode(obs->Autorelease(), false);
 
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		for (float x = -0.1; x < 0.2f; x += 0.2f)
+		{
+			for (float z = -0.1f; z < 0.2f; z += 0.2f)
+			{
+				Animatable *flame = new Animatable(RNCSTR("sprites/Fire.png"));
+				obs->AddChild(flame->Autorelease());
+				flame->SetPosition(RN::Vector3(x, 0.57f, z));
+				flame->SetScale(RN::Vector3(0.5f, 0.5f, 0.5f));
+			}
+		}
+		obs->SetEffect(new BurnEffect(1));
 		level->AddObstacle(obs);
+		required.push_back(obs);
+		AddLevelNode(obs->Autorelease(), false);
+
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_wall.sgm"), nullptr, level);
+		obs->SetEffect(new WallEffect());
+		level->AddObstacle(obs);
+		required.push_back(obs);
+		AddLevelNode(obs->Autorelease(), false);
+		
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
+
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_web.sgm"), RNCSTR("models/obstacle_web_collision.sgm"), level);
+		obs->SetEffect(new SlowEffect());
+		level->AddObstacle(obs);
+		required.push_back(obs);
+		AddLevelNode(obs->Autorelease(), false);
+		
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		for (float x = -0.1; x < 0.2f; x += 0.2f)
+		{
+			for (float z = -0.1f; z < 0.2f; z += 0.2f)
+			{
+				Animatable *flame = new Animatable(RNCSTR("sprites/Fire.png"));
+				obs->AddChild(flame->Autorelease());
+				flame->SetPosition(RN::Vector3(x, 0.60f, z));
+				flame->SetScale(RN::Vector3(0.75f, 0.75f, 0.75f));
+			}
+		}
+		obs->SetEffect(new BurnEffect(2));
+		level->AddObstacle(obs);
+		required.push_back(obs);
+		AddLevelNode(obs->Autorelease(), false);
+		
+		
+		level = new PS::Level(false);
+		AddLevelNode(level->Autorelease(), false);
+		level->SetWorldPosition(RN::Vector3(-1.75f, 0.0f, 1.75f));
+
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
+
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
+
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		Animatable *milk = new Animatable(RNCSTR("sprites/Milk.png"));
+		milk->isAnimated = false;
+		milk->GetModel()->GetLODStage(0)->GetMaterialAtIndex(0)->SetSpecularColor(RN::Color::WithRGBA(1.0f, 4.0f, 0.0f, 0.0f));
+		obs->AddChild(milk->Autorelease());
+		milk->SetPosition(RN::Vector3(0.0f, 0.64f, 0.0f));
+
+		level->AddObstacle(obs);
+		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
@@ -384,7 +452,7 @@ namespace PS
 				flame->SetPosition(RN::Vector3(x, 0.64f, z));
 			}
 		}
-		obs->SetEffect(new BurnEffect(1));
+		obs->SetEffect(new BurnEffect(3));
 		level->AddObstacle(obs);
 		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
@@ -409,67 +477,10 @@ namespace PS
 		level->AddObstacle(obs);
 		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
-		
-		
-		level = new PS::Level(false);
-		AddLevelNode(level->Autorelease(), false);
-		level->SetWorldPosition(RN::Vector3(-1.75f, 0.0f, 1.75f));
-
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
-		level->AddObstacle(obs);
-		AddLevelNode(obs->Autorelease(), false);
-
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
-		level->AddObstacle(obs);
-		AddLevelNode(obs->Autorelease(), false);
-
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_pit.sgm"), nullptr, level);
-		obs->SetEffect(new PitEffect());
-		level->AddObstacle(obs);
-		required.push_back(obs);
-		AddLevelNode(obs->Autorelease(), false);
-
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
-		for (float x = -0.1; x < 0.2f; x += 0.2f)
-		{
-			for (float z = -0.1f; z < 0.2f; z += 0.2f)
-			{
-				Animatable *flame = new Animatable(RNCSTR("sprites/Fire.png"));
-				obs->AddChild(flame->Autorelease());
-				flame->SetPosition(RN::Vector3(x, 0.64f, z));
-			}
-		}
-		obs->SetEffect(new BurnEffect(1));
-		level->AddObstacle(obs);
-		required.push_back(obs);
-		AddLevelNode(obs->Autorelease(), false);
-
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_wall.sgm"), nullptr, level);
-		obs->SetEffect(new WallEffect());
-		level->AddObstacle(obs);
-		required.push_back(obs);
-		AddLevelNode(obs->Autorelease(), false);
-
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_web.sgm"), RNCSTR("models/obstacle_web_collision.sgm"), level);
-		obs->SetEffect(new SlowEffect());
-		level->AddObstacle(obs);
-		required.push_back(obs);
-		AddLevelNode(obs->Autorelease(), false);
-		
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
-		iceBear = new RN::Entity(RN::Model::WithName(RNCSTR("models/cow.sgm")));
-		obs->AddChild(iceBear->Autorelease());
-		iceBear->SetPosition(RN::Vector3(0.07f, 0.5f, 0.0f));
-		obs->SetEffect(new BurnEffect(1));
-		level->AddObstacle(obs);
-		required.push_back(obs);
-		AddLevelNode(obs->Autorelease(), false);
-		
+ 
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		obs->SetEffect(new FinishEffect(required, obs));
 		Animatable *flag = new Animatable(RNCSTR("sprites/Flag.png"));
-		flag->isAnimated = false;
-		flag->GetModel()->GetLODStage(0)->GetMaterialAtIndex(0)->SetSpecularColor(RN::Color::WithRGBA(1.0f, 4.0f, 0.0f, 0.0f));
 		obs->AddChild(flag->Autorelease());
 		flag->SetPosition(RN::Vector3(0.0f, 0.64f, 0.0f));
 		level->AddObstacle(obs);

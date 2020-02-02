@@ -22,6 +22,7 @@ namespace PS
 	class Grabbable;
 	class Helix;
 	class Stevelet;
+	class IPad;
 
 	class World : public RN::SceneBasic
 	{
@@ -47,6 +48,7 @@ namespace PS
 		RN::SceneNode *GetCamera() const { return _mainCamera; }
 		Player *GetPlayer() const { return _player; }
 		Helix *GetHelix() const { return _helix; }
+		IPad* GetIPad() const { return _ipad; }
 		
 		Grabbable* GetClosestGrabbableObject(RN::Vector3 position);
 		std::pair<Grabbable*,float> GetClosestGrabbableObject(RN::Vector2 coordinate);
@@ -83,6 +85,7 @@ namespace PS
 
 		Helix *_helix;
 		Player *_player;
+		IPad* _ipad;
 		RN::Camera *_shadowCamera;
 		RN::VRCamera *_vrCamera;
 		RN::SceneNode *_mainCamera;

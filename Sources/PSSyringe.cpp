@@ -9,6 +9,7 @@
 #include "PSSyringe.h"
 #include "PSWorld.h"
 #include "PSStevelet.h"
+#include "PSIPad.h"
 
 namespace PS
 {
@@ -57,12 +58,15 @@ namespace PS
 			
 			if(_fillPercentage < 1.0f-RN::k::EpsilonFloat)
 			{
-				World::GetSharedInstance()->GetGrabbableObjects()->Enumerate<Grabbable>([&](Grabbable *grabbable, size_t index, bool &stop){
+				World* world = World::GetSharedInstance();
+				world->GetGrabbableObjects()->Enumerate<Grabbable>([&](Grabbable *grabbable, size_t index, bool &stop){
 					Stevelet *stevelet = grabbable->Downcast<Stevelet>();
 					if(stevelet && stevelet->GetWorldPosition().GetDistance(GetWorldPosition() - GetRight()*0.08f) < 0.15)
 					{
 						stevelet->SetSteveletStats(_stats);
 						StatsKnowledge::Discover(_stats);
+						// update possibly new attributes
+						world->GetIPad()->UpdateAttributes(world->GetHelix()->GetDNA());
 					}
 				});
 			}

@@ -9,6 +9,7 @@
 #include "PSIPad.h"
 #include "PSWorld.h"
 #include "PSPlayer.h"
+#include "PSSteveStats.h"
 
 #define SCREEN_SIZE_X (0.16002f*2.0f-0.02f) //0.16002f
 #define SCREEN_SIZE_Y (0.21336f*2.0f-0.0267f) //0.21336f
@@ -120,6 +121,9 @@ namespace PS
 		
 		verticalPosition += FONT_SIZE_BIG + MARGIN_INSIDE * 2.0f;
 		
+		_attributesView = new RN::UI::View();
+		_attributesView->SetFrame(RN::Rect(0.0f, verticalPosition, windowSize.x, windowSize.y));
+		_levelScrollView->AddSubview(_attributesView->Autorelease());
 		/*
 		 STRENGTH,
 		 SIZE,
@@ -139,23 +143,6 @@ namespace PS
 		 CLIMB,
 		 BOUNCE,
 		 */
-		
-		RN::UI::Font *smallFont = RN::UI::Font::WithFamilyName(MENU_FONT, FONT_SIZE_SMALL);
-		
-		RN::Array *properties = RN::Array::WithObjects({RNSTR("Strength"), RNSTR("Size"), RNSTR("Intelligence"), RNSTR("Bodyfat"), RNSTR("Aggression"), RNSTR("Dexterity"), RNSTR("Speed"), RNSTR("Weight"), RNSTR("Wings"), RNSTR("Shell"), RNSTR("Hands"), RNSTR("Legs"), RNSTR("Lactrase"), RNSTR("Flying"), RNSTR("Climbing"), RNSTR("Bouncing")});
-		
-		properties->Enumerate<RN::String>([&](RN::String *property, size_t index, bool &stop){
-			label = new RN::UI::Label();
-			label->SetFrame(RN::Rect(MARGIN_OUTSIDE, verticalPosition, windowSize.x-MARGIN_OUTSIDE*2, FONT_SIZE_SMALL));
-			label->SetAlignment(RN::UI::Label::Alignment::Center);
-			label->SetFont(smallFont);
-			label->SetColor(RN::Color::White());
-			label->SetBackgroundColor(RN::Color::ClearColor());
-			label->SetText(property);
-			_levelScrollView->AddSubview(label->Autorelease());
-			
-			verticalPosition += MARGIN_INSIDE + FONT_SIZE_SMALL;
-		});
 		
 		_uiWindow->GetContentView()->SetBackgroundColor(RN::Color::Black());
 		_uiWindow->GetContentView()->AddSubview(_levelScrollView->Autorelease());
@@ -261,5 +248,35 @@ namespace PS
 
 		_uiWindow->Update();
 		_uiWindow->DrawViews();
+	}
+
+	void IPad::UpdateAttributes(const DNA& dna)
+	{
+		using namespace RN::UI;
+		_attributesView->RemoveAllSubviews();
+		Font* smallFont = RN::UI::Font::WithFamilyName(MENU_FONT, FONT_SIZE_SMALL);
+
+		const SteveStats stats(dna);
+
+		RN::Array* properties = RN::Array::WithObjects({ RNSTR("Strength"), RNSTR("Size"), RNSTR("Intelligence"), RNSTR("Bodyfat"), RNSTR("Aggression"), RNSTR("Dexterity"), RNSTR("Speed"), RNSTR("Weight"), RNSTR("Wings"), RNSTR("Shell"), RNSTR("Hands"), RNSTR("Legs"), RNSTR("Lactrase"), RNSTR("Flying"), RNSTR("Climbing"), RNSTR("Bouncing") });
+		float verticalPosition = 0.f;
+		properties->Enumerate<RN::String>([&](RN::String* property, size_t index, bool& stop)
+		{
+			const auto attr = static_cast<SteveStats::Attributes>(index);
+			if (!StatsKnowledge::IsKnown(attr)) return;
+			
+			Label* label = new Label();
+			label->SetFrame(RN::Rect(MARGIN_OUTSIDE, verticalPosition, SCREEN_RESOLUTION_X - MARGIN_OUTSIDE * 2, FONT_SIZE_SMALL));
+			label->SetAlignment(RN::UI::Label::Alignment::Center);
+			label->SetFont(smallFont);
+			label->SetColor(RN::Color::White());
+			label->SetBackgroundColor(RN::Color::ClearColor());
+			label->SetText(RNSTR(property << ": " << stats[attr]));
+			_attributesView->AddSubview(label->Autorelease());
+
+			verticalPosition += MARGIN_INSIDE + FONT_SIZE_SMALL;
+		});
+
+		_needsRedraw = true;
 	}
 }

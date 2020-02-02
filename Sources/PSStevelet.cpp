@@ -75,6 +75,9 @@ namespace PS
 		_physicsBody->SetLinearVelocity(RN::Vector3());
 		ResetVelocity();
 		SetTargetPosition(position);
+		
+		RN::Vector3 direction = position - GetWorldPosition();
+		SetTargetRotation(RN::Vector3(direction.x > 0.1f? 270:180.0f, 0.0f, 0.0f));
 			//RN::Vector3(GetWorldPosition().x, GetWorldPosition().y, GetWorldPosition().z + 1.0f));
 		
 		RNDebug("Enter ObstacleBlubb");
