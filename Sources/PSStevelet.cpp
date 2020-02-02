@@ -132,7 +132,7 @@ namespace PS
 		
 		if(!_isMoving)
 		{
-			SetTargetPosition(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomVector3Range(RN::Vector3(-1.7f, 0.15f, -1.7f), RN::Vector3(1.0f, 0.15f, 1.7f)));
+			SetTargetPosition(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomVector3Range(RN::Vector3(-1.0f, 0.15f, -1.7f), RN::Vector3(1.7f, 0.15f, 1.0f)));
 		}
 		
 		if(_isGrabbed)
@@ -160,7 +160,8 @@ namespace PS
 			angularVelocity *= axisAngleSpeed.w*M_PI;
 			angularVelocity /= 180.0f;
 			angularVelocity /= delta;
-		//	RNDebug(angularVelocity.GetLength());
+			const float l = angularVelocity.GetLength();
+			if(l > 60.f) angularVelocity *= 60.f / l;
 			_physicsBody->SetAngularVelocity(angularVelocity * 0.1f);
 		}
 	}

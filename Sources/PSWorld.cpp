@@ -313,51 +313,50 @@ namespace PS
 		
 		Spawner *syringeSpawner = new Spawner(Spawner::ObjectType::SyringeType, 20);
 		AddLevelNode(syringeSpawner->Autorelease(), false);
-		syringeSpawner->SetWorldPosition(RN::Vector3(1.0f-0.75f, 0.82f, -1.75f));
+		syringeSpawner->SetWorldPosition(RN::Vector3(1.6 - (1.0f+0.8f), 0.82f, -1.75f));
 		syringeSpawner->Rotate(RN::Vector3(90.0f, 0.0f, 0.0f));
 		
 		IPad *ipad = new IPad();
 		AddLevelNode(ipad->Autorelease(), true);
-		ipad->SetWorldPosition(RN::Vector3(-0.875f-0.75f, 0.82f, -1.75f));
+		ipad->SetWorldPosition(RN::Vector3(1.6 - (-0.875f+0.8f), 0.82f, -1.75f));
 		ipad->SetRotation(RN::Vector3(0.0f, -90.0f, 0.0f));
 		
 		_helix = new Helix(*this);
 		AddLevelNode(_helix->Autorelease(), false);
-		_helix->SetWorldPosition(RN::Vector3(0.625f-0.75f, 0.8f, -1.75f));
+		_helix->SetWorldPosition(RN::Vector3(1.6 - (0.625f+0.8f), 0.8f, -1.75f));
 		
 		Spawner *geneGreenSpawner = new Spawner(Spawner::ObjectType::GeneCType, 20);
 		AddLevelNode(geneGreenSpawner->Autorelease(), false);
-		geneGreenSpawner->SetWorldPosition(RN::Vector3(0.25f-0.75f, 0.82f, -1.75f));
+		geneGreenSpawner->SetWorldPosition(RN::Vector3(1.6 - (0.25f+0.8f), 0.82f, -1.75f));
 		geneGreenSpawner->Rotate(RN::Vector3(90.0f, 0.0f, 0.0f));
 		
 		Spawner *geneBlueSpawner = new Spawner(Spawner::ObjectType::GeneGType, 20);
 		AddLevelNode(geneBlueSpawner->Autorelease(), false);
-		geneBlueSpawner->SetWorldPosition(RN::Vector3(0.0f-0.75f, 0.82f, -1.75f));
+		geneBlueSpawner->SetWorldPosition(RN::Vector3(1.6 - (0.0f+0.8f), 0.82f, -1.75f));
 		geneBlueSpawner->Rotate(RN::Vector3(90.0f, 0.0f, 0.0f));
 		
 		Spawner *geneYellowSpawner = new Spawner(Spawner::ObjectType::GeneAType, 20);
 		AddLevelNode(geneYellowSpawner->Autorelease(), false);
-		geneYellowSpawner->SetWorldPosition(RN::Vector3(-0.25f-0.75f, 0.82f, -1.75f));
+		geneYellowSpawner->SetWorldPosition(RN::Vector3(1.6 - (-0.25f+0.8f), 0.82f, -1.75f));
 		geneYellowSpawner->Rotate(RN::Vector3(90.0f, 0.0f, 0.0f));
 		
 		Spawner *geneRedSpawner = new Spawner(Spawner::ObjectType::GeneTType, 20);
 		AddLevelNode(geneRedSpawner->Autorelease(), false);
-		geneRedSpawner->SetWorldPosition(RN::Vector3(-0.5f-0.75f, 0.82f, -1.75f));
+		geneRedSpawner->SetWorldPosition(RN::Vector3(1.6 - (-0.5f+0.8f), 0.82f, -1.75f));
 		geneRedSpawner->Rotate(RN::Vector3(90.0f, 0.0f, 0.0f));
 		
 		Spawner *steveletSpawner = new Spawner(Spawner::ObjectType::SteveletType, 5);
 		AddLevelNode(steveletSpawner->Autorelease(), false);
 		steveletSpawner->SetWorldPosition(RN::Vector3(0.3f, 0.2f, -1.5f));
 
-		GenerateLevel(RN::Vector3(1.5f, 0.0f, -1.75f), true);
-		GenerateLevel(RN::Vector3(-1.5f, 0.0f, -1.75f), false);
+		GenerateLevel();
 	}
 
-	void World::GenerateLevel(RN::Vector3 start, bool zOriented) {
-		auto level = new PS::Level(zOriented);
+	void World::GenerateLevel()
+	{
+		auto level = new PS::Level(true);
 		AddLevelNode(level->Autorelease(), false);
-
-		level->SetWorldPosition(start);
+		level->SetWorldPosition(RN::Vector3(-1.75f, 0.0f, -1.75f));
 
 		auto obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		level->AddObstacle(obs);
@@ -398,6 +397,56 @@ namespace PS
 		
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		RN::Entity *iceBear = new RN::Entity(RN::Model::WithName(RNCSTR("models/cow.sgm")));
+		obs->AddChild(iceBear->Autorelease());
+		iceBear->SetPosition(RN::Vector3(0.07f, 0.5f, 0.0f));
+		obs->SetEffect(new BurnEffect(1));
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
+		
+		
+		level = new PS::Level(false);
+		AddLevelNode(level->Autorelease(), false);
+		level->SetWorldPosition(RN::Vector3(-1.75f, 0.0f, 1.75f));
+
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
+
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_pit.sgm"), nullptr, level);
+		obs->SetEffect(new PitEffect());
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
+
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
+
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		for (float x = -0.1; x < 0.2f; x += 0.2f)
+		{
+			for (float z = -0.1f; z < 0.2f; z += 0.2f)
+			{
+				Animatable *flame = new Animatable(RNCSTR("sprites/Fire.png"));
+				obs->AddChild(flame->Autorelease());
+				flame->SetPosition(RN::Vector3(x, 0.64f, z));
+			}
+		}
+		obs->SetEffect(new BurnEffect(1));
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
+
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_wall.sgm"), nullptr, level);
+		obs->SetEffect(new WallEffect());
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
+
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_web.sgm"), RNCSTR("models/obstacle_web_collision.sgm"), level);
+		obs->SetEffect(new SlowEffect());
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
+		
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		iceBear = new RN::Entity(RN::Model::WithName(RNCSTR("models/cow.sgm")));
 		obs->AddChild(iceBear->Autorelease());
 		iceBear->SetPosition(RN::Vector3(0.07f, 0.5f, 0.0f));
 		obs->SetEffect(new BurnEffect(1));

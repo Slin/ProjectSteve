@@ -62,6 +62,7 @@ namespace PS
 					if(stevelet && stevelet->GetWorldPosition().GetDistance(GetWorldPosition() - GetRight()*0.08f) < 0.15)
 					{
 						stevelet->SetSteveletStats(_stats);
+						StatsKnowledge::Discover(_stats);
 					}
 				});
 			}
