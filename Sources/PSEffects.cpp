@@ -29,6 +29,9 @@ namespace PS
 	
 	void SlowEffect::executeChallenge(Stevelet* steve) {
 		// Speed, Dexterity, -Gr��e		~(3, 4, -4) = 3
+		SteveStats const& stats = steve->GetSteveletStats();
+
+		steve->SetVelocity(log10(std::max(stats[Attr::SPEED] / 2 + stats[Attr::DEXTERITY] / 2 - stats[Attr::SIZE] * 2 + stats[Attr::WEIGHT], 1)));
 	}
 
 	void MilkEffect::executeChallenge(Stevelet* steve) {
