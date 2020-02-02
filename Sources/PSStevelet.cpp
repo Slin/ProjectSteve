@@ -14,7 +14,7 @@ namespace PS
 {
 	RNDefineMeta(Stevelet, Animatable)
 	
-	Stevelet::Stevelet() : Animatable(RNCSTR("sprites/stevelet/0000000.png")), _isMoving(false)
+	Stevelet::Stevelet() : Animatable(RNCSTR("sprites/stevelet/0000000.png")), _isMoving(false), _flightTime(0.0f), _flightHeight(0.0f)
 	{
 		RN::PhysXMaterial *material = new RN::PhysXMaterial();
 		RN::PhysXShape *shape = RN::PhysXSphereShape::WithRadius(0.15, material);
@@ -41,6 +41,13 @@ namespace PS
 
 	void Stevelet::Jump(float intensity) {
 		_physicsBody->ApplyForce({ 0, intensity, 0 });
+	}
+
+	void Stevelet::SetFlying(float height, float distance)
+	{
+		Jump(height);
+		_flightTime = distance/_targetVelocity;
+		_flightHeight = height;
 	}
 
 	void Stevelet::ResetVelocity() {
@@ -71,6 +78,12 @@ namespace PS
 	{
 		delta = std::min(0.05f, delta);
 		Animatable::Update(delta);
+		
+		if(_flightTime > 0.0f)
+		{
+			_physicsBody->ApplyForce({0.0f, 9.81f*0.4f*delta, 0.0f});
+		}
+		_flightTime -= delta;
 		
 		RN::Vector3 direction = _targetPosition - GetWorldPosition();
 		direction.y = 0.0f;

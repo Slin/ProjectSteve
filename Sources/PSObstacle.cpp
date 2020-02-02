@@ -62,7 +62,7 @@ namespace PS
 			}
 
 			auto aabb = GetBoundingBox();
-			aabb.maxExtend.y = 1.0f;
+			aabb.maxExtend.y = 2.0f;
 			aabb.minExtend.y = 0.45f;
 			if (!aabb.Contains(steve->GetWorldPosition())) {
 				if (steve->GetWorldPosition().z > aabb.position.z + aabb.maxExtend.z) {

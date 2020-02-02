@@ -348,7 +348,7 @@ namespace PS
 		AddLevelNode(obs->Autorelease(), false);
 			
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_pit.sgm"), level);
-		obs->SetEffect(new BurnEffect(1));
+		obs->SetEffect(new PitEffect());
 		level -> AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
 		

@@ -29,6 +29,7 @@ namespace PS
 		void ResetVelocity();
 		void SetVelocity(float velocity);
 		void Jump(float intensity);
+		void SetFlying(float height, float distance);
 		void Vanish();
 		void EnterObstacleCourse();
 		void LeaveObstacleCourse();
@@ -49,6 +50,9 @@ namespace PS
 
 		float const _defaultVelocity = 0.4f;
 		float _targetVelocity = _defaultVelocity;
+		
+		float _flightTime;
+		float _flightHeight;
 		
 		RN::PhysXDynamicBody *_physicsBody;
 		

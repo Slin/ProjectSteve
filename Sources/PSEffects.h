@@ -39,6 +39,10 @@ namespace PS
 	public:
 		void executeChallenge(Stevelet* steve) override;
 	};
+	class PitEffect : public Effect {
+	public:
+		void executeChallenge(Stevelet* steve) override;
+	};
 }
 
 #endif /* defined(__ProjectSteve_STEVELET_H_) */
