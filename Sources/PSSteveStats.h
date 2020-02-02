@@ -41,13 +41,24 @@ namespace PS
 
 			COUNT
 		};
-		const int& operator[](Attributes index) const { return _attr[static_cast<int>(index)]; }
+		int operator[](Attributes index) const { return _attr[static_cast<int>(index)]; }
 		int& operator[](Attributes index) { return _attr[static_cast<int>(index)]; }
 		
 		RN::String *GetSteveletFileName();
 		
 	private:
 		std::array<int, static_cast<int>(Attributes::COUNT)> _attr = {};
+	};
+
+	using ReducedDNA = std::array<Gene::Type, 12>;
+
+	class StatsKnowledge
+	{
+	public:
+		static void Discover(const SteveStats& stats);
+		static int IsKnown(SteveStats::Attributes attr);
+	private:
+		static std::array<int, static_cast<int>(SteveStats::Attributes::COUNT)> s_statsKnown;
 	};
 }
 

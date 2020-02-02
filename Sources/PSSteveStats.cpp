@@ -89,6 +89,20 @@ namespace PS {
 		return RNSTR("sprites/stevelet/" << numbersToString(phenoType) << ".png");
 	}
 	
+	std::array<int, static_cast<int>(SteveStats::Attributes::COUNT)> StatsKnowledge::s_statsKnown = {};
 
+	void StatsKnowledge::Discover(const SteveStats& stats)
+	{
+		for (int i = 0; i < 12; ++i)
+		{
+			const Attr attr = static_cast<Attr>(i);
+			s_statsKnown[i] = std::max(s_statsKnown[i], stats[attr]);
+		}
+	}
+
+	int StatsKnowledge::IsKnown(SteveStats::Attributes attr)
+	{
+		return s_statsKnown[static_cast<size_t>(attr)];
+	}
 
 }
