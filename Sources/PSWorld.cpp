@@ -476,7 +476,8 @@ namespace PS
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		RN::Entity *iceBear = new RN::Entity(RN::Model::WithName(RNCSTR("models/cow.sgm")));
 		obs->AddChild(iceBear->Autorelease());
-		iceBear->SetPosition(RN::Vector3(0.07f, 0.5f, 0.0f));
+		iceBear->SetPosition(RN::Vector3(-0.07f, 0.5f, 0.0f));
+		iceBear->SetRotation(RN::Vector3(180.0f, 0.0f, 0.0f));
 		obs->SetEffect(new FightEffect());
 		level->AddObstacle(obs);
 		required.push_back(obs);

@@ -15,7 +15,7 @@ namespace PS
 {
 	RNDefineMeta(Stevelet, Animatable)
 	
-	Stevelet::Stevelet() : Animatable(RNCSTR("sprites/stevelet/0000000.png")), _isMoving(false), _flightTime(0.0f), _flightHeight(0.0f)
+	Stevelet::Stevelet() : Animatable(RNCSTR("sprites/stevelet/0000000.png")), _isMoving(false), _isInObstacle(false), _flightTime(0.0f), _flightHeight(0.0f)
 	{
 		RN::PhysXMaterial *material = new RN::PhysXMaterial();
 		RN::PhysXShape *shape = RN::PhysXSphereShape::WithRadius(0.15, material);
@@ -26,6 +26,7 @@ namespace PS
 
 	void Stevelet::Kill() {
 		_isMoving = false;
+		_isInObstacle = false;
 
 		_completedObstacles.clear();
 
@@ -45,7 +46,7 @@ namespace PS
 	}
 
 	void Stevelet::Jump(float intensity, float velocity) {
-		_physicsBody->ApplyForce({ 0, intensity, 0 });
+		_physicsBody->ApplyImpulse({ 0, intensity*0.017f, 0 });
 		SetVelocity(velocity);
 	}
 
@@ -72,6 +73,7 @@ namespace PS
 
 	void Stevelet::EnterObstacleCourse(RN::Vector3 position)
 	{
+		_isInObstacle = true;
 		_physicsBody->SetLinearVelocity(RN::Vector3());
 		ResetVelocity();
 		SetTargetPosition(position);
@@ -85,6 +87,7 @@ namespace PS
 
 	void Stevelet::LeaveObstacleCourse()
 	{
+		_isInObstacle = false;
 		float offset = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(1.3f, 2.4f);
 		
 		if(GetForward().x > GetForward().z) SetTargetPosition(RN::Vector3(GetWorldPosition().x, GetWorldPosition().y, GetWorldPosition().z - offset));
@@ -104,12 +107,12 @@ namespace PS
 		
 		if(_flightTime > 0.0f)
 		{
-			_physicsBody->ApplyForce({0.0f, 9.81f*0.4f*delta, 0.0f});
+			_physicsBody->ApplyForce({0.0f, 9.81f*0.5f*0.013f, 0.0f});
 		}
 		_flightTime -= delta;
 
 		if (_climbTime > 0.0f) {
-			if(_physicsBody->GetLinearVelocity().y < 1.0f) _physicsBody->ApplyForce({ 0.0f, 13.0f * 0.5f * delta, 0.0f });
+			if(_physicsBody->GetLinearVelocity().y < 1.0f) _physicsBody->ApplyForce({ 0.0f, 13.0f * 0.5f * 0.017f, 0.0f });
 			_climbTime -= delta;
 
 			float newPos = GetForward().z > GetForward().x ? GetWorldPosition().z : GetWorldPosition().x;
@@ -166,8 +169,8 @@ namespace PS
 			angularVelocity *= axisAngleSpeed.w*M_PI;
 			angularVelocity /= 180.0f;
 			angularVelocity /= delta;
-			//const float l = angularVelocity.GetLength();
-			//if(l > 60.f) angularVelocity *= 60.f / l;
+			const float l = angularVelocity.GetLength();
+			if(!_isInObstacle && l > 60.f) angularVelocity *= 60.f / l;
 			_physicsBody->SetAngularVelocity(angularVelocity * 0.1f);
 		}
 	}

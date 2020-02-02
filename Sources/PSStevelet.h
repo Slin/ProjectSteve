@@ -50,6 +50,7 @@ namespace PS
 		RN::Vector3 _targetPosition;
 		RN::Quaternion _targetRotation;
 		bool _isMoving;
+		bool _isInObstacle;
 
 		std::set<Obstacle*> _completedObstacles;
 		
