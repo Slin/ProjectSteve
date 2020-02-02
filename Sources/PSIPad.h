@@ -14,6 +14,7 @@
 #include "RNOpenALWorld.h"
 #include "Sources/RNUI.h"
 #include "PSGrabbable.h"
+#include "PSHelix.h"
 
 namespace PS
 {
@@ -25,7 +26,7 @@ namespace PS
 		
 		void CreateUI();
 		void Update(float delta) override;
-
+		void UpdateAttributes(const DNA& dna);
 	private:
 		void UpdateCursorPosition();
 		void UpdateUI(float delta);
@@ -47,6 +48,7 @@ namespace PS
 		RN::PhysXDynamicBody *_physicsBody;
 		
 		RN::UI::ScrollView *_levelScrollView;
+		RN::UI::View* _attributesView;
 		
 		RNDeclareMeta(Grabbable)
 	};

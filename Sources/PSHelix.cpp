@@ -9,6 +9,7 @@
 #include "PSHelix.h"
 #include "PSWorld.h"
 #include "PSSpawner.h"
+#include "PSIPad.h"
 
 namespace PS
 {
@@ -82,13 +83,14 @@ namespace PS
 		target.RemoveFlags(RN::SceneNode::Flags::Hidden);
 		target.SetType(newGene.GetType());
 		target.DisablePhysics();
+		World* world = World::GetSharedInstance();
+		world->GetIPad()->UpdateAttributes(_genes);
 		if(target.GetSpawner())
 		{
 			target.GetSpawner()->ReturnToPool(&target);
 		}
 		else
 		{
-			World* world = World::GetSharedInstance();
 			world->RemoveLevelNode(&newGene);
 		}
 	}

@@ -311,10 +311,10 @@ namespace PS
 		syringeSpawner->SetWorldPosition(RN::Vector3(1.6 - (1.0f+0.8f), 0.82f, -1.75f));
 		syringeSpawner->Rotate(RN::Vector3(90.0f, 0.0f, 0.0f));
 		
-		IPad *ipad = new IPad();
-		AddLevelNode(ipad->Autorelease(), true);
-		ipad->SetWorldPosition(RN::Vector3(1.6 - (-0.875f+0.8f), 0.82f, -1.75f));
-		ipad->SetRotation(RN::Vector3(0.0f, -90.0f, 0.0f));
+		_ipad = new IPad();
+		AddLevelNode(_ipad->Autorelease(), true);
+		_ipad->SetWorldPosition(RN::Vector3(1.6 - (-0.875f+0.8f), 0.82f, -1.75f));
+		_ipad->SetRotation(RN::Vector3(0.0f, -90.0f, 0.0f));
 		
 		_helix = new Helix(*this);
 		AddLevelNode(_helix->Autorelease(), false);
