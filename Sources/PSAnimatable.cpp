@@ -17,14 +17,17 @@ namespace PS
 		: _animationTimer(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0.0f, 1.0f))
 	{
 		bool isSprite = false;
-		if(spriteName->HasSuffix(RNCSTR(".sgm")))
-		{
-			_model = RN::Model::WithName(spriteName)->Copy();
-		}
-		else
-		{
-			_model = RN::Model::WithName(RNCSTR("sprites/stevelet/stevelet.sgm"))->Copy();
-			isSprite = true;
+		if (!spriteName) _model = RN::Model::WithName(RNCSTR("sprites/stevelet/stevelet.sgm"))->Copy();
+		else {
+			if (spriteName->HasSuffix(RNCSTR(".sgm")))
+			{
+				_model = RN::Model::WithName(spriteName)->Copy();
+			}
+			else
+			{
+				_model = RN::Model::WithName(RNCSTR("sprites/stevelet/stevelet.sgm"))->Copy();
+				isSprite = true;
+			}
 		}
 		
 		RN::ShaderLibrary *shaderLibrary = World::GetSharedInstance()->GetShaderLibrary();
@@ -38,7 +41,7 @@ namespace PS
 		{
 			material->RemoveAllTextures();
 			material->AddTexture(RN::Texture::WithName(spriteName));
-		}
+		} else if(!spriteName) material->RemoveAllTextures();
 		material->SetAlphaToCoverage(true);
 		material->SetVertexShader(shaderLibrary->GetShaderWithName(RNCSTR("main_vertex"), shaderOptions), RN::Shader::UsageHint::Default);
 		material->SetFragmentShader(shaderLibrary->GetShaderWithName(RNCSTR("main_fragment"), shaderOptions), RN::Shader::UsageHint::Default);

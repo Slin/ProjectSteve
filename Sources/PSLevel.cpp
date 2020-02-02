@@ -14,6 +14,12 @@ namespace PS
 {
 	RNDefineMeta(Level, RN::Entity)
 
+	Level::Level() {
+	/*	auto obs = new PS::Obstacle(0.5f, this);
+		AddObstacle(obs);
+		PS::World::GetSharedInstance()->AddLevelNode(obs->Autorelease(), false);*/
+	}
+
 	void Level::AddObstacle(Obstacle* obst) {
 		auto position = CalculateEndPosition();
 		position.z -= obst->GetBoundingBox().minExtend.z;
@@ -58,7 +64,7 @@ namespace PS
 			if ((*it)->IsReached(steve->GetWorldPosition().z)) {
 				(*it)->AssignStevelet(steve);
 
-				auto position = RN::Vector3(GetWorldPosition().x, GetWorldPosition().y, (*it)->GetZTreshold());
+				auto position = RN::Vector3(GetWorldPosition().x, GetWorldPosition().y, (*it)->GetZTreshold() + 0.05f);
 				steve->SetWorldPosition(position);
 				break;
 			}

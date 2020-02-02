@@ -13,6 +13,14 @@
 namespace PS
 {
 	RNDefineMeta(Obstacle, Animatable)
+
+	Obstacle::Obstacle(float zLength, Level* parent) : Animatable(nullptr), _parent{ parent } {
+		_isEmpty = true;
+		auto aabb = GetBoundingBox();
+		aabb.minExtend.z = -zLength / 2;
+		aabb.maxExtend.z = zLength / 2;
+		SetBoundingBox(aabb);
+	}
 	
 	void Obstacle::AssignStevelet(Stevelet* steve) {
 		_steves.push_back(steve);
@@ -23,7 +31,7 @@ namespace PS
 	}
 
 	bool Obstacle::IsReached(float z) {
-		return z > GetZTreshold();
+		return (z > GetZTreshold() - 0.05f) && _isEmpty;
 	}
 
 	float Obstacle::GetZTreshold() {

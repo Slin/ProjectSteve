@@ -23,6 +23,7 @@ namespace PS
 	{
 	public:
 		Obstacle(RN::String const* modelName, Level* parent) : Animatable(modelName), _parent{ parent } {}
+		Obstacle(float zLength, Level* parent);
 		~Obstacle() = default;
 		void AssignStevelet(Stevelet* steve);
 		bool Contains(Stevelet* steve);
@@ -32,6 +33,7 @@ namespace PS
 	private:
 		std::vector<Stevelet*> _steves;
 		Level* _parent;
+		bool _isEmpty = false;
 		
 		RNDeclareMeta(Obstacle)
 	};

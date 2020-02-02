@@ -22,7 +22,7 @@ namespace PS
 	class Level : public RN::Entity
 	{
 	public:
-		Level() = default;
+		Level();
 		~Level() = default;
 		void AddObstacle(Obstacle* obs);
 		void AssignStevelet(Stevelet* steve);

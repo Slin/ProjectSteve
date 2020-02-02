@@ -337,10 +337,16 @@ namespace PS
 		AddLevelNode(level->Autorelease(), false);
 		level->SetWorldPosition(RN::Vector3(1.5f, 0.9f, -0.6f));
 
-		for (int i = 0; i < 7; i++) {
-			auto obs = new PS::Obstacle(RNCSTR("sprites/Fire.png"), level);
+		for (int i = 0; i < 3; i++) {
+			auto obs = new PS::Obstacle(0.5f, level);
+			level->AddObstacle(obs);
+			AddLevelNode(obs->Autorelease(), false);
+				
+			obs = new PS::Obstacle(RNCSTR("sprites/Fire.png"), level);
 			level -> AddObstacle(obs);
 			AddLevelNode(obs->Autorelease(), false);
+
+			
 		}
 	}
 
