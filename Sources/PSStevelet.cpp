@@ -30,6 +30,9 @@ Stevelet::Stevelet() : Animatable(RNCSTR("sprites/stevelet/0000000.png")), _isMo
 		_idleAudioAssets[3] = RN::AudioAsset::WithName(RNCSTR("audio/quietsch_4.ogg"))->Retain();
 		_idleAudioAssets[4] = RN::AudioAsset::WithName(RNCSTR("audio/quietsch_5.ogg"))->Retain();
 		
+		_grabAudioAssets[0] = RN::AudioAsset::WithName(RNCSTR("audio/quietsch_6.ogg"))->Retain();
+		_grabAudioAssets[1] = RN::AudioAsset::WithName(RNCSTR("audio/quietsch_7.ogg"))->Retain();
+		
 		_dieAudioAsset = RN::AudioAsset::WithName(RNCSTR("audio/die.ogg"))->Retain();
 		_changeAudioAsset = RN::AudioAsset::WithName(RNCSTR("audio/transition.ogg"))->Retain();
 		
@@ -44,6 +47,9 @@ Stevelet::Stevelet() : Animatable(RNCSTR("sprites/stevelet/0000000.png")), _isMo
 		_idleAudioAssets[2]->Release();
 		_idleAudioAssets[3]->Release();
 		_idleAudioAssets[4]->Release();
+		
+		_grabAudioAssets[0]->Release();
+		_grabAudioAssets[1]->Release();
 		
 		_dieAudioAsset->Release();
 		_changeAudioAsset->Release();
@@ -151,11 +157,22 @@ Stevelet::Stevelet() : Animatable(RNCSTR("sprites/stevelet/0000000.png")), _isMo
 		delta = std::min(0.05f, delta);
 		Animatable::Update(delta);
 		
+		if(_isGrabbed && !_wasGrabbed)
+		{
+			if(!_audioSource->IsPlaying())
+			{
+				_audioSource->SetAudioAsset(_grabAudioAssets[RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomInt32Range(0, 2)]);
+				_audioSource->Seek(0.0f);
+				_audioSource->Play();
+			}
+		}
+		_wasGrabbed = _isGrabbed;
+		
 		if(_idleAudioTimer < 0.0f)
 		{
 			if(!_audioSource->IsPlaying() && !_isInObstacle)
 			{
-				_audioSource->SetAudioAsset(_idleAudioAssets[RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomInt32Range(0, 4)]);
+				_audioSource->SetAudioAsset(_idleAudioAssets[RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomInt32Range(0, 5)]);
 				_audioSource->Seek(0.0f);
 				_audioSource->Play();
 			}

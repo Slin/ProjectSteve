@@ -56,6 +56,7 @@ namespace PS
 		Syringe *_lastSyringe;
 		
 		RN::AudioAsset *_idleAudioAssets[5];
+		RN::AudioAsset *_grabAudioAssets[2];
 		RN::AudioAsset *_dieAudioAsset;
 		RN::AudioAsset *_changeAudioAsset;
 		
@@ -75,6 +76,8 @@ namespace PS
 
 		float _climbTime;
 		float _climbZ;
+		
+		bool _wasGrabbed = false;
 		
 		RN::PhysXDynamicBody *_physicsBody;
 		
