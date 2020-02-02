@@ -57,12 +57,11 @@ namespace PS
 			
 			if(_fillPercentage < 1.0f-RN::k::EpsilonFloat)
 			{
-				SteveStats steveStats;
 				World::GetSharedInstance()->GetGrabbableObjects()->Enumerate<Grabbable>([&](Grabbable *grabbable, size_t index, bool &stop){
 					Stevelet *stevelet = grabbable->Downcast<Stevelet>();
 					if(stevelet && stevelet->GetWorldPosition().GetDistance(GetWorldPosition() - GetRight()*0.08f) < 0.15)
 					{
-						stevelet->SetSteveletStats(steveStats);
+						stevelet->SetSteveletStats(_stats);
 					}
 				});
 			}
@@ -89,5 +88,10 @@ namespace PS
 	void Syringe::Trigger()
 	{
 		_isAnimating = true;
+	}
+
+	void Syringe::SetDNA(const DNA& dna)
+	{
+		_stats = SteveStats(dna);
 	}
 }

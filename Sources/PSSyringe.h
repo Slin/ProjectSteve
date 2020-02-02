@@ -30,6 +30,8 @@ namespace PS
 		void Trigger();
 		void Reset() override;
 		
+		void SetDNA(const DNA& dna);
+		
 	private:
 		RN::PhysXDynamicBody *_physicsBody;
 		RN::Entity *_fluidEntity;
@@ -37,6 +39,8 @@ namespace PS
 		
 		float _fillPercentage;
 		bool _isAnimating;
+		
+		SteveStats _stats;
 		
 		RNDeclareMeta(Syringe)
 	};

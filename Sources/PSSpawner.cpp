@@ -83,6 +83,10 @@ namespace PS
 		
 		if(_currentObject && _currentObject->GetWorldPosition().GetDistance(GetWorldPosition()) > 0.3f)
 		{
+			if(_type == ObjectType::SyringeType)
+			{
+				_currentObject->Downcast<Syringe>()->SetDNA(World::GetSharedInstance()->GetHelix()->GetDNA());
+			}
 			_currentObject = nullptr;
 		}
 		
@@ -118,6 +122,11 @@ namespace PS
 				firstObject->SetWorldPosition(GetWorldPosition());
 				firstObject->SetWorldRotation(GetWorldRotation());
 				_currentObject = firstObject;
+			}
+			
+			if(_type == ObjectType::SyringeType)
+			{
+				_currentObject->Downcast<Syringe>()->SetDNA(World::GetSharedInstance()->GetHelix()->GetDNA());
 			}
 		}
 	}

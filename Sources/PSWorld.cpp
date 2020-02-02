@@ -309,9 +309,9 @@ namespace PS
 		AddLevelNode(syringeSpawner->Autorelease(), false);
 		syringeSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, 1.0f));
 		
-		Helix *helix = new Helix(*this);
-		AddLevelNode(helix->Autorelease(), false);
-		helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.625f));
+		_helix = new Helix(*this);
+		AddLevelNode(_helix->Autorelease(), false);
+		_helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.625f));
 		
 		Spawner *geneGreenSpawner = new Spawner(Spawner::ObjectType::GeneCType, 20);
 		AddLevelNode(geneGreenSpawner->Autorelease(), false);
