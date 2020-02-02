@@ -8,6 +8,7 @@
 
 #include "PSHelix.h"
 #include "PSWorld.h"
+#include "PSSpawner.h"
 
 namespace PS
 {
@@ -78,8 +79,16 @@ namespace PS
 	{
 		target.RemoveFlags(RN::SceneNode::Flags::Hidden);
 		target.SetType(newGene.GetType());
-		World* world = World::GetSharedInstance();
-		world->RemoveLevelNode(&newGene);
+		target.DisablePhysics();
+		if(target.GetSpawner())
+		{
+			target.GetSpawner()->ReturnToPool(&target);
+		}
+		else
+		{
+			World* world = World::GetSharedInstance();
+			world->RemoveLevelNode(&newGene);
+		}
 	}
 
 	RNDefineMeta(Gene, Grabbable)
@@ -89,7 +98,7 @@ namespace PS
 		_physicsBody(nullptr), 
 		_type(type)
 	{
-		
+		_spawner = nullptr;
 	}
 
 	void Gene::EnablePhysics()

@@ -11,7 +11,7 @@
 using Attr = PS::SteveStats::Attributes;
 namespace PS
 {
-	BurnEffect::BurnEffect(int _intensity = 5) : intensity{ _intensity } {};
+	BurnEffect::BurnEffect(int _intensity) : intensity{ _intensity } {};
 
 	void BurnEffect::executeChallenge(Stevelet* steve) {
 		// Speed, KFA, Shell			~(4, 3, /) = 7
@@ -28,7 +28,7 @@ namespace PS
 	}
 	
 	void SlowEffect::executeChallenge(Stevelet* steve) {
-		// Speed, Dexterity, -Größe		~(3, 4, -4) = 3
+		// Speed, Dexterity, -Grï¿½ï¿½e		~(3, 4, -4) = 3
 	}
 
 	void MilkEffect::executeChallenge(Stevelet* steve) {

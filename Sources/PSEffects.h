@@ -22,7 +22,7 @@ namespace PS
 
 	class BurnEffect : public Effect {
 	public:
-		BurnEffect(int _intensity);
+		BurnEffect(int _intensity = 5);
 		void executeChallenge(Stevelet* steve) override;
 	private:
 		int intensity;
