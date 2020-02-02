@@ -86,15 +86,18 @@ namespace PS
 			SetTargetPosition(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomVector3Range(RN::Vector3(-1.7f, 0.15f, -1.7f), RN::Vector3(1.7f, 0.15f, 1.7f)));
 		}
 		
-		if(_isGrabbed && _physicsEnabled)
+		if(_physicsEnabled)
 		{
-			_physicsBody->SetLinearVelocity(RN::Vector3());
-		}
-		
-		if(_wantsThrow && _physicsEnabled)
-		{
-			_physicsBody->SetLinearVelocity(_currentGrabbedSpeed);
-			_wantsThrow = false;
+			if(_isGrabbed)
+			{
+				_physicsBody->SetLinearVelocity(RN::Vector3(0.0f, 9.81f*delta, 0.0f));
+			}
+			
+			if(_wantsThrow)
+			{
+				_physicsBody->SetLinearVelocity(_currentGrabbedSpeed);
+				_wantsThrow = false;
+			}
 		}
 		
 		if(delta > RN::k::EpsilonFloat)

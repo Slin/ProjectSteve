@@ -16,6 +16,7 @@
 #include "PSLevel.h"
 #include "PSObstacle.h"
 #include "PSSpawner.h"
+#include "PSIPad.h"
 
 #if RN_PLATFORM_ANDROID
 	#include "RNOculusMobileWindow.h"
@@ -309,9 +310,14 @@ namespace PS
 		AddLevelNode(syringeSpawner->Autorelease(), false);
 		syringeSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, 1.0f));
 		
-		Helix *helix = new Helix(*this);
-		AddLevelNode(helix->Autorelease(), false);
-		helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.625f));
+		IPad *ipad = new IPad();
+		AddLevelNode(ipad->Autorelease(), true);
+		ipad->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, 1.5f));
+		ipad->SetRotation(RN::Vector3(180.0f, -90.0f, 0.0f));
+		
+		_helix = new Helix(*this);
+		AddLevelNode(_helix->Autorelease(), false);
+		_helix->SetWorldPosition(RN::Vector3(-1.5f, 0.8f, 0.625f));
 		
 		Spawner *geneGreenSpawner = new Spawner(Spawner::ObjectType::GeneCType, 20);
 		AddLevelNode(geneGreenSpawner->Autorelease(), false);

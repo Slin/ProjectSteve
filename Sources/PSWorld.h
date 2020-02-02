@@ -20,6 +20,7 @@ namespace PS
 {
 	class Player;
 	class Grabbable;
+	class Helix;
 
 	class World : public RN::SceneBasic
 	{
@@ -44,6 +45,7 @@ namespace PS
 		RN::ShaderLibrary *GetShaderLibrary() const { return _shaderLibrary; }
 		RN::SceneNode *GetCamera() const { return _mainCamera; }
 		Player *GetPlayer() const { return _player; }
+		Helix *GetHelix() const { return _helix; }
 		
 		Grabbable* GetClosestGrabbableObject(RN::Vector3 position);
 		std::pair<Grabbable*,float> GetClosestGrabbableObject(RN::Vector2 coordinate);
@@ -74,6 +76,7 @@ namespace PS
 		RN::Array *_levelNodes;
 		RN::Array *_grabbableObjects;
 
+		Helix *_helix;
 		Player *_player;
 		RN::Camera *_shadowCamera;
 		RN::VRCamera *_vrCamera;

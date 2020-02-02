@@ -80,7 +80,8 @@ set(SOURCES
 	Sources/PSLevel.cpp
 	Sources/PSSpawner.cpp
 	Sources/PSGrabbable.cpp
-	Sources/PSEffects.cpp)
+	Sources/PSEffects.cpp
+	Sources/PSIPad.cpp)
 
 set(HEADERS
 	Sources/PSApplication.h
@@ -97,7 +98,8 @@ set(HEADERS
 	Sources/PSGrabbable.h
 	Sources/PSSpawner.h
 	Sources/PSEffect.h
-	Sources/PSEffects.h)
+	Sources/PSEffects.h
+	Sources/PSIPad.h)
 
 set(RESOURCES
 	manifest.json

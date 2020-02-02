@@ -56,6 +56,9 @@ namespace PS
 		// @return copy of the gene to move around or nullptr if the given gene is already missing
 		Gene* PickGene(Gene& gene);
 		void PlaceGene(Gene& target, Gene& newGene);
+		
+		const DNA &GetDNA() const { return _genes; }
+		
 	private:
 		DNA _genes;
 		RNDeclareMeta(Helix)
