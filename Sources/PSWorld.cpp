@@ -300,7 +300,6 @@ namespace PS
 		levelBody->SetCollisionFilter(World::CollisionType::Level, World::CollisionType::All);
 		levelEntity->AddAttachment(levelBody);
 		
-		
 		RN::Model *tableModel = AssignDefaultShader(RN::Model::WithName(RNCSTR("models/table.sgm")), false);
 		RN::Entity *tableEntity = new RN::Entity(tableModel);
 		AddLevelNode(tableEntity->Autorelease(), false);
@@ -309,6 +308,10 @@ namespace PS
 		RN::PhysXStaticBody *tableBody = RN::PhysXStaticBody::WithShape(tableShape);
 		tableBody->SetCollisionFilter(World::CollisionType::Level, World::CollisionType::All);
 		tableEntity->AddAttachment(tableBody);
+		
+		RN::Model *detailsModel = AssignDefaultShader(RN::Model::WithName(RNCSTR("models/room_details.sgm")), false);
+		RN::Entity *detailsEntity = new RN::Entity(detailsModel);
+		AddLevelNode(detailsEntity->Autorelease(), false);
 		
 		
 		Spawner *syringeSpawner = new Spawner(Spawner::ObjectType::SyringeType, 20);
