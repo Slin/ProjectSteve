@@ -363,17 +363,14 @@ namespace PS
 		AddLevelNode(obs->Autorelease(), false);
 
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
-		level->AddObstacle(obs);
-		AddLevelNode(obs->Autorelease(), false);
-
-		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		for (float x = -0.1; x < 0.2f; x += 0.2f)
 		{
 			for (float z = -0.1f; z < 0.2f; z += 0.2f)
 			{
 				Animatable *flame = new Animatable(RNCSTR("sprites/Fire.png"));
 				obs->AddChild(flame->Autorelease());
-				flame->SetPosition(RN::Vector3(x, 0.64f, z));
+				flame->SetPosition(RN::Vector3(x, 0.57f, z));
+				flame->SetScale(RN::Vector3(0.5f, 0.5f, 0.5f));
 			}
 		}
 		obs->SetEffect(new BurnEffect(1));
@@ -384,6 +381,10 @@ namespace PS
 		obs->SetEffect(new WallEffect());
 		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
+		
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
 
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_web.sgm"), RNCSTR("models/obstacle_web_collision.sgm"), level);
 		obs->SetEffect(new SlowEffect());
@@ -391,10 +392,17 @@ namespace PS
 		AddLevelNode(obs->Autorelease(), false);
 		
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
-		RN::Entity *iceBear = new RN::Entity(RN::Model::WithName(RNCSTR("models/cow.sgm")));
-		obs->AddChild(iceBear->Autorelease());
-		iceBear->SetPosition(RN::Vector3(0.07f, 0.5f, 0.0f));
-		obs->SetEffect(new BurnEffect(1));
+		for (float x = -0.1; x < 0.2f; x += 0.2f)
+		{
+			for (float z = -0.1f; z < 0.2f; z += 0.2f)
+			{
+				Animatable *flame = new Animatable(RNCSTR("sprites/Fire.png"));
+				obs->AddChild(flame->Autorelease());
+				flame->SetPosition(RN::Vector3(x, 0.60f, z));
+				flame->SetScale(RN::Vector3(0.75f, 0.75f, 0.75f));
+			}
+		}
+		obs->SetEffect(new BurnEffect(2));
 		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
 		
@@ -413,6 +421,11 @@ namespace PS
 		AddLevelNode(obs->Autorelease(), false);
 
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		Animatable *milk = new Animatable(RNCSTR("sprites/Milk.png"));
+		milk->isAnimated = false;
+		milk->GetModel()->GetLODStage(0)->GetMaterialAtIndex(0)->SetSpecularColor(RN::Color::WithRGBA(1.0f, 4.0f, 0.0f, 0.0f));
+		obs->AddChild(milk->Autorelease());
+		milk->SetPosition(RN::Vector3(0.0f, 0.64f, 0.0f));
 		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
@@ -426,7 +439,7 @@ namespace PS
 				flame->SetPosition(RN::Vector3(x, 0.64f, z));
 			}
 		}
-		obs->SetEffect(new BurnEffect(1));
+		obs->SetEffect(new BurnEffect(3));
 		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
 
@@ -441,7 +454,7 @@ namespace PS
 		AddLevelNode(obs->Autorelease(), false);
 		
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
-		iceBear = new RN::Entity(RN::Model::WithName(RNCSTR("models/cow.sgm")));
+		RN::Entity *iceBear = new RN::Entity(RN::Model::WithName(RNCSTR("models/cow.sgm")));
 		obs->AddChild(iceBear->Autorelease());
 		iceBear->SetPosition(RN::Vector3(0.07f, 0.5f, 0.0f));
 		obs->SetEffect(new BurnEffect(1));
