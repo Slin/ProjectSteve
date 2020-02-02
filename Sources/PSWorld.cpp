@@ -341,20 +341,26 @@ namespace PS
 
 		auto level = new PS::Level();
 		AddLevelNode(level->Autorelease(), false);
-		level->SetWorldPosition(RN::Vector3(1.5f, 0.9f, -0.6f));
+		level->SetWorldPosition(RN::Vector3(1.5f, 0.4f, -1.75f));
 
-		for (int i = 0; i < 3; i++) {
-			auto obs = new PS::Obstacle(0.5f, level);
-			level->AddObstacle(obs);
-			AddLevelNode(obs->Autorelease(), false);
-				
-			obs = new PS::Obstacle(RNCSTR("sprites/Fire.png"), level);
-			obs->SetEffect(new BurnEffect(i * 2 + 1));
-			level -> AddObstacle(obs);
-			AddLevelNode(obs->Autorelease(), false);
-
+		auto obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), level);
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
 			
-		}
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_pit.sgm"), level);
+		obs->SetEffect(new BurnEffect(1));
+		level -> AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
+		
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_wall.sgm"), level);
+		obs->SetEffect(new BurnEffect(2));
+		level -> AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
+		
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_web.sgm"), level);
+		obs->SetEffect(new BurnEffect(3));
+		level -> AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
 	}
 
 	void World::UpdateForWindowSize() const

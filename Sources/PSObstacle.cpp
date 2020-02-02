@@ -14,13 +14,15 @@ namespace PS
 {
 	RNDefineMeta(Obstacle, Animatable)
 
-	Obstacle::Obstacle(float zLength, Level* parent) : Animatable(nullptr), _parent{ parent } {
-		_isEmpty = true;
-		auto aabb = GetBoundingBox();
-		aabb.minExtend.z = -zLength / 2;
-		aabb.maxExtend.z = zLength / 2;
-		SetBoundingBox(aabb);
+	Obstacle::Obstacle(RN::String const* modelName, Level* parent) : Animatable(modelName), _parent{ parent }
+	{
+		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
+		RN::PhysXCompoundShape *levelShape = RN::PhysXCompoundShape::WithModel(GetModel(), levelPhysicsMaterial->Autorelease(), true);
+		RN::PhysXStaticBody *levelBody = RN::PhysXStaticBody::WithShape(levelShape);
+		levelBody->SetCollisionFilter(World::CollisionType::Level, World::CollisionType::All);
+		AddAttachment(levelBody);
 	}
+
 	Obstacle::~Obstacle() {
 		if (_effect) delete _effect;
 	}
@@ -41,7 +43,7 @@ namespace PS
 	}
 
 	bool Obstacle::IsReached(float z) {
-		return (z > GetZTreshold() - 0.05f) && _isEmpty;
+		return (z > GetZTreshold() - 0.05f);
 	}
 
 	float Obstacle::GetZTreshold() {
@@ -60,6 +62,7 @@ namespace PS
 			}
 
 			auto aabb = GetBoundingBox();
+			aabb.maxExtend.y = 1.0f;
 			if (!aabb.Contains(steve->GetWorldPosition())) {
 				if (steve->GetWorldPosition().z > aabb.position.z + aabb.maxExtend.z) {
 					_parent->FreeStevelet(steve, this);

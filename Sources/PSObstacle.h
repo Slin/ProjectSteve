@@ -23,8 +23,7 @@ namespace PS
 	class Obstacle : public Animatable
 	{
 	public:
-		Obstacle(RN::String const* modelName, Level* parent) : Animatable(modelName), _parent{ parent } {};
-		Obstacle(float zLength, Level* parent);
+		Obstacle(RN::String const* modelName, Level* parent);
 		~Obstacle();
 		void SetEffect(Effect* effect);
 		void AssignStevelet(Stevelet* steve);
@@ -35,7 +34,6 @@ namespace PS
 	private:
 		std::vector<Stevelet*> _steves;
 		Level* _parent;
-		bool _isEmpty = false;
 		Effect* _effect = new NoEffect();
 		
 		RNDeclareMeta(Obstacle)

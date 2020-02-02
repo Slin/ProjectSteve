@@ -31,6 +31,7 @@ namespace PS
 			return;
 		}
 
+		RNDebug("kill");
 		_spawner->ReturnToPool(this);
 	}
 
@@ -54,12 +55,16 @@ namespace PS
 	{
 		_physicsBody->SetLinearVelocity(RN::Vector3());
 		SetTargetPosition(RN::Vector3(GetWorldPosition().x, GetWorldPosition().y, GetWorldPosition().z + 100.0f));
+		
+		RNDebug("Enter ObstacleBlubb");
 	}
 
 	void Stevelet::LeaveObstacleCourse()
 	{
 		float offset = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(1.3f, 2.4f);
 		SetTargetPosition(RN::Vector3(GetWorldPosition().x - offset, GetWorldPosition().y, GetWorldPosition().z));
+		
+		RNDebug("Leave ObstacleBlubb");
 	}
 
 	void Stevelet::Update(float delta)
@@ -73,7 +78,9 @@ namespace PS
 		{
 			if(_isMoving)
 			{
-				if(_physicsBody->GetLinearVelocity().GetLength() < _targetVelocity)
+				RN::Vector3 linearVelocity = _physicsBody->GetLinearVelocity();
+				linearVelocity.y = 0.0f;
+				if(linearVelocity.GetLength() < _targetVelocity)
 					_physicsBody->ApplyForce(direction.Normalize() * 0.08f);
 			}
 		}
