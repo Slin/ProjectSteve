@@ -343,6 +343,7 @@ namespace PS
 			AddLevelNode(obs->Autorelease(), false);
 				
 			obs = new PS::Obstacle(RNCSTR("sprites/Fire.png"), level);
+			obs->SetEffect(new BurnEffect(i * 2 + 1));
 			level -> AddObstacle(obs);
 			AddLevelNode(obs->Autorelease(), false);
 

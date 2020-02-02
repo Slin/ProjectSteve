@@ -33,15 +33,32 @@ namespace PS
 		_spawner->ReturnToPool(this);
 	}
 
+	void Stevelet::Vanish() {
+		SetWorldPosition({ 42, 42, 42 });
+	}
+
+	void Stevelet::Jump(float intensity) {
+		_physicsBody->ApplyForce({ 0, intensity, 0 });
+	}
+
+	void Stevelet::ResetVelocity() {
+		_targetVelocity = _defaultVelocity;
+	}
+
+	void Stevelet::SetVelocity(float velocity) {
+		_targetVelocity = velocity;
+	}
+
 	void Stevelet::EnterObstacleCourse()
 	{
 		_physicsBody->SetLinearVelocity(RN::Vector3());
-		SetTargetPosition(RN::Vector3(GetWorldPosition().x, GetWorldPosition().y, GetWorldPosition().z + 2.0f));
+		SetTargetPosition(RN::Vector3(GetWorldPosition().x, GetWorldPosition().y, GetWorldPosition().z + 100.0f));
 	}
 
 	void Stevelet::LeaveObstacleCourse()
 	{
-		_isMoving = false;
+		float offset = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(1.3f, 2.4f);
+		SetTargetPosition(RN::Vector3(GetWorldPosition().x - offset, GetWorldPosition().y, GetWorldPosition().z));
 	}
 
 	void Stevelet::Update(float delta)
@@ -118,6 +135,10 @@ namespace PS
 	{
 		_stats = stats;
 		SetTexture(_stats.GetSteveletFileName());
+	}
+
+	SteveStats const& Stevelet::GetSteveletStats() {
+		return _stats;
 	}
 
 	void Stevelet::SetTexture(RN::String *file)

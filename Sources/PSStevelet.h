@@ -26,6 +26,10 @@ namespace PS
 		void Update(float delta) override;
 
 		void Kill();
+		void ResetVelocity();
+		void SetVelocity(float velocity);
+		void Jump(float intensity);
+		void Vanish();
 		void EnterObstacleCourse();
 		void LeaveObstacleCourse();
 		
@@ -33,6 +37,7 @@ namespace PS
 		void SetTargetRotation(RN::Quaternion rotation);
 		
 		void SetSteveletStats(const SteveStats &stats);
+		SteveStats const& GetSteveletStats();
 		
 	private:
 		SteveStats _stats;
@@ -42,7 +47,8 @@ namespace PS
 		
 		void SetTexture(RN::String *file);
 
-		float const _targetVelocity = 0.4f;
+		float const _defaultVelocity = 0.4f;
+		float _targetVelocity = _defaultVelocity;
 		
 		RN::PhysXDynamicBody *_physicsBody;
 		bool _physicsEnabled = true;

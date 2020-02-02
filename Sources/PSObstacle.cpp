@@ -21,9 +21,19 @@ namespace PS
 		aabb.maxExtend.z = zLength / 2;
 		SetBoundingBox(aabb);
 	}
+	Obstacle::~Obstacle() {
+		if (_effect) delete _effect;
+	}
+
+	void Obstacle::SetEffect(Effect* effect) {
+		if (_effect) delete _effect;
+		_effect = effect;
+	}
 	
 	void Obstacle::AssignStevelet(Stevelet* steve) {
 		_steves.push_back(steve);
+		steve->ResetVelocity();
+		_effect->executeChallenge(steve);
 	}
 
 	bool Obstacle::Contains(Stevelet* steve) {
