@@ -355,7 +355,20 @@ namespace PS
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
 		level->AddObstacle(obs);
 		AddLevelNode(obs->Autorelease(), false);
-
+		
+		obs = new PS::Obstacle(RNCSTR("models/obstacle_empty.sgm"), nullptr, level);
+		for(float x = -0.1; x < 0.2f; x += 0.2f)
+		{
+			for(float z = -0.1f; z < 0.2f; z += 0.2f)
+			{
+				Animatable *flame = new Animatable(RNCSTR("sprites/Fire.png"));
+				obs->AddChild(flame->Autorelease());
+				flame->SetPosition(RN::Vector3(x, 0.64f, z));
+			}
+		}
+		obs->SetEffect(new BurnEffect(1));
+		level->AddObstacle(obs);
+		AddLevelNode(obs->Autorelease(), false);
 		
 		obs = new PS::Obstacle(RNCSTR("models/obstacle_wall.sgm"), nullptr, level);
 		obs->SetEffect(new WallEffect());
