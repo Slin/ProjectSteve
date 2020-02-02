@@ -17,6 +17,7 @@ namespace PS
 	class SteveStats
 	{
 	public:
+		SteveStats() = default;
 		SteveStats(const DNA& dna);
 		~SteveStats() = default;
 		enum struct Attributes {
@@ -46,7 +47,7 @@ namespace PS
 		RN::String *GetSteveletFileName();
 		
 	private:
-		std::array<int, static_cast<int>(Attributes::COUNT)> _attr{};
+		std::array<int, static_cast<int>(Attributes::COUNT)> _attr = {};
 	};
 }
 

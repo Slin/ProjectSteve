@@ -8,6 +8,7 @@
 
 #include "PSStevelet.h"
 #include "PSWorld.h"
+#include "PSSpawner.h"
 
 namespace PS
 {
@@ -24,32 +25,22 @@ namespace PS
 
 	void Stevelet::Kill() {
 		if (_isGrabbed) {
-			StopMovement();
-			ResumePhysics();
+			_isMoving = false;
+			LeaveObstacleCourse();
 			return;
 		}
 
-		World::GetSharedInstance()->RemoveLevelNode(this);
+		_spawner->ReturnToPool(this);
 	}
 
-	void Stevelet::MoveForward() {
-		_isWalking = true;
-	}
-
-	void Stevelet::StopMovement() {
-		_isWalking = false;
+	void Stevelet::EnterObstacleCourse()
+	{
 		_physicsBody->SetLinearVelocity(RN::Vector3());
+		SetTargetPosition(RN::Vector3(GetWorldPosition().x, GetWorldPosition().y, GetWorldPosition().z + 2.0f));
 	}
 
-	void Stevelet::FreezePhysics() {
-		_physicsBody->ClearForces();
-		_physicsBody->SetLinearVelocity(RN::Vector3());
-		_physicsEnabled = false;
-	}
-
-	void Stevelet::ResumePhysics() {
-		StopMovement();
-		_physicsEnabled = true;
+	void Stevelet::LeaveObstacleCourse()
+	{
 		_isMoving = false;
 	}
 
@@ -64,7 +55,8 @@ namespace PS
 		{
 			if(_isMoving && _physicsEnabled)
 			{
-				_physicsBody->ApplyForce(direction.Normalize() * 0.08f);
+				if(_physicsBody->GetLinearVelocity().GetLength() < _targetVelocity)
+					_physicsBody->ApplyForce(direction.Normalize() * 0.08f);
 			}
 		}
 		else
@@ -88,23 +80,20 @@ namespace PS
 			_wantsThrow = false;
 		}
 		
-		if (delta > RN::k::EpsilonFloat) {
+		if(delta > RN::k::EpsilonFloat)
+		{
 			RN::Quaternion startRotation = GetWorldRotation();
-			if (_targetRotation.GetDotProduct(startRotation) > 0.0f)
+			if(_targetRotation.GetDotProduct(startRotation) > 0.0f)
 				startRotation = startRotation.GetConjugated();
 			RN::Quaternion rotationSpeed = _targetRotation * startRotation;
 			RN::Vector4 axisAngleSpeed = rotationSpeed.GetAxisAngle();
-			if (axisAngleSpeed.w > 180.0f)
+			if(axisAngleSpeed.w > 180.0f)
 				axisAngleSpeed.w -= 360.0f;
 			RN::Vector3 angularVelocity(axisAngleSpeed.x, axisAngleSpeed.y, axisAngleSpeed.z);
 			angularVelocity *= axisAngleSpeed.w*M_PI;
 			angularVelocity /= 180.0f;
 			angularVelocity /= delta;
 			_physicsBody->SetAngularVelocity(angularVelocity * 0.1f);
-		}
-
-		if (_isWalking) {
-			_physicsBody->SetLinearVelocity(RN::Vector3(0, 0, _targetVelocity));
 		}
 	}
 
@@ -118,8 +107,6 @@ namespace PS
 		direction.Normalize();
 		
 		_targetRotation = RN::Quaternion::WithLookAt(-direction, RN::Vector3(0.0f, 1.0f, 0.0f), false);
-		RN::Vector3 blubb = _targetRotation.GetEulerAngle();
-		RNDebug("yo: (" << blubb.x << ", " << blubb.y << ", " << blubb.z << ")");
 	}
 
 	void Stevelet::SetTargetRotation(RN::Quaternion rotation)

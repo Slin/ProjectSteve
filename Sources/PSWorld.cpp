@@ -329,7 +329,7 @@ namespace PS
 		AddLevelNode(geneRedSpawner->Autorelease(), false);
 		geneRedSpawner->SetWorldPosition(RN::Vector3(-1.5f, 0.82f, -0.5f));
 		
-		Spawner *steveletSpawner = new Spawner(Spawner::ObjectType::SteveletType, 1);
+		Spawner *steveletSpawner = new Spawner(Spawner::ObjectType::SteveletType, 5);
 		AddLevelNode(steveletSpawner->Autorelease(), false);
 		steveletSpawner->SetWorldPosition(RN::Vector3(1.5f, 0.2f, 0.75f));
 

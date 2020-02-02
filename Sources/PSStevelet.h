@@ -26,10 +26,8 @@ namespace PS
 		void Update(float delta) override;
 
 		void Kill();
-		void MoveForward();
-		void StopMovement();
-		void FreezePhysics();
-		void ResumePhysics();
+		void EnterObstacleCourse();
+		void LeaveObstacleCourse();
 		
 		void SetTargetPosition(RN::Vector3 position);
 		void SetTargetRotation(RN::Quaternion rotation);
@@ -41,7 +39,6 @@ namespace PS
 		RN::Vector3 _targetPosition;
 		RN::Quaternion _targetRotation;
 		bool _isMoving;
-		bool _isWalking = false;
 		
 		void SetTexture(RN::String *file);
 
