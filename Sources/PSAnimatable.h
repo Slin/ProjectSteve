@@ -24,6 +24,8 @@ namespace PS
 		
 		void Update(float delta) override;
 		
+		bool isAnimated = true;
+		
 	protected:
 		RN::Model* _model;
 		
