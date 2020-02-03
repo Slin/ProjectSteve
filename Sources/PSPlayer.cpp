@@ -68,7 +68,8 @@ namespace PS
 	{
 		RN::SceneNode::Update(delta);
 
-		if(World::GetSharedInstance()->IsDash())
+		RN::VRCamera *vrCamera = _camera->Downcast<RN::VRCamera>();
+		if(World::GetSharedInstance()->IsDash() || !vrCamera)
 		{
 			_handEntity[0]->AddFlags(RN::Entity::Flags::Hidden);
 			_handEntity[1]->AddFlags(RN::Entity::Flags::Hidden);
@@ -80,7 +81,6 @@ namespace PS
 		}
 
 		RN::InputManager *manager = RN::InputManager::GetSharedInstance();
-		RN::VRCamera *vrCamera = _camera->Downcast<RN::VRCamera>();
 
 		RN::Vector3 rotation(0.0);
 
@@ -115,101 +115,32 @@ namespace PS
 			RN::VRControllerTrackingState leftController = vrCamera->GetControllerTrackingState(0);
 			RN::VRControllerTrackingState rightController = vrCamera->GetControllerTrackingState(1);
 
-			bool isOneHanded = !leftController.active || !rightController.active;
-
-			if(isOneHanded)
+			if(std::abs(rightController.thumbstick.x) > 0.25f || (rightController.button[RN::VRControllerTrackingState::Button::Pad] && std::abs(rightController.trackpad.x) > 0.25f))
 			{
-				RN::VRControllerTrackingState activeController = leftController;
-				if(!activeController.active)
-					activeController = rightController;
-
-				if(activeController.active)
+				if(!_didSnapTurn)
 				{
-					if(activeController.type == RN::VRControllerTrackingState::Type::ThreeDegreesOfFreedom)
+					if(rightController.thumbstick.x > 0.25f || (rightController.button[RN::VRControllerTrackingState::Button::Pad] && rightController.trackpad.x > 0.25f))
 					{
-						//Oculus Go
-						if(activeController.button[RN::VRControllerTrackingState::Button::Pad])
-						{
-							if(!_stickIsPressed)
-							{
-								if(activeController.trackpad.x > 0.5f)
-								{
-									_camera->SetRotation(_cameraRotation - RN::Vector3(45.0f, 0.0f, 0.0f));
-									_didSnapTurn = true;
-								}
-								else if(activeController.trackpad.x < -0.5f)
-								{
-									_camera->SetRotation(_cameraRotation + RN::Vector3(45.0f, 0.0f, 0.0f));
-									_didSnapTurn = true;
-								}
-							}
-							
-							_stickIsPressed = true;
-						}
-						else
-						{
-							_stickIsPressed = false;
-							_didSnapTurn = false;
-						}
+						_camera->SetRotation(_cameraRotation - RN::Vector3(45.0f, 0.0f, 0.0f));
+						_didSnapTurn = true;
 					}
-					else
+					else if(rightController.thumbstick.x < -0.25f || (rightController.button[RN::VRControllerTrackingState::Button::Pad] && rightController.trackpad.x < -0.25f))
 					{
-						//PC VR / Quest
-						if(activeController.thumbstick.GetLength() > 0.25f || activeController.button[RN::VRControllerTrackingState::Button::Pad])
-						{
-							if(!_stickIsPressed)
-							{
-								if(activeController.thumbstick.x > 0.25f || activeController.trackpad.x > 0.5f)
-								{
-									_camera->SetRotation(_cameraRotation - RN::Vector3(45.0f, 0.0f, 0.0f));
-									_didSnapTurn = true;
-								}
-								else if(activeController.thumbstick.x < -0.25f || activeController.trackpad.x < -0.5f)
-								{
-									_camera->SetRotation(_cameraRotation + RN::Vector3(45.0f, 0.0f, 0.0f));
-									_didSnapTurn = true;
-								}
-							}
-
-							_stickIsPressed = true;
-						}
-						else
-						{
-							_stickIsPressed = false;
-							_didSnapTurn = false;
-						}
+						_camera->SetRotation(_cameraRotation + RN::Vector3(45.0f, 0.0f, 0.0f));
+						_didSnapTurn = true;
 					}
 				}
 			}
-			else //Two controllers
+			else
 			{
-				if(std::abs(rightController.thumbstick.x) > 0.25f || (rightController.button[RN::VRControllerTrackingState::Button::Pad] && std::abs(rightController.trackpad.x) > 0.25f))
-				{
-					if(!_didSnapTurn)
-					{
-						if(rightController.thumbstick.x > 0.25f || (rightController.button[RN::VRControllerTrackingState::Button::Pad] && rightController.trackpad.x > 0.25f))
-						{
-							_camera->SetRotation(_cameraRotation - RN::Vector3(45.0f, 0.0f, 0.0f));
-							_didSnapTurn = true;
-						}
-						else if(rightController.thumbstick.x < -0.25f || (rightController.button[RN::VRControllerTrackingState::Button::Pad] && rightController.trackpad.x < -0.25f))
-						{
-							_camera->SetRotation(_cameraRotation + RN::Vector3(45.0f, 0.0f, 0.0f));
-							_didSnapTurn = true;
-						}
-					}
-				}
-				else
-				{
-					_didSnapTurn = false;
-				}
-				
-				RN::Vector3 controllerRotation = leftController.rotation.GetEulerAngle();
-				controllerRotation.y = 0.0f;
-				stickTranslation += (_cameraRotation * RN::Quaternion(controllerRotation)).GetRotatedVector(RN::Vector3(leftController.thumbstick.x, 0.0f, -leftController.thumbstick.y));
-				stickTranslation.y = 0.0f;
-				stickTranslation.Normalize(1.5f * delta);
+				_didSnapTurn = false;
 			}
+			
+			RN::Vector3 controllerRotation = leftController.rotation.GetEulerAngle();
+			controllerRotation.y = 0.0f;
+			stickTranslation += (_cameraRotation * RN::Quaternion(controllerRotation)).GetRotatedVector(RN::Vector3(leftController.thumbstick.x, 0.0f, -leftController.thumbstick.y));
+			stickTranslation.y = 0.0f;
+			stickTranslation.Normalize(1.5f * delta);
 		}
 		
 		_camera->Rotate(rotation * delta * 15.0f);
@@ -253,8 +184,14 @@ namespace PS
 
 			globalTranslation = translation;
 		}
+		
+		RN::Vector3 newPosition = GetWorldPosition() + globalTranslation;
+		if(newPosition.x > 1.8f) newPosition.x = 1.8f;
+		if(newPosition.x < -1.8f) newPosition.x = -1.8f;
+		if(newPosition.z > 1.8f) newPosition.z = 1.8f;
+		if(newPosition.z < -1.8f) newPosition.z = -1.8f;
 
-		Translate(globalTranslation);
+		SetWorldPosition(newPosition);
 		
 		if(vrCamera)
 		{
@@ -282,7 +219,14 @@ namespace PS
 				controller.rotation = vrCamera->GetWorldRotation() * controller.rotation;
 				
 				_handEntity[i]->SetRotation(controller.rotation * RN::Vector3(0.0f, -45.0f, 0.0f));
-				_handEntity[i]->SetPosition(vrCamera->GetWorldPosition() - GetWorldPosition() + controller.position - _handEntity[i]->GetRotation().GetRotatedVector(RN::Vector3(0.0f, 0.0f, 0.0f)));
+				
+				RN::Vector3 newPosition = vrCamera->GetWorldPosition() + controller.position;
+				if(newPosition.x > 1.9f) newPosition.x = 1.9f;
+				if(newPosition.x < -1.9f) newPosition.x = -1.9f;
+				if(newPosition.z > 1.9f) newPosition.z = 1.9f;
+				if(newPosition.z < -1.9f) newPosition.z = -1.9f;
+				
+				_handEntity[i]->SetWorldPosition(newPosition);
 				
 				if(controller.active && controller.handTrigger > 0.1f)
 				{
@@ -346,7 +290,14 @@ namespace PS
 					else
 					{
 						const Vector3 dir = _camera->GetWorldRotation().GetRotatedVector(_grabbedObjectOffset[i]);
-						_grabbedObject[i]->SetWorldPosition(_camera->GetWorldPosition() + dir);
+						
+						RN::Vector3 newPosition = _camera->GetWorldPosition() + dir;
+						if(newPosition.x > 1.9f) newPosition.x = 1.9f;
+						if(newPosition.x < -1.9f) newPosition.x = -1.9f;
+						if(newPosition.z > 1.9f) newPosition.z = 1.9f;
+						if(newPosition.z < -1.9f) newPosition.z = -1.9f;
+						
+						_grabbedObject[i]->SetWorldPosition(newPosition);
 
 						_grabbedObject[i]->SetIsTriggered(manager->IsControlToggling(RNSTR("F")));
 					}
@@ -368,8 +319,21 @@ namespace PS
 				_grabbedObject[0]->Translate(-left);
 				_grabbedObject[1]->Translate(left);
 				const RN::Vector3 forward = _camera->GetWorldRotation().GetRotatedVector(Vector3(0.f, 0.f, 1.f));
-				_grabbedObject[0]->SetWorldRotation(RN::Quaternion::WithLookAt(_grabbedObject[0]->IsKindOfClass(Syringe::GetMetaClass()) ? -forward : left));
-				_grabbedObject[1]->SetWorldRotation(RN::Quaternion::WithLookAt(_grabbedObject[1]->IsKindOfClass(Syringe::GetMetaClass()) ? forward : -left));
+				
+				RN::Vector3 rotation = RN::Quaternion::WithLookAt(_grabbedObject[0]->IsKindOfClass(Syringe::GetMetaClass()) ? -forward : left).GetEulerAngle();
+				if(_grabbedObject[0]->IsKindOfClass(Syringe::GetMetaClass()))
+				{
+					rotation.y -= 90.0f;
+				}
+				_grabbedObject[0]->SetWorldRotation(rotation);
+				
+				
+				rotation = RN::Quaternion::WithLookAt(_grabbedObject[1]->IsKindOfClass(Syringe::GetMetaClass()) ? forward : -left).GetEulerAngle();
+				if(_grabbedObject[1]->IsKindOfClass(Syringe::GetMetaClass()))
+				{
+					rotation.y += 90.0f;
+				}
+				_grabbedObject[1]->SetWorldRotation(rotation);
 			}
 		}
 	}
