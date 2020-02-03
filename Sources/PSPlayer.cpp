@@ -33,13 +33,13 @@ namespace PS
 		{
 			_previousHeadPosition = vrCamera->GetHead()->GetPosition();
 			if(vrCamera->GetOrigin() == RN::VRWindow::Origin::Head)
-				_camera->SetPosition(RN::Vector3(0.0f, 1.8f, 0.0f));
+				_camera->SetPosition(RN::Vector3(0.0f, 1.6f, 0.0f));
 			else
 				_camera->SetPosition(RN::Vector3(0.0f, 0.0f, 0.0f));
 		}
 		else
 		{
-			_camera->SetPosition(RN::Vector3(0.0f, 1.8f, 0.0f));
+			_camera->SetPosition(RN::Vector3(0.0f, 1.6f, 0.0f));
 		}
 		
 		//World *world = World::GetSharedInstance();
@@ -236,16 +236,22 @@ namespace PS
 		else
 		{
 			RN::Vector3 translation{};
-			if(manager->IsControlToggling(RNSTR("V")))
-				translation -= RN::Vector3(0.f,0.f, delta);
-			if (manager->IsControlToggling(RNSTR("I")))
-				translation += RN::Vector3(0.f, 0.f, delta);
-			if (manager->IsControlToggling(RNSTR("U")))
-				translation -= RN::Vector3(delta, 0.f, 0.f);
+			if(manager->IsControlToggling(RNSTR("W")))
+				translation -= RN::Vector3(0.f,0.f, 1.0f);
+			if (manager->IsControlToggling(RNSTR("S")))
+				translation += RN::Vector3(0.f, 0.f, 1.0f);
+			if (manager->IsControlToggling(RNSTR("D")))
+				translation -= RN::Vector3(1.0f, 0.f, 0.f);
 			if (manager->IsControlToggling(RNSTR("A")))
-				translation += RN::Vector3(delta, 0.f, 0.f);
+				translation += RN::Vector3(1.0f, 0.f, 0.f);
+			
+			RN::Vector3 cameraRotation = _camera->GetWorldRotation().GetEulerAngle();
+			cameraRotation.y = 0.0f;
+			translation = RN::Quaternion(cameraRotation).GetRotatedVector(translation);
+			translation.y = 0.0f;
+			translation.Normalize(1.5f * delta);
 
-			globalTranslation = _camera->GetWorldRotation().GetRotatedVector(translation);
+			globalTranslation = translation;
 		}
 
 		Translate(globalTranslation);
@@ -342,7 +348,7 @@ namespace PS
 						const Vector3 dir = _camera->GetWorldRotation().GetRotatedVector(_grabbedObjectOffset[i]);
 						_grabbedObject[i]->SetWorldPosition(_camera->GetWorldPosition() + dir);
 
-						_grabbedObject[i]->SetIsTriggered(manager->IsControlToggling(RNSTR("3")));
+						_grabbedObject[i]->SetIsTriggered(manager->IsControlToggling(RNSTR("F")));
 					}
 				}
 				else
@@ -350,8 +356,8 @@ namespace PS
 					if (_grabbedObject[i]) ReleaseGrabbable(false, i);
 				}
 			};
-			processHand(0, "1");
-			processHand(1, "2");
+			processHand(0, "E");
+			processHand(1, "Q");
 
 			if (_isHandGrabbing[0] && _isHandGrabbing[1])
 			{

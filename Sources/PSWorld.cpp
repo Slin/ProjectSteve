@@ -380,8 +380,8 @@ namespace PS
 			{
 				Animatable *flame = new Animatable(RNCSTR("sprites/Fire.png"));
 				obs->AddChild(flame->Autorelease());
-				flame->SetPosition(RN::Vector3(x, 0.57f, z));
-				flame->SetScale(RN::Vector3(0.5f, 0.5f, 0.5f));
+				flame->SetPosition(RN::Vector3(x, 0.55f, z));
+				flame->SetScale(RN::Vector3(0.3f, 0.3f, 0.3f));
 			}
 		}
 		obs->SetEffect(new BurnEffect(1));
@@ -419,8 +419,8 @@ namespace PS
 			{
 				Animatable *flame = new Animatable(RNCSTR("sprites/Fire.png"));
 				obs->AddChild(flame->Autorelease());
-				flame->SetPosition(RN::Vector3(x, 0.60f, z));
-				flame->SetScale(RN::Vector3(0.75f, 0.75f, 0.75f));
+				flame->SetPosition(RN::Vector3(x, 0.57f, z));
+				flame->SetScale(RN::Vector3(0.5f, 0.5f, 0.5f));
 			}
 		}
 		obs->SetEffect(new BurnEffect(2));
@@ -495,7 +495,8 @@ namespace PS
 			{
 				Animatable *flame = new Animatable(RNCSTR("sprites/Fire.png"));
 				obs->AddChild(flame->Autorelease());
-				flame->SetPosition(RN::Vector3(x, 0.64f, z));
+				flame->SetPosition(RN::Vector3(x, 0.60f, z));
+				flame->SetScale(RN::Vector3(0.75f, 0.75f, 0.75f));
 			}
 		}
 		obs->SetEffect(new BurnEffect(3));
