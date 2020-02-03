@@ -119,10 +119,11 @@ namespace PS
 			else
 			{
 				if(_type == ObjectType::SteveletType) return;
+				if(_activeObjects->GetCount() == 0) return;
 				
-				Grabbable *firstObject = _activeObjects->GetFirstObject<Grabbable>();
+				Grabbable *firstObject = _activeObjects->GetFirstObject<Grabbable>()->Retain();
 				_activeObjects->RemoveObject(firstObject);
-				_activeObjects->AddObject(firstObject);
+				_activeObjects->AddObject(firstObject->Autorelease());
 				World::GetSharedInstance()->GetPlayer()->ReleaseObjectFromHandIfNeeded(firstObject);
 				firstObject->Reset();
 				firstObject->SetWorldPosition(GetWorldPosition());

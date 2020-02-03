@@ -99,9 +99,9 @@ namespace PS
 		target.DisablePhysics();
 		World* world = World::GetSharedInstance();
 		world->GetIPad()->UpdateAttributes(_genes);
-		if(target.GetSpawner())
+		if(newGene.GetSpawner())
 		{
-			target.GetSpawner()->ReturnToPool(&target);
+			newGene.GetSpawner()->ReturnToPool(&newGene);
 		}
 		else
 		{

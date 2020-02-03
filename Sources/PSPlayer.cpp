@@ -208,7 +208,7 @@ namespace PS
 				controllerRotation.y = 0.0f;
 				stickTranslation += (_cameraRotation * RN::Quaternion(controllerRotation)).GetRotatedVector(RN::Vector3(leftController.thumbstick.x, 0.0f, -leftController.thumbstick.y));
 				stickTranslation.y = 0.0f;
-				stickTranslation.Normalize(3.0f * delta);
+				stickTranslation.Normalize(1.5f * delta);
 			}
 		}
 		
@@ -390,7 +390,7 @@ namespace PS
 			}
 			
 			Grabbable* grabbedObject = world->GetClosestGrabbableObject(referencePosition);
-			if(grabbedObject && referencePosition.GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
+			if(grabbedObject && referencePosition.GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.06f)
 				return grabbedObject;
 		}
 		else
