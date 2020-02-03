@@ -461,7 +461,7 @@ namespace PS
 		required.push_back(obs);
 		AddLevelNode(obs->Autorelease(), false);
 		RN::OpenALSource *windAudioSource = new RN::OpenALSource(RN::AudioAsset::WithName(RNCSTR("audio/wind.ogg")));
-		windAudioSource->SetGain(0.5f);
+		windAudioSource->SetGain(0.3f);
 		windAudioSource->SetRepeat(true);
 		windAudioSource->Seek(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0.0f, 90.0f));
 		windAudioSource->SetPosition(RN::Vector3(0.0f, 0.6f, 0.0f));

@@ -283,7 +283,7 @@ namespace PS
 					if(!_isHandGrabbing[i])
 					{
 						Grabbable* grabbedObject;
-						if((grabbedObject = FindGrabbable(true, i)) && (grabbedObject = Grab(grabbedObject,i)))
+						if((grabbedObject = FindGrabbable(true, i, false)) && (grabbedObject = Grab(grabbedObject,i)))
 						{
 							_grabbedObjectOffset[i] = _handEntity[i]->GetWorldRotation().GetConjugated().GetRotatedVector(grabbedObject->GetWorldPosition() - _handEntity[i]->GetWorldPosition());
 							_grabbedObjectRotationOffset[i] = _handEntity[i]->GetWorldRotation().GetConjugated() * grabbedObject->GetWorldRotation();
@@ -331,7 +331,7 @@ namespace PS
 					if (!_isHandGrabbing[i])
 					{
 						Grabbable* grabbedObject;
-						if ((grabbedObject = FindGrabbable(false, i)) && (grabbedObject = Grab(grabbedObject, i)))
+						if ((grabbedObject = FindGrabbable(false, i, false)) && (grabbedObject = Grab(grabbedObject, i)))
 						{
 							_grabbedObjectOffset[i] = {};
 							_grabbedObjectOffset[i].z = -std::min(1.5f, grabbedObject->GetWorldPosition().GetDistance(_camera->GetWorldPosition()));
@@ -378,13 +378,19 @@ namespace PS
 		_didActivate = true;
 	}
 
-	Grabbable* Player::FindGrabbable(bool vrMode, RN::uint8 handIndex)
+	Grabbable* Player::FindGrabbable(bool vrMode, RN::uint8 handIndex, bool isDropping)
 	{
 		PS::World* world = World::GetSharedInstance();
 		if (vrMode)
 		{
-			Grabbable* grabbedObject = world->GetClosestGrabbableObject(_handEntity[handIndex]->GetWorldPosition());
-			if(grabbedObject && _handEntity[handIndex]->GetWorldPosition().GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
+			RN::Vector3 referencePosition = _handEntity[handIndex]->GetWorldPosition();
+			if(isDropping && _grabbedObject[handIndex] && _grabbedObject[handIndex]->IsKindOfClass(Gene::GetMetaClass()))
+			{
+				referencePosition = _grabbedObject[handIndex]->GetWorldPosition();
+			}
+			
+			Grabbable* grabbedObject = world->GetClosestGrabbableObject(referencePosition);
+			if(grabbedObject && referencePosition.GetSquaredDistance(grabbedObject->GetWorldPosition()) < 0.02f)
 				return grabbedObject;
 		}
 		else
@@ -427,7 +433,7 @@ namespace PS
 		// drop gene in helix?
 		if (node->IsKindOfClass(Gene::GetMetaClass()))
 		{
-			RN::SceneNode* target = FindGrabbable(vrMode, handIndex);
+			RN::SceneNode* target = FindGrabbable(vrMode, handIndex, true);
 			if (target && target->IsKindOfClass(Gene::GetMetaClass())
 				&& target->GetParent()
 				&& target->GetParent()->IsKindOfClass(Helix::GetMetaClass()))

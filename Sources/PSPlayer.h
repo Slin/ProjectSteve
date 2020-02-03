@@ -35,7 +35,7 @@ namespace PS
 		void ReleaseObjectFromHandIfNeeded(Grabbable *grabbable);
 
 	private:
-		Grabbable* FindGrabbable(bool vrMode, RN::uint8 handIndex);
+		Grabbable* FindGrabbable(bool vrMode, RN::uint8 handIndex, bool isDropping);
 		Grabbable* Grab(Grabbable* node, RN::uint8 handIndex);
 		void ReleaseGrabbable(bool vrMode, RN::uint8 handIndex);
 
