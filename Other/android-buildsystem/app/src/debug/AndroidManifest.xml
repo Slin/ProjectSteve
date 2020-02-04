@@ -7,7 +7,7 @@
 
     <application
         android:allowBackup="true"
-        android:label="ProjectSteve"
+        android:label="Stevelettes Lab"
         android:supportsRtl="true"
         android:hasCode="false"
         android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
@@ -15,7 +15,7 @@
         <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
 
         <activity android:name="android.app.NativeActivity"
-            android:label="ProjectSteve"
+            android:label="Stevelettes Lab"
             android:screenOrientation="landscape"
             android:configChanges="density|keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|uiMode"
             android:launchMode="singleTask"

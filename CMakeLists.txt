@@ -131,7 +131,6 @@ if(ANDROID)
     	target_link_libraries(ProjectSteve ${CMAKE_CURRENT_SOURCE_DIR}/Vendor/OculusPlatform/Android/libs/arm64-v8a/libovrplatformloader.so)
     	add_custom_command(TARGET ProjectSteve PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy
                        ${CMAKE_CURRENT_SOURCE_DIR}/Vendor/OculusPlatform/Android/libs/arm64-v8a/libovrplatformloader.so $<TARGET_FILE_DIR:ProjectSteve>)
-    	target_compile_definitions(ProjectSteve PRIVATE -DBUILD_FOR_OCULUS)
     endif()
 elseif(UNIX AND NOT APPLE)
 	rayne_use_modules(ProjectSteve RayneVulkan)

@@ -17,7 +17,7 @@ namespace PS
 		: _animationTimer(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0.0f, 1.0f))
 	{
 		bool isSprite = false;
-		if (!spriteName) _model = RN::Model::WithName(RNCSTR("sprites/stevelet/stevelet.sgm"))->Copy();
+		if (!spriteName) _model = RN::Model::WithName(RNCSTR("sprites/stevelet.sgm"))->Copy();
 		else {
 			if (spriteName->HasSuffix(RNCSTR(".sgm")))
 			{
@@ -25,7 +25,7 @@ namespace PS
 			}
 			else
 			{
-				_model = RN::Model::WithName(RNCSTR("sprites/stevelet/stevelet.sgm"))->Copy();
+				_model = RN::Model::WithName(RNCSTR("sprites/stevelet.sgm"))->Copy();
 				isSprite = true;
 			}
 		}
