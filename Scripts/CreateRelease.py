@@ -54,7 +54,7 @@ def main():
 			shutil.copy2('../Other/RunPancake-macOS.sh', destinationDirectory)
 		elif sys.argv[1] == 'android':
 			os.makedirs(destinationDirectory)
-			shutil.copy2(os.path.join(sourceDirectory, 'project-z.apk'), os.path.join(destinationDirectory, 'project-z-sidequest.apk'))
+			shutil.copy2(os.path.join(sourceDirectory, 'stevelettes-lab.apk'), os.path.join(destinationDirectory, 'stevelettes-lab-sidequest.apk'))
 	elif sys.argv[2] == 'steam':
 		if sys.argv[1] == 'windows':
 			shutil.copytree(sourceDirectory, destinationDirectory, symlinks=False, ignore=shutil.ignore_patterns('*.lib', '*.exp', '../Builds/Steam/Build/Release/ProjectSteve/RayneOgg.dll', 'RayneBullet', 'RayneOculus', 'RayneOpenAL', 'RayneVR', 'RayneOpenVR'))
@@ -67,7 +67,7 @@ def main():
 			shutil.copytree(sourceDirectory, destinationDirectory, symlinks=False, ignore=shutil.ignore_patterns('*.lib', '*.exp', '../Builds/Steam/Build/Release/ProjectSteve/RayneOgg.dll', 'RayneBullet', 'RayneOculus', 'RayneOpenAL', 'RayneVR', 'RayneOpenVR'))
 		elif sys.argv[1] == 'android':
 			os.makedirs(destinationDirectory)
-			shutil.copy2(os.path.join(sourceDirectory, 'project-z.apk'), destinationDirectory)
+			shutil.copy2(os.path.join(sourceDirectory, 'stevelettes-lab.apk'), destinationDirectory)
 
 if __name__ == '__main__':
 	main()

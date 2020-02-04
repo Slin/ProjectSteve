@@ -54,7 +54,7 @@ def main():
 			keyPassword = getpass.getpass()
 			subprocess.call(['gradle', 'assembleRelease'])
 			subprocess.call(['jarsigner', '-keystore', os.path.join(currentDirectory, '../../../AndroidReleaseKeyStore'), '-storepass', storePassword, 'app/build/outputs/apk/release/app-release-unsigned.apk', 'AndroidReleaseKey', '-keypass', keyPassword])
-			subprocess.call(['/Users/slin/Library/Android/sdk/build-tools/29.0.2/zipalign', '-f', '4', 'app/build/outputs/apk/release/app-release-unsigned.apk', 'app/build/outputs/apk/release/project-z.apk'])
+			subprocess.call(['/Users/slin/Library/Android/sdk/build-tools/29.0.2/zipalign', '-f', '4', 'app/build/outputs/apk/release/app-release-unsigned.apk', 'app/build/outputs/apk/release/stevelettes-lab.apk'])
 	elif sys.argv[2] == 'steam':
 		if sys.argv[1] == 'windows':
 			print 'Not yet supported'
@@ -76,7 +76,7 @@ def main():
 			keyPassword = getpass.getpass()
 			subprocess.call(['gradle', 'assembleRelease'])
 			subprocess.call(['jarsigner', '-verbose', '-keystore', os.path.join(currentDirectory, '../../../AndroidReleaseKeyStore'), '-storepass', storePassword, 'app/build/outputs/apk/release/app-release-unsigned.apk', 'AndroidReleaseKey', '-keypass', keyPassword])
-			subprocess.call(['/Users/slin/Library/Android/sdk/build-tools/29.0.2/zipalign', '-f', '4', 'app/build/outputs/apk/release/app-release-unsigned.apk', 'app/build/outputs/apk/release/project-z.apk'])
+			subprocess.call(['/Users/slin/Library/Android/sdk/build-tools/29.0.2/zipalign', '-f', '4', 'app/build/outputs/apk/release/app-release-unsigned.apk', 'app/build/outputs/apk/release/stevelettes-lab.apk'])
 
 if __name__ == '__main__':
 	main()
