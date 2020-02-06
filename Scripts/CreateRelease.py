@@ -32,7 +32,7 @@ def main():
 	elif sys.argv[1] == 'linux':
 		sourceDirectory = os.path.join(sourceDirectory, 'Build')
 	else:
-		sourceDirectory = os.path.join(sourceDirectory, 'Build/ProjectSteve/Release')
+		sourceDirectory = os.path.join(sourceDirectory, 'Build/Release')
 	
 	if not os.path.isdir(sourceDirectory):
 		print "Build does not exist: " + sourceDirectory

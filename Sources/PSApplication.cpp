@@ -167,7 +167,7 @@ namespace PS
 #elif RN_PLATFORM_LINUX
         World *world = new World(_vrWindow, 8, false, false);
 #else
-		World *world = new World(_vrWindow, 8, wantsPreview, false);
+		World *world = new World(_vrWindow, 8, true, false);
 #endif
 
 		RN::SceneManager::GetSharedInstance()->AddScene(world);

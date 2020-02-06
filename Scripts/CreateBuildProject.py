@@ -44,7 +44,7 @@ def main():
 
 	if sys.argv[2] == 'independent':
 		if sys.argv[1] == 'windows':
-			subprocess.call(['cmake', '../..', '-DPZ_BUILD_FOR_STEAM=False', '-DPZ_BUILD_FOR_OCULUS=False'])
+			subprocess.call(['cmake', '-A', 'x64', '../..', '-DPZ_BUILD_FOR_STEAM=False', '-DPZ_BUILD_FOR_OCULUS=False'])
 		elif sys.argv[1] == 'linux':
 			subprocess.call(['cmake', '../..', '-DPZ_BUILD_FOR_STEAM=False', '-DPZ_BUILD_FOR_OCULUS=False', '-DCMAKE_BUILD_TYPE=Release'])
 		elif sys.argv[1] == 'macos':
@@ -57,14 +57,14 @@ def main():
 			copyToFolder('../../../../Rayne/Modules/OculusMobile/Vendor/ovr_sdk_mobile_1/VrApi/Libs/Android/arm64-v8a/Debug/libvrapi.so', 'app/src/debug/libs/arm64-v8a/')
 	elif sys.argv[2] == 'steam':
 		if sys.argv[1] == 'windows':
-			subprocess.call(['cmake', '../..', '-DPZ_BUILD_FOR_STEAM=True', '-DPZ_BUILD_FOR_OCULUS=False'])
+			subprocess.call(['cmake', '-A', 'x64', '../..', '-DPZ_BUILD_FOR_STEAM=True', '-DPZ_BUILD_FOR_OCULUS=False'])
 		elif sys.argv[1] == 'linux':
 			subprocess.call(['cmake', '../..', '-DPZ_BUILD_FOR_STEAM=True', '-DPZ_BUILD_FOR_OCULUS=False', '-DCMAKE_BUILD_TYPE=Release', "-DCMAKE_C_COMPILER=/usr/bin/clang", "-DCMAKE_CXX_COMPILER=/usr/bin/clang++"])
 		elif sys.argv[1] == 'macos':
 			subprocess.call(['cmake', '-G', 'Xcode', '../..', '-DPZ_BUILD_FOR_STEAM=True', '-DPZ_BUILD_FOR_OCULUS=False'])
 	elif sys.argv[2] == 'oculus':
 		if sys.argv[1] == 'windows':
-			subprocess.call(['cmake', '../..', '-DPZ_BUILD_FOR_STEAM=False', '-DPZ_BUILD_FOR_OCULUS=True'])
+			subprocess.call(['cmake', '-A', 'x64', '../..', '-DPZ_BUILD_FOR_STEAM=False', '-DPZ_BUILD_FOR_OCULUS=True'])
 		elif sys.argv[1] == 'android':
 			subprocess.call(['gradle', 'init', '--type', 'basic', '--dsl', 'groovy', '--project-name', 'ProjectSteve'])
 			subprocess.call(['gradle', '-PrayneBuildType=oculus', '-PrayneBuildVersion=1.0.7'])
